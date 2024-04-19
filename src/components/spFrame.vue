@@ -7,6 +7,31 @@
 
 <script setup>
 import { onMounted, onUnmounted } from 'vue';
+import {c} from "../components/constants.js";
+import {useEventHandler} from "./eventHandler.js";
+
+
+const emit = defineEmits(['cevt']);
+const name = 'spFrame'
+const cmdHandlers = {}
+const funcs = [];
+const {handleEvent} = useEventHandler();
+const handleCmd = function(args){
+  console.log('handleCmd-', name, args);
+}
+//emit('cevt', [c.SET_CMD_HANDLER, handleCmd, name]);
+
+
+funcs[c.SET_CMD_HANDLER]= function(evt){
+  console.log('in SET_CMD_HANDLER-', evt);
+  cmdHandlers[evt[2]]=evt[1];
+}
+funcs[c.UNSET_CMD_HANDLER]= function(evt){
+  console.log('in SET_CMD_HANDLER-', evt);
+  let dlt = delete cmdHandlers[evt[2]];
+}
+
+
 
 const resizeHandler = () => {
   const vh = window.innerHeight * 0.01;
@@ -16,10 +41,12 @@ const resizeHandler = () => {
 onMounted(() => {
   resizeHandler();
   window.addEventListener('resize', resizeHandler);
+  emit('cevt', [c.SET_CMD_HANDLER, handleCmd, name]);
 });
 
 onUnmounted(() => {
   window.removeEventListener('resize', resizeHandler);
+  emit('cevt', [c.UNSET_CMD_HANDLER, name]);
 });
 </script>
 

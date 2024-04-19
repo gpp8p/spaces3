@@ -38,7 +38,7 @@ export default defineComponent({
   },
   setup(props, { emit }) {
     const handleInput = (data) => {
-      emit('input', data);
+      emit('cevt', [data]);
     };
 
     return {
