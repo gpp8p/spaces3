@@ -1,6 +1,6 @@
 <template>
   <div
-      :class="config.tailwindStyle ? config.tailwindStyle : 'text-lg text-blue-500 hover:text-red-500 cursor-pointer'"
+      :class="config.tailwindStyle ? config.tailwindStyle : 'text-sm text-blue-500 hover:text-red-500 cursor-pointer'"
       @click="handleClick"
   >
     {{ config.label || 'Missing' }}

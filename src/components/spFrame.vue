@@ -1,6 +1,8 @@
 <template>
   <div class="flex flex-col h-screen p-1vh">
-    <div class="w-98vw h-14-5vh mx-auto mb-1vh border-2 border-blue-500 sp-background rounded-lg"></div>
+    <div class="w-98vw h-14-5vh mx-auto mb-1vh border-2 border-blue-500 sp-background rounded-lg">
+      <dynaMenu menuOption="adminMenu" ></dynaMenu>
+    </div>
     <div class="w-98vw h-84-5vh mx-auto border-2 border-blue-500 sp-background rounded-lg"></div>
   </div>
 </template>
@@ -9,6 +11,7 @@
 import { onMounted, onUnmounted } from 'vue';
 import {c} from "../components/constants.js";
 import {useEventHandler} from "./eventHandler.js";
+import dynaMenu from '../components/dynaMenu.vue';
 
 
 const emit = defineEmits(['cevt']);

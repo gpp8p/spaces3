@@ -18,6 +18,7 @@ import { defineComponent } from 'vue';
 import menuItem from './menuItem.vue';
 //import htmlTextInput from './htmlTextInput.vue';
 import menuItemDrop from '../components//menuItemDrop.vue';
+import {c} from "./constants";
 
 
 export default defineComponent({
@@ -38,6 +39,7 @@ export default defineComponent({
   },
   setup(props, { emit }) {
     const handleInput = (data) => {
+      debugger;
       emit('cevt', [data]);
     };
 

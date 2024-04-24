@@ -21,7 +21,16 @@ export function getMenu(){
                     ],
                 }
             }
+            case 'loginMenu': {
+                return {
+                    twStyling:'text-xs text-blue-500 w-[40%]',
+                    items: [
+                        { type: 'menuItem', config: { label: 'Login', actionCode: c.MENU_LOGIN } },
+                        { type: 'menuItem', config: { label: 'Cancel', actionCode: c.MENU_CANCEL_LOGIN } },
+                    ],
+                }
+            }
         }
     }
-    return {getMenuOpts}
+    return getMenuOpts
 }
