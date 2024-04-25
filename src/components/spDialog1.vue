@@ -24,14 +24,16 @@ import {c} from "./constants";
 import dynamicMenu from './dynamicMenu.vue';
 import menuItem from './menuItem.vue';
 import menuItemDrop from '../components//menuItemDrop.vue';
+import {getLogin} from "./login.js";
 
 import {getMenu} from '../components/menuOpts.js';
-
+const {doLogin}= getLogin();
 
 const emit = defineEmits(['cevt']);
 const {handleEvent} = useEventHandler();
 const cmdHandlers = {}
 const funcs = [];
+const dialogData = {};
 funcs[c.SET_CMD_HANDLER]= function(evt){
   console.log('in SET_CMD_HANDLER-', evt);
   cmdHandlers[evt[2]]=evt[1];
@@ -42,13 +44,17 @@ funcs[c.UNSET_CMD_HANDLER]= function(evt){
 }
 funcs[c.FIELD_INPUT]=function(evt){
   console.log('in spDialog1 FIELD_INPUT-', evt);
+  dialogData[evt[1]]=evt[2];
 }
-funcs[c.INPUT_ERROR]=function(evt){
+ funcs[c.INPUT_ERROR]=function(evt){
   console.log('input error-', evt);
   alert('entry error- please try again');
-}
+ }
+
 funcs[c.MENU_LOGIN]=function(evt){
   console.log('in spDialog1 MENU_LOGIN-', evt);
+  debugger;
+  doLogin(dialogData.userId, dialogData.password);
 }
 
 const handleCmd = function(args){
@@ -83,9 +89,9 @@ onUnmounted(() => {
 });
 </script>
 <style scoped>
-.dialogLayout {
-  height: 60%;
-  display: grid;
-  grid-template-rows: 15% 75% 10%;
-}
+  .dialogLayout {
+    height: 60%;
+    display: grid;
+    grid-template-rows: 15% 75% 10%;
+  }
 </style>
