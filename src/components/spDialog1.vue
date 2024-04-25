@@ -1,22 +1,37 @@
 <template>
-  <div class="fixed w-1/2 h-2/5 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-200 rounded border-2 border-blue-500 shadow-xl shadow-black">
-    <!-- Add dialog content here -->
+  <div :class="thisDialogDefinition.login.twstyle">
+    <span class="dialogLayout">
+      <div class="text-lg text-current ml-[30%] my-[4%] text-indigo-950">
+        {{d.login.prompt}}
+      </div>
+      <div class="ml-[30%] my-[5%]">
+        <dialogFields  :dialogDef="d" @cevt="handleEvent($event, funcs, emit)"></dialogFields>
+      </div>
+      <div class="ml-[10%] my-[10%]">
+        <dynamicMenu :config="menuConfig" @cevt="handleEvent($event, funcs, emit)" />
+      </div>
+    </span>
   </div>
 </template>
 
 <script setup>
 import { onMounted, onUnmounted } from 'vue';
-import {c} from "../components/constants.js";
+import {ref} from 'vue';
+import {getDialogDefinitions} from "./dialogDefinitions.js";
+import dialogFields from '../components/dialogFields2.vue';
 import {useEventHandler} from "./eventHandler.js";
+import {c} from "./constants";
+import dynamicMenu from './dynamicMenu.vue';
+import menuItem from './menuItem.vue';
+import menuItemDrop from '../components//menuItemDrop.vue';
+
+import {getMenu} from '../components/menuOpts.js';
 
 
 const emit = defineEmits(['cevt']);
-const cmdHandlers = {}
-const name = 'spDialog1'
-const funcs = [];
 const {handleEvent} = useEventHandler();
-
-
+const cmdHandlers = {}
+const funcs = [];
 funcs[c.SET_CMD_HANDLER]= function(evt){
   console.log('in SET_CMD_HANDLER-', evt);
   cmdHandlers[evt[2]]=evt[1];
@@ -25,20 +40,52 @@ funcs[c.UNSET_CMD_HANDLER]= function(evt){
   console.log('in SET_CMD_HANDLER-', evt);
   let dlt = delete cmdHandlers[evt[2]];
 }
-const handleCmd = function(args){
-  console.log('comp1 handleCmd-', args);
+funcs[c.FIELD_INPUT]=function(evt){
+  console.log('in spDialog1 FIELD_INPUT-', evt);
 }
+funcs[c.INPUT_ERROR]=function(evt){
+  console.log('input error-', evt);
+  alert('entry error- please try again');
+}
+funcs[c.MENU_LOGIN]=function(evt){
+  console.log('in spDialog1 MENU_LOGIN-', evt);
+}
+
+const handleCmd = function(args){
+  console.log('handleCmd-', name, args);
+}
+
+const {getDialog} = getDialogDefinitions();
+const thisDialogDefinition = getDialog(c, 'loginDialog');
+console.log('spDialog1 - thisDialogDefinition', thisDialogDefinition);
+debugger;
+console.log('menudef-',thisDialogDefinition.login.menuOpts);
+
+debugger;
+const getMenuOpts = getMenu();
+console.log('getMenuOpts-',getMenuOpts);
+const menuConfig = getMenuOpts(c,thisDialogDefinition.login.menuOpts);
+console.log('menuOpts are-', menuConfig);
+
+const d = ref(thisDialogDefinition);
+
+const dName = ref('loginDialog');
 const handleResize = () => {
   // Add any necessary resize handling logic here
 };
 
 onMounted(() => {
   window.addEventListener('resize', handleResize);
-  emit('cevt', [c.SET_CMD_HANDLER, handleCmd, name]);
 });
 
 onUnmounted(() => {
   window.removeEventListener('resize', handleResize);
-  emit('cevt', [c.UNSET_CMD_HANDLER, name]);
 });
 </script>
+<style scoped>
+.dialogLayout {
+  height: 60%;
+  display: grid;
+  grid-template-rows: 15% 75% 10%;
+}
+</style>
