@@ -6,6 +6,7 @@ export const c = {
     UNSET_CMD_HANDLER:5,
     FIELD_INPUT:6,
     INPUT_ERROR:7,
+    LOGIN_RETURNED:8,
 
 
     MENU_EDIT_PAGE: 1001,
@@ -16,5 +17,8 @@ export const c = {
     MENU_ACCESS_: 1006,
     MENU_MYSPACES: 1007,
     MENU_LOGIN: 1008,
-    MENU_CANCEL_LOGIN: 1009
+    MENU_CANCEL_LOGIN: 1009,
+
+    CMD_SET_MENU: 1200,
+    CMD_SET_MESSAGE: 1201,
 }

@@ -1,5 +1,7 @@
 <template>
 
+
+
     <div class="flex justify-evenly">
       <component
           v-for="(item, index) in config.items"
@@ -11,10 +13,13 @@
     </div>
 
 
+
+
 </template>
 
 <script>
 import { defineComponent } from 'vue';
+import {ref} from 'vue';
 import menuItem from './menuItem.vue';
 //import htmlTextInput from './htmlTextInput.vue';
 import menuItemDrop from '../components//menuItemDrop.vue';

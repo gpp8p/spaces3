@@ -21,12 +21,15 @@ import {getDialogDefinitions} from "./dialogDefinitions.js";
 import dialogFields from '../components/dialogFields2.vue';
 import {useEventHandler} from "./eventHandler.js";
 import {c} from "./constants";
+import { storeToRefs } from 'pinia';
 import dynamicMenu from './dynamicMenu.vue';
 import menuItem from './menuItem.vue';
 import menuItemDrop from '../components//menuItemDrop.vue';
 import {getLogin} from "./login.js";
 
 import {getMenu} from '../components/menuOpts.js';
+
+
 const {doLogin}= getLogin();
 
 const emit = defineEmits(['cevt']);
@@ -53,8 +56,11 @@ funcs[c.FIELD_INPUT]=function(evt){
 
 funcs[c.MENU_LOGIN]=function(evt){
   console.log('in spDialog1 MENU_LOGIN-', evt);
-  debugger;
-  doLogin(dialogData.userId, dialogData.password);
+  if((typeof(dialogData.userId)=='undefined') || typeof(dialogData.password)=='undefined'){
+    alert('You must enter a user id and password and press the tab key');
+  }else{
+    doLogin(dialogData.userId, dialogData.password, emit, c);
+  }
 }
 
 const handleCmd = function(args){
