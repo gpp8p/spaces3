@@ -7,6 +7,7 @@ export const c = {
     FIELD_INPUT:6,
     INPUT_ERROR:7,
     LOGIN_RETURNED:8,
+    TRANSACTION_COMPLETED:9,
 
 
     MENU_EDIT_PAGE: 1001,
