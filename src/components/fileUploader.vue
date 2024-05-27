@@ -13,8 +13,6 @@ const props = defineProps({
   }
 });
 
-
-
 import {c} from "../components/constants.js";
 import { onMounted, onUnmounted, ref } from 'vue'
 import {useEventHandler} from "./eventHandler.js";

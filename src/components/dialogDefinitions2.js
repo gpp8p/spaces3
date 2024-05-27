@@ -16,14 +16,6 @@ export function getDialogDefinitions(){
     }
     return {getDialogAppearence, getDialogFields, getDefaultData}
 }
-/*
-const existingData = {
-    name: "Curious George",
-    num: "7.5",
-    city: "The Zoo",
-    field4: true
-}
-*/
 
 
 const defs = function(dialogDef){
