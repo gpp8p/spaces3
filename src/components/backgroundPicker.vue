@@ -7,12 +7,12 @@
 
       <div class="flex-auto">
         <span>
-          <input type="radio" @click="radioSelected('color')" id="colorBackground" name="backgroundType" :checked="fieldValue.backgroundType=='color'" />
-          <label  for="colorBackground">Color</label>
+          <input type="radio" class="radioStyle" @click="radioSelected('color')" id="colorBackground" name="backgroundType" :checked="fieldValue.backgroundType=='color'" />
+          <label  :class="props.config.radioLabelStyle ||'mr-[10px] text-lg'" for="colorBackground">Color</label>
         </span>
         <span>
-          <input type="radio" @click="radioSelected('image')" value="image" id="imageBackground" name="backgroundType" :checked="fieldValue.backgroundType=='image'"/>
-          <label for="imageBackground">Image</label>
+          <input type="radio" class="radioStyle" @click="radioSelected('image')" value="image" id="imageBackground" name="backgroundType" :checked="fieldValue.backgroundType=='image'"/>
+          <label :class="props.config.radioLabelStyle ||'mr-[10px] text-lg'" for="imageBackground">Image</label>
         </span>
       </div>
       <span v-if="backType=='color'">
@@ -39,6 +39,8 @@ const props = defineProps({
   }
 });
 
+
+
 import {c} from "../components/constants.js";
 import { onMounted, onUnmounted } from 'vue'
 import {useEventHandler} from "./eventHandler.js";
@@ -53,13 +55,25 @@ const funcs = [];
 const cmdHandlers = {}
 const handleCmd = function(args){
   console.log('handleCmd-', name, args);
-  if(name==args[2]) {
-    if(typeof(funcs[args[0]]!='undefined')){
+  debugger;
+  if(name==args[2] || args[2]=='*') {
+    if(typeof(funcs[args[0]])!='undefined'){
       console.log('Found func-', args[1]);
       funcs[args[0]](args);
+    }else{
+      passCmdDown(args);
     }
   }else{
-
+    passCmdDown(args);
+  }
+}
+const passCmdDown = function(args){
+  var availableHandlers = Object.keys(cmdHandlers);
+  if(availableHandlers.length>0){
+    for(var a=0;a<availableHandlers.length;a++){
+//                debugger;
+      cmdHandlers[availableHandlers[a]]([args[0], args[1], args[2]]);
+    }
   }
 }
 debugger;
@@ -121,6 +135,9 @@ funcs[c.UNSET_CMD_HANDLER]= function(evt){
   console.log('in SET_CMD_HANDLER-', evt);
   let dlt = delete cmdHandlers[evt[2]];
 }
+funcs[c.CMD_SET_VALUE]= function(evt){
+  console.log(props.config.name+' CMD_SET_VALUE-', evt[2]);
+}
 
 onMounted(() => {
   debugger;
@@ -138,13 +155,16 @@ onUnmounted(() => {
 <style scoped>
 .componentStyle {
   display: grid;
-  grid-template-columns: 20% 20% 20%;
+  grid-template-columns: 30% 20% 20%;
   margin-top: 7px;
 }
 .inputCss {
   margin-top: 1%;
   display: grid;
   grid-template-columns: 20% 40%;
+}
+.radioStyle {
+  margin-right: 10px;
 }
 </style>
 

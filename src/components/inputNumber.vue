@@ -34,6 +34,8 @@ const props = defineProps({
   }
 });
 
+
+
 import {c} from "../components/constants.js";
 import { onMounted, onUnmounted } from 'vue'
 import {useEventHandler} from "./eventHandler.js";
@@ -42,18 +44,30 @@ import {ref, nextTick } from 'vue';
 
 const {handleEvent} = useEventHandler();
 const emit = defineEmits(['cevt']);
-const name = 'componentName'
+const name = props.config.name;
 const funcs = [];
 const cmdHandlers = {}
 const handleCmd = function(args){
   console.log('handleCmd-', name, args);
-  if(name==args[2]) {
-    if(typeof(funcs[args[0]]!='undefined')){
+  debugger;
+  if(name==args[2] || args[2]=='*') {
+    if(typeof(funcs[args[0]])!='undefined'){
       console.log('Found func-', args[1]);
       funcs[args[0]](args);
+    }else{
+      passCmdDown(args);
     }
   }else{
-
+    passCmdDown(args);
+  }
+}
+const passCmdDown = function(args){
+  var availableHandlers = Object.keys(cmdHandlers);
+  if(availableHandlers.length>0){
+    for(var a=0;a<availableHandlers.length;a++){
+//                debugger;
+      cmdHandlers[availableHandlers[a]]([args[0], args[1], args[2]]);
+    }
   }
 }
 const noChange = ref(false);
@@ -133,9 +147,13 @@ funcs[c.UNSET_CMD_HANDLER]= function(evt){
   console.log('in SET_CMD_HANDLER-', evt);
   let dlt = delete cmdHandlers[evt[2]];
 }
+funcs[c.CMD_SET_VALUE]= function(evt){
+  console.log(props.config.name+' CMD_SET_VALUE-', evt[2]);
+}
 
 onMounted(() => {
   debugger;
+  emit('cevt', [c.SET_CMD_HANDLER, handleCmd, name]);
 //  startField.value.focus();
   /*
     var input = inputs['f2']?.value;

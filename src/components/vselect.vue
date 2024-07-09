@@ -1,11 +1,17 @@
 <template>
   <div class="inputCss">
     <span>{{props.config.label}}</span>
-    <span>
-      <input type="checkbox" v-model = "fieldValue" :checked="fieldValue==true" @change="fieldChanged" />
+    <span v-if="props.config.selectType=='pulldown'">
+      <select v-model="fieldValue" @change="setFieldValue" :class="props.config.selectStyle || 'mr-[10px] text-lg'">
+        <option v-for="opt in props.config.selectOptions" :value="opt.value">{{opt.label}}</option>
+      </select>
+    </span>
+    <span v-if="props.config.selectType=='scroll'">
+      <select class="optStyleScroll"  v-model="fieldValue" @change="setFieldValue" :size="props.config.selectSize" :multiple="props.config.selectMultiple"  :class="props.config.selectStyle || 'mr-[10px] text-lg'">
+        <option v-for="opt in props.config.selectOptions" :value="opt.value">{{opt.label}}</option>
+      </select>
     </span>
   </div>
-
 </template>
 
 <script setup>
@@ -34,6 +40,12 @@ const emit = defineEmits(['cevt']);
 const name = props.config.name;
 const funcs = [];
 const cmdHandlers = {}
+
+const fieldValue = ref('');
+if(typeof(props.config.value)=='function'){
+  fieldValue.value = props.config.value(props.data);
+}
+
 const handleCmd = function(args){
   console.log('handleCmd-', name, args);
   debugger;
@@ -57,10 +69,8 @@ const passCmdDown = function(args){
     }
   }
 }
-const fieldValue = ref(false);
-
-if(typeof(props.config.value)=='function'){
-  fieldValue.value = props.config.value(props.data);
+const setFieldValue= function(){
+  emit('cevt', [c.FIELD_CHANGED,  props.config.name, fieldValue.value]);
 }
 
 funcs[c.SET_CMD_HANDLER]= function(evt){
@@ -70,13 +80,6 @@ funcs[c.SET_CMD_HANDLER]= function(evt){
 funcs[c.UNSET_CMD_HANDLER]= function(evt){
   console.log('in SET_CMD_HANDLER-', evt);
   let dlt = delete cmdHandlers[evt[2]];
-}
-funcs[c.CMD_SET_VALUE]= function(evt){
-  console.log(props.config.name+' CMD_SET_VALUE-', evt[2]);
-}
-const fieldChanged = function(){
-//  debugger;
-  emit('cevt', [c.FIELD_CHANGED,  props.config.name, fieldValue.value]);
 }
 
 onMounted(() => {
@@ -96,5 +99,11 @@ onUnmounted(() => {
   display: grid;
   grid-template-columns: 20% 40%;
 }
+.optStyleScroll {
+  option:hover {
+    background-color: green;
+  }
+}
+
 </style>
 

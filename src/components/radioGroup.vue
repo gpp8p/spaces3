@@ -2,10 +2,27 @@
   <div class="inputCss">
     <span>{{props.config.label}}</span>
     <span>
-      <input type="checkbox" v-model = "fieldValue" :checked="fieldValue==true" @change="fieldChanged" />
+      <span v-for="rad in props.config.radioButtons">
+        <span v-if="props.config.orientation=='horozontal'">
+            <span class="radioStyle">
+              <input type="radio" class="radioStyle" :checked="rad.value==fieldValue" @click="setfieldValue(rad.value)" :name="props.config.name" :id="rad.value" >
+            </span>
+            <span :class="props.config.buttonLabelStyle || 'mr-[6px]'">
+              <label :for="rad.value">{{rad.value}}</label>
+            </span>
+        </span>
+        <span v-if="props.config.orientation=='vertical'">
+            <span>
+              <input type="radio" class="radioStyleV" :checked="rad.value==fieldValue" @click="setfieldValue(rad.value)" :name="props.config.name" :id="rad.value" >
+            </span>
+            <span :class="props.config.buttonLabelStyle || 'mr-[6px]'">
+              <label :for="rad.value">{{rad.value}}</label>
+            </span>
+          <br/>
+        </span>
+      </span>
     </span>
   </div>
-
 </template>
 
 <script setup>
@@ -48,6 +65,10 @@ const handleCmd = function(args){
     passCmdDown(args);
   }
 }
+const fieldValue = ref('');
+if(typeof(props.config.value)=='function'){
+  fieldValue.value = props.config.value(props.data);
+}
 const passCmdDown = function(args){
   var availableHandlers = Object.keys(cmdHandlers);
   if(availableHandlers.length>0){
@@ -57,10 +78,10 @@ const passCmdDown = function(args){
     }
   }
 }
-const fieldValue = ref(false);
-
-if(typeof(props.config.value)=='function'){
-  fieldValue.value = props.config.value(props.data);
+const setfieldValue=function(selectedValue){
+  debugger;
+  fieldValue.value=selectedValue;
+  emit('cevt', [c.FIELD_CHANGED,  props.config.name, fieldValue.value]);
 }
 
 funcs[c.SET_CMD_HANDLER]= function(evt){
@@ -73,10 +94,6 @@ funcs[c.UNSET_CMD_HANDLER]= function(evt){
 }
 funcs[c.CMD_SET_VALUE]= function(evt){
   console.log(props.config.name+' CMD_SET_VALUE-', evt[2]);
-}
-const fieldChanged = function(){
-//  debugger;
-  emit('cevt', [c.FIELD_CHANGED,  props.config.name, fieldValue.value]);
 }
 
 onMounted(() => {
@@ -95,6 +112,15 @@ onUnmounted(() => {
   margin-top: 1%;
   display: grid;
   grid-template-columns: 20% 40%;
+}
+
+.radioStyle {
+  display: inline;
+  margin-right: 10px;
+}
+.radioStyleV {
+  margin-top: 4px;
+  margin-right: 10px;
 }
 </style>
 

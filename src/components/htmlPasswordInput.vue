@@ -16,7 +16,10 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import {c} from "./constants";
+import {c} from "../components/constants";
+import {useEventHandler} from "../components/eventHandler.js";
+const {handleEvent} = useEventHandler();
+
 
 const props = defineProps({
   config: {
@@ -37,12 +40,14 @@ onMounted(() => {
 });
 
 const handleInput = (event) => {
+  debugger;
   const inputValue = event.target.value;
   if (inputValue.length > inputLength.value) {
     emit('error', 'Input exceeds the maximum allowed length');
   } else {
 //    emit('input', { name: props.config.name, value: inputValue });
-    emit('cevt', [c.FIELD_INPUT, props.config.name, event.target.value])
+    console.log('password entered-', c.FIELD_INPUT, props.config.name, event.target.value);
+    emit('cevt', [c.FIELD_CHANGED, props.config.name, event.target.value])
   }
 };
 </script>

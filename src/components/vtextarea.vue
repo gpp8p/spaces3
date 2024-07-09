@@ -2,7 +2,8 @@
   <div class="inputCss">
     <span>{{props.config.label}}</span>
     <span>
-      <input type="checkbox" v-model = "fieldValue" :checked="fieldValue==true" @change="fieldChanged" />
+      <textarea :rows="props.config.rows" @input="setFieldValue($event)" :cols="props.config.columns" v-model="fieldValue"></textarea>
+
     </span>
   </div>
 
@@ -34,6 +35,17 @@ const emit = defineEmits(['cevt']);
 const name = props.config.name;
 const funcs = [];
 const cmdHandlers = {}
+
+const fieldValue = ref('');
+if(typeof(props.config.value)=='function'){
+  fieldValue.value = props.config.value(props.data);
+}
+
+const setFieldValue= function(evt){
+//  debugger;
+  emit('cevt', [c.FIELD_CHANGED,  props.config.name, fieldValue.value]);
+}
+
 const handleCmd = function(args){
   console.log('handleCmd-', name, args);
   debugger;
@@ -57,11 +69,6 @@ const passCmdDown = function(args){
     }
   }
 }
-const fieldValue = ref(false);
-
-if(typeof(props.config.value)=='function'){
-  fieldValue.value = props.config.value(props.data);
-}
 
 funcs[c.SET_CMD_HANDLER]= function(evt){
   console.log('in SET_CMD_HANDLER-', evt);
@@ -70,13 +77,6 @@ funcs[c.SET_CMD_HANDLER]= function(evt){
 funcs[c.UNSET_CMD_HANDLER]= function(evt){
   console.log('in SET_CMD_HANDLER-', evt);
   let dlt = delete cmdHandlers[evt[2]];
-}
-funcs[c.CMD_SET_VALUE]= function(evt){
-  console.log(props.config.name+' CMD_SET_VALUE-', evt[2]);
-}
-const fieldChanged = function(){
-//  debugger;
-  emit('cevt', [c.FIELD_CHANGED,  props.config.name, fieldValue.value]);
 }
 
 onMounted(() => {
@@ -96,5 +96,12 @@ onUnmounted(() => {
   display: grid;
   grid-template-columns: 20% 40%;
 }
+.tacss {
+  margin-top: 1%;
+  display: grid;
+  grid-template-columns: 90% 10%;
+}
+
 </style>
+
 

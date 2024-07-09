@@ -1,15 +1,14 @@
 <template>
-  <div class="inputCss">
-    <span>{{props.config.label}}</span>
-    <span>
-      <input type="checkbox" v-model = "fieldValue" :checked="fieldValue==true" @change="fieldChanged" />
-    </span>
+  <div
+      :class="config.tailwindStyle ? config.tailwindStyle : 'text-sm text-blue-500 hover:text-red-500 cursor-pointer'"
+      @click="handleClick"
+  >
+    {{ config.label || 'Missing' }}
   </div>
-
 </template>
 
 <script setup>
-
+debugger;
 const props = defineProps({
   config: {
     type: Object,
@@ -17,7 +16,7 @@ const props = defineProps({
   },
   data:{
     type: Object,
-    required: true
+    required: false
   }
 });
 
@@ -34,6 +33,17 @@ const emit = defineEmits(['cevt']);
 const name = props.config.name;
 const funcs = [];
 const cmdHandlers = {}
+
+const fieldValue = ref('');
+if(typeof(props.config.value)=='function'){
+  fieldValue.value = props.config.value(props.data);
+}
+
+const handleClick = function(){
+  debugger;
+  emit('cevt', [c.MENU_ITEM_SELECTED, props.config.actionCode]);
+}
+
 const handleCmd = function(args){
   console.log('handleCmd-', name, args);
   debugger;
@@ -57,11 +67,6 @@ const passCmdDown = function(args){
     }
   }
 }
-const fieldValue = ref(false);
-
-if(typeof(props.config.value)=='function'){
-  fieldValue.value = props.config.value(props.data);
-}
 
 funcs[c.SET_CMD_HANDLER]= function(evt){
   console.log('in SET_CMD_HANDLER-', evt);
@@ -70,13 +75,6 @@ funcs[c.SET_CMD_HANDLER]= function(evt){
 funcs[c.UNSET_CMD_HANDLER]= function(evt){
   console.log('in SET_CMD_HANDLER-', evt);
   let dlt = delete cmdHandlers[evt[2]];
-}
-funcs[c.CMD_SET_VALUE]= function(evt){
-  console.log(props.config.name+' CMD_SET_VALUE-', evt[2]);
-}
-const fieldChanged = function(){
-//  debugger;
-  emit('cevt', [c.FIELD_CHANGED,  props.config.name, fieldValue.value]);
 }
 
 onMounted(() => {
@@ -96,5 +94,6 @@ onUnmounted(() => {
   display: grid;
   grid-template-columns: 20% 40%;
 }
+
 </style>
 

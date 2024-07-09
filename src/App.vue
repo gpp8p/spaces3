@@ -1,7 +1,7 @@
 <template>
   <div class="w-screen h-screen" id="app">
     <spFrame @cevt="handleEvent($event, funcs, emit)" />
-    <spDialog1 v-if="showDialog" @cevt="handleEvent($event, funcs, emit)" />
+    <spDialog :config = "dialogConfig" :data="dialogData" @cevt="handleEvent($event, funcs, emit)" v-if="showDialog==true"></spDialog>
   </div>
 </template>
 
@@ -9,7 +9,7 @@
 import { ref } from 'vue';
 import {c} from "./components/constants.js";
 import spFrame from './components/spFrame.vue';
-import spDialog1 from './components/spDialog1.vue';
+import spDialog from './components/dialog4.vue';
 import {useLoginStateStore} from './stores/loginState.js';
 import { storeToRefs } from 'pinia';
 
@@ -37,6 +37,16 @@ const frameConfig = ref(
 )
 
 const cmdHandlers = {}
+
+const dialogConfig = {};
+
+
+const showDialog = ref(true);
+if(showDialog.value==true){
+  dialogConfig.definition = 'loginDialog';
+}
+console.log('dialogConfig-', dialogConfig);
+
 const funcs = [];
 funcs[c.SET_CMD_HANDLER]= function(evt){
   console.log('in SET_CMD_HANDLER-', evt);
@@ -76,5 +86,5 @@ funcs[c.LOGIN_RETURNED]=function(evt){
 
 }
 
-const showDialog = ref(true);
+
 </script>
