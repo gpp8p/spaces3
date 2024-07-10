@@ -43,6 +43,59 @@ const existingData = {
 
 const defs = function(dialogDef){
     switch(dialogDef){
+        case 'pageConfig':{
+            return {
+                dialogAppearence: {
+                    twPrompt: 'text-lg text-current ml-[30%] my-[5%]',
+                    prompt: 'Test Dialog',
+                    twstyle:"fixed w-[50%] h-auto p-[2%] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-200 rounded border-2 border-blue-500 shadow-xl shadow-black",
+                },
+                dialogFields:
+                    [
+                        {
+                            name: 'pageType',
+                            type: 'vselect',
+                            ref: 'pageType',
+                            startFocus: true,
+                            selectType: "pulldown",
+                            selectSize: 0,
+                            selectMultiple: false,
+                            value: function(existingData){
+                                debugger;
+                                return existingData.pageType;
+                            },
+                            selectStyle: 'mr-[10px] text-lg',
+
+                            selectLabelStyle: "mr-[10px] text-lg",
+                            selectOptions :[
+                                {
+                                    label: 'Web Page',
+                                    value: 'webPage'
+                                },
+                                {
+                                    label: 'Phone Page',
+                                    value: 'phonePage'
+                                }
+                            ],
+                            label: "Page Type:"
+                        },
+                        {
+                            name: 'pageName',
+                            type: 'inputText',
+                            ref: 'pageName',
+                            value: function(existingData){
+                                debugger;
+                                return existingData.pageName;
+                            },
+                            required: true,
+                            size: '30',
+                            maxlength: '18',
+                            startFocus: false,
+                            label: "Page Name"
+                        },
+                    ]
+            }
+        }
         case 'testDialog':{
             return {
                 dialogAppearence: {
