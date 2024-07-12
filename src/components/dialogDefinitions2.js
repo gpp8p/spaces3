@@ -29,7 +29,28 @@ export function getDialogDefinitions(){
         var currentDefs = defs(dialogDef);
         return currentDefs.addActions
     }
-    return {getDialogAppearence, getDialogFields, getDefaultData, getMenuDefinitions, getActions}
+    const getDialogParams = function(dialogDef, aspect){
+        var currentDefinitions;
+        switch(aspect){
+            case 'fields': {
+                currentDefinitions = defs(dialogDef);
+                return currentDefinitions.dialogFields;
+            }
+            case 'defaultData': {
+                currentDefinitions = defs(dialogDef);
+                return currentDefinitions.defaultData;
+            }
+            case 'menu': {
+                currentDefinitions = defs(dialogDef);
+                return currentDefinitions.menuDefs;
+            }
+            case 'actions':{
+                currentDefinitions = defs(dialogDef);
+                return currentDefinitions.actions;
+            }
+        }
+    }
+    return {getDialogAppearence, getDialogFields, getDefaultData, getMenuDefinitions, getActions, getDialogParams}
 }
 /*
 const existingData = {
@@ -42,60 +63,8 @@ const existingData = {
 
 
 const defs = function(dialogDef){
+//    debugger;
     switch(dialogDef){
-        case 'pageConfig':{
-            return {
-                dialogAppearence: {
-                    twPrompt: 'text-lg text-current ml-[30%] my-[5%]',
-                    prompt: 'Test Dialog',
-                    twstyle:"fixed w-[50%] h-auto p-[2%] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-200 rounded border-2 border-blue-500 shadow-xl shadow-black",
-                },
-                dialogFields:
-                    [
-                        {
-                            name: 'pageType',
-                            type: 'vselect',
-                            ref: 'pageType',
-                            startFocus: true,
-                            selectType: "pulldown",
-                            selectSize: 0,
-                            selectMultiple: false,
-                            value: function(existingData){
-                                debugger;
-                                return existingData.pageType;
-                            },
-                            selectStyle: 'mr-[10px] text-lg',
-
-                            selectLabelStyle: "mr-[10px] text-lg",
-                            selectOptions :[
-                                {
-                                    label: 'Web Page',
-                                    value: 'webPage'
-                                },
-                                {
-                                    label: 'Phone Page',
-                                    value: 'phonePage'
-                                }
-                            ],
-                            label: "Page Type:"
-                        },
-                        {
-                            name: 'pageName',
-                            type: 'inputText',
-                            ref: 'pageName',
-                            value: function(existingData){
-                                debugger;
-                                return existingData.pageName;
-                            },
-                            required: true,
-                            size: '30',
-                            maxlength: '18',
-                            startFocus: false,
-                            label: "Page Name"
-                        },
-                    ]
-            }
-        }
         case 'testDialog':{
             return {
                 dialogAppearence: {
@@ -419,7 +388,7 @@ const defs = function(dialogDef){
                 menuDefs:{
                     twStyling:'text-xs text-blue-500 w-[60%] mt-[15%] ml-[10%]',
                     items: [
-                        { type: 'menuItem', config: { label: 'Login', actionCode: c.MENU_LOGIN } },
+ //                       { type: 'menuItem', config: { label: 'Login', actionCode: c.MENU_LOGIN } },
                         { type: 'menuItem', config: { label: 'Cancel', actionCode: c.MENU_CANCEL_LOGIN } },
                     ],
                 },
@@ -435,10 +404,39 @@ const defs = function(dialogDef){
                         console.log('new func menu login');
                         const {doLogin}= getLogin();
                         doLogin(dialogData.userId, dialogData.password, emit, c)
+                    }
+
+                    currentFuncs[c.FIELD_CHANGE_EVENT]=function(evt, emit, dialogData){
+                        console.log('in c.FIELD_CHANGE_EVENT-', evt, dialogData);
+                        if(evt[1]==='password'){
+                            emit('cevt', [c.CHANGE_DIALOG_CONFIGURATION, c.CHANGE_MENU_CONFIGURATION, 'loginDialogB', dialogData]);
+                        }
 
 
                     }
+
+
                     //return currentFuncs;
+                }
+            }
+        }
+        case 'loginMenuB':{
+            return {
+                dialogAppearence: {
+
+                },
+                dialogFields : [
+                ],
+                defaultData:{},
+                menuDefs:{
+                    twStyling:'text-xs text-blue-500 w-[60%] mt-[15%] ml-[10%]',
+                    items: [
+                        { type: 'menuItem', config: { label: 'Login', actionCode: c.MENU_LOGIN } },
+                        { type: 'menuItem', config: { label: 'Cancel', actionCode: c.MENU_CANCEL_LOGIN } },
+                    ],
+                },
+                addActions:function(currentFuncs){
+
                 }
             }
         }

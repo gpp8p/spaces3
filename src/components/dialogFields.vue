@@ -1,48 +1,92 @@
 <template>
-  <dynaComponent v-for="(thisField, index) in thisDialogDefinition.login.fields"
-             :config="thisField"
-  ></dynaComponent>
+  <span >
+      <component v-for="(aComponent, i) in dialogFields"
+                 :key="i"
+                 :config="dialogFields[i]"
+                 :data="existingData"
+                 :is="morphs[aComponent.type]"
+                 :name="aComponent"
+                 @cevt="handleEvent($event, funcs, emit)"
+      />
+    </span>
 </template>
 
 <script setup>
-import {defineAsyncComponent, ref} from 'vue';
+
 const props = defineProps({
-  dialogName: {
-    type: String,
-    required: true,
+  config: {
+    type: Object,
+    required: true
   },
-  dialogDef: {
+  data:{
     type: Object,
     required: true
   }
 });
-debugger;
-console.log('props-', props.dialogName);
+
+
 
 import {c} from "../components/constants.js";
 import { onMounted, onUnmounted } from 'vue'
 import {useEventHandler} from "./eventHandler.js";
-import {getDialogDefinitions} from "./dialogDefinitions.js";
-import htmlTextInput from '../components/htmlTextInput.vue';
-import htmlPasswordInput from '../components/htmlPasswordInput.vue';
-//import {getDialogDefinitions} from '../components/dialogDefinitions.js';
-import dynaComponent from '../components/dynaComponent.vue';
-const {getDialog} = getDialogDefinitions();
+import {ref} from 'vue';
 
-//const dialogName = 'login';
-debugger;
-const thisDialogDefinition = getDialog(c, props.dialogName);
-console.log('thisDialogDefinition-', thisDialogDefinition);
-console.log('dialogDefs-', props.dialogDef.login.fields);
-const dialogFields = props.dialogDef.login.fields;
-console.log('dialogFields-', dialogFields);
+import inputText from "../components/inputText.vue";
+import inputNumber from "../components/inputNumber.vue"
+import inputCheckbox from "../components/inputCheckbox.vue"
+import backgroundPicker from "../components/backgroundPicker.vue";
+import radioGroup from "../components/radioGroup.vue";
+import vselect from "../components/vselect.vue";
+import vtextarea from "../components/vtextarea.vue"
+import listTable from "../components/listTable.vue";
+import htmlPasswordInput from '../components/htmlPasswordInput.vue';
+
 
 const {handleEvent} = useEventHandler();
 const emit = defineEmits(['cevt']);
-const name = 'componentName'
+const name = props.config.name;
 const funcs = [];
 const cmdHandlers = {}
-const testFieldType = ref("htmlTextInput")
+
+const fieldValue = ref('');
+if(typeof(props.config.value)=='function'){
+  fieldValue.value = props.config.value(props.data);
+}
+const morphs = {
+  inputText,
+  inputNumber,
+  inputCheckbox,
+  backgroundPicker,
+  radioGroup,
+  vselect,
+  vtextarea,
+  listTable,
+  htmlPasswordInput
+}
+
+const handleCmd = function(args){
+  console.log('handleCmd-', name, args);
+  debugger;
+  if(name==args[2] || args[2]=='*') {
+    if(typeof(funcs[args[0]])!='undefined'){
+      console.log('Found func-', args[1]);
+      funcs[args[0]](args);
+    }else{
+      passCmdDown(args);
+    }
+  }else{
+    passCmdDown(args);
+  }
+}
+const passCmdDown = function(args){
+  var availableHandlers = Object.keys(cmdHandlers);
+  if(availableHandlers.length>0){
+    for(var a=0;a<availableHandlers.length;a++){
+//                debugger;
+      cmdHandlers[availableHandlers[a]]([args[0], args[1], args[2]]);
+    }
+  }
+}
 
 funcs[c.SET_CMD_HANDLER]= function(evt){
   console.log('in SET_CMD_HANDLER-', evt);
@@ -53,9 +97,6 @@ funcs[c.UNSET_CMD_HANDLER]= function(evt){
   let dlt = delete cmdHandlers[evt[2]];
 }
 
-const handleCmd = function(args){
-  console.log('comp1 handleCmd-', args);
-}
 onMounted(() => {
   debugger;
   emit('cevt', [c.SET_CMD_HANDLER, handleCmd, name]);
@@ -68,6 +109,11 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
+.inputCss {
+  margin-top: 1%;
+  display: grid;
+  grid-template-columns: 20% 40%;
+}
 
 </style>
 

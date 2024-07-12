@@ -1,7 +1,7 @@
 <template>
   <div class="w-screen h-screen" id="app">
     <spFrame @cevt="handleEvent($event, funcs, emit)" />
-    <spDialog :config = "dialogConfig" :data="dialogData" @cevt="handleEvent($event, funcs, emit)" v-if="showDialog==true"></spDialog>
+    <spDialog :config = "dialogConfig" :data="dialogData"  @cevt="handleEvent($event, funcs, emit)" v-if="showDialog==true"></spDialog>
   </div>
 </template>
 
@@ -38,7 +38,9 @@ const frameConfig = ref(
 
 const cmdHandlers = {}
 
-const dialogConfig = {};
+var dialogConfig = {};
+var dialogData = {};
+
 
 
 const showDialog = ref(true);
@@ -51,7 +53,7 @@ const funcs = [];
 funcs[c.SET_CMD_HANDLER]= function(evt){
   console.log('in SET_CMD_HANDLER-', evt);
   cmdHandlers[evt[2]]=evt[1];
-  cmdHandlers['spFrame']([c.CMD_SET_MESSAGE, 'Please enter user id and password...','spFrame']);
+  cmdHandlers['spFrame']([c.CMD_SET_MESSAGE, 'Please supply user id and password, hitting tab after entering each one','spFrame']);
 }
 funcs[c.UNSET_CMD_HANDLER]= function(evt){
   console.log('in UNSET_CMD_HANDLER-', evt);
@@ -81,9 +83,10 @@ funcs[c.LOGIN_RETURNED]=function(evt){
 
   }
   console.log('loginState structure after change-',toRaw(store.structure));
-
-
-
+}
+funcs[c.CHANGE_DIALOG_CONFIGURATION]= function(evt){
+  console.log('in CHANGE_DIALOG_CONFIGURATION',evt);
+  cmdHandlers['dialog']([evt[1], "loginMenuB", "dialog"]);
 }
 
 
