@@ -42,10 +42,11 @@ var dialogConfig = {};
 var dialogData = {};
 
 
-
-const showDialog = ref(true);
-if(showDialog.value==true){
+const showDialog = ref(false);
+const loginRequired = ref(true);
+if(loginRequired.value===true){
   dialogConfig.definition = 'loginDialog';
+  showDialog.value=true;
 }
 console.log('dialogConfig-', dialogConfig);
 
@@ -78,6 +79,7 @@ funcs[c.LOGIN_RETURNED]=function(evt){
       debugger;
       cmdHandlers['spFrame']([c.CMD_SET_MENU, 'adminMenu','spFrame']);
       showDialog.value=false;
+      loginRequired.value=false;
     }
 
 
@@ -87,6 +89,11 @@ funcs[c.LOGIN_RETURNED]=function(evt){
 funcs[c.CHANGE_DIALOG_CONFIGURATION]= function(evt){
   console.log('in CHANGE_DIALOG_CONFIGURATION',evt);
   cmdHandlers['dialog']([evt[1], "loginMenuB", "dialog"]);
+}
+funcs[c.MENU_PAGE_SETTINGS]= function(evt){
+  console.log('in MENU_PAGE_SETTINGS-', evt);
+  dialogConfig.definition = 'pageSettings';
+  showDialog.value=true;
 }
 
 

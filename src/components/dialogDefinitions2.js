@@ -65,6 +65,54 @@ const existingData = {
 const defs = function(dialogDef){
 //    debugger;
     switch(dialogDef){
+        case 'pageSettings':{
+            return {
+                dialogAppearence: {
+                    twPrompt: 'text-lg text-current ml-[30%] my-[5%]',
+                    prompt: 'Test Dialog',
+                    twstyle:"fixed w-[50%] h-auto p-[2%] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-200 rounded border-2 border-blue-500 shadow-xl shadow-black",
+                },
+                dialogFields :
+                    [
+
+                        {
+                            name: 'pageName',
+                            type: 'inputText',
+                            ref: 'field1',
+                            value: function(existingData){
+                                debugger;
+                                return existingData.pageName;
+                            },
+                            required: true,
+                            size: '25',
+                            maxlength: '35',
+                            startFocus: true,
+                            label: "Page Name"
+                        },
+                        {
+                            name: 'pageDescription',
+                            type: 'inputText',
+                            ref: 'field1',
+                            value: function(existingData){
+                                debugger;
+                                return existingData.pageName;
+                            },
+                            required: true,
+                            size: '25',
+                            maxlength: '35',
+                            startFocus: true,
+                            label: "Description"
+                        },
+                    ],
+                defaultData:{
+                    pageName: "New Page",
+                    pageDescription: "New Page Description",
+                },
+                menuDefs:{},
+                addActions:function(currentFuncs){}
+            }
+        }
+
         case 'testDialog':{
             return {
                 dialogAppearence: {
