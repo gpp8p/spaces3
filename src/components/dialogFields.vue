@@ -1,9 +1,9 @@
 <template>
   <span >
-      <component v-for="(aComponent, i) in dialogFields"
+      <component v-for="(aComponent, i) in props.config.dialogFields"
                  :key="i"
-                 :config="dialogFields[i]"
-                 :data="existingData"
+                 :config="props.config.dialogFields[i]"
+                 :data="props.config.existingData"
                  :is="morphs[aComponent.type]"
                  :name="aComponent"
                  @cevt="handleEvent($event, funcs, emit)"
