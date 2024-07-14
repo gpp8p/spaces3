@@ -1,6 +1,6 @@
 <template>
   <div class="inputCss">
-    <span>{{props.config.label}}</span>
+    <label v-if="config.label" :class="config.labelStyle || 'text-xl text-blue-500'">{{ config.label }}</label>
     <span>
       <textarea :rows="props.config.rows" @input="setFieldValue($event)" :cols="props.config.columns" v-model="fieldValue"></textarea>
 

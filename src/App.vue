@@ -63,15 +63,20 @@ funcs[c.UNSET_CMD_HANDLER]= function(evt){
 funcs[c.MENU_LOGIN]=function(evt){
   console.log('in app MENU_LOGIN-', evt);
 }
+funcs[c.EXIT_DIALOG]=function(evt){
+  showDialog.value=false;
+}
 funcs[c.LOGIN_RETURNED]=function(evt){
   console.log('login was returned', evt);
 //  debugger;
+
   const loginState = ref(evt[1]);
   const store = useLoginStateStore();
-  const {structure, setStructure} = storeToRefs(store);
+  const {structure, setStructure, getStructure} = storeToRefs(store);
   store.setStructure(loginState);
   debugger;
   const loginResult = toRaw(store.structure);
+
   if(loginResult.resultType=='Ok'){
     if(loginResult.loginPerms.admin==true){
       debugger;
@@ -83,6 +88,8 @@ funcs[c.LOGIN_RETURNED]=function(evt){
     }
 
 
+  }else{
+    alert('Login failed - please try again');
   }
   console.log('loginState structure after change-',toRaw(store.structure));
 }
@@ -94,6 +101,9 @@ funcs[c.MENU_PAGE_SETTINGS]= function(evt){
   console.log('in MENU_PAGE_SETTINGS-', evt);
   dialogConfig.definition = 'pageSettings';
   showDialog.value=true;
+}
+funcs[c.TRANSACTION_COMPLETED] = function(evt){
+  console.log('in TRANSACTION_COMPLETED-', evt);
 }
 
 

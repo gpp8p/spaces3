@@ -1,12 +1,16 @@
 import {c} from "../components/constants.js";
 import {getLogin} from "./login.js";
-import { defineEmits} from 'vue'
+import {defineEmits, toRaw} from 'vue'
+import {getTrans} from "./dbTrans.js";
+import {createPinia, storeToRefs} from "pinia";
+import {useLoginStateStore} from "../stores/loginState.js";
 
 
 
 
 
 export function getDialogDefinitions(){
+
     const getDialogAppearence = function(dialogDef){
         var currentDefs = defs(dialogDef);
 //        debugger;
@@ -20,6 +24,10 @@ export function getDialogDefinitions(){
     const getDefaultData = function(dialogDef){
         var currentDefs = defs(dialogDef);
         return currentDefs.defaultData;
+    }
+    const getDialogData = function(dialogDef){
+        var currentDefs = defs(dialogDef);
+        return currentDefs.dialogData;
     }
     const getMenuDefinitions = function(dialogDef){
         var currentDefs = defs(dialogDef);
@@ -50,7 +58,7 @@ export function getDialogDefinitions(){
             }
         }
     }
-    return {getDialogAppearence, getDialogFields, getDefaultData, getMenuDefinitions, getActions, getDialogParams}
+    return {getDialogAppearence, getDialogFields, getDefaultData, getDialogData, getMenuDefinitions, getActions, getDialogParams}
 }
 /*
 const existingData = {
@@ -78,7 +86,7 @@ const defs = function(dialogDef){
                         {
                             name: 'pageName',
                             type: 'inputText',
-                            ref: 'field1',
+                            ref: 'pageName',
                             value: function(existingData){
                                 debugger;
                                 return existingData.pageName;
@@ -91,22 +99,38 @@ const defs = function(dialogDef){
                         },
                         {
                             name: 'pageDescription',
-                            type: 'inputText',
-                            ref: 'field1',
+                            type: 'vtextarea',
+                            ref: 'pageDescription',
+                            placeholder: 'Please Enter..',
+                            rows: '4',
+                            columns: '40',
+                            maxlength: '18',
+                            startFocus: false,
                             value: function(existingData){
                                 debugger;
-                                return existingData.pageName;
+                                return existingData.pageDescription;
                             },
-                            required: true,
-                            size: '25',
-                            maxlength: '35',
-                            startFocus: true,
                             label: "Description"
+
                         },
+
                     ],
                 defaultData:{
                     pageName: "New Page",
                     pageDescription: "New Page Description",
+                },
+                dialogData: function(emit, c) {
+ //                   import { createPinia } from 'pinia'
+ //                   const pinia = createPinia();
+                    const store = useLoginStateStore();
+                    const {structure, setStructure, getStructure} = storeToRefs(store);
+                    console.log('login structure - ', store.structure);
+/*
+                    const {executeTrans} = getTrans();
+                    const header = '';
+                    executeTrans(parms, c.TRANS_GET_LAYOUT,  c.API_PATH+'api/shan/getLayout?XDEBUG_SESSION_START=19884', 'GET', emit, c, header);
+
+ */
                 },
                 menuDefs:{},
                 addActions:function(currentFuncs){}
@@ -433,6 +457,7 @@ const defs = function(dialogDef){
                     }
                 ],
                 defaultData:{},
+                dialogData: false,
                 menuDefs:{
                     twStyling:'text-xs text-blue-500 w-[60%] mt-[15%] ml-[10%]',
                     items: [
@@ -476,6 +501,7 @@ const defs = function(dialogDef){
                 dialogFields : [
                 ],
                 defaultData:{},
+                dialogData: false,
                 menuDefs:{
                     twStyling:'text-xs text-blue-500 w-[60%] mt-[15%] ml-[10%]',
                     items: [

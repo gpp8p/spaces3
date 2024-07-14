@@ -8,5 +8,8 @@ export const useLoginStateStore = defineStore('loginState', () => {
         debugger;
         structure.value = newStructure.value;
     }
-    return {structure, setStructure}
+    function getStructure() {
+        return structure.value;
+    }
+    return {structure, setStructure, getStructure}
 })

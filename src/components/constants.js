@@ -55,4 +55,8 @@ export const c = {
     SELECTION_EVTYPE: 1302,
 
 
+    API_PATH:  'http://localhost:8000/',
+    TRANS_GET_LAYOUT:2110,
+
+
 }

@@ -48,7 +48,7 @@ debugger;
 import {getDialogDefinitions} from "../components/dialogDefinitions2.js";
 
 
-const {getDialogAppearence, getDialogFields, getDefaultData, getMenuDefinitions, getActions, getDialogParams} = getDialogDefinitions();
+const {getDialogAppearence, getDialogFields, getDefaultData, getDialogData, getMenuDefinitions, getActions, getDialogParams} = getDialogDefinitions();
 const dialogFields = getDialogFields(props.config.definition);
 //const dialogFields = getDialogFields('loginDialog');
 console.log('dialogFields-',dialogFields);
@@ -57,7 +57,18 @@ const dialogAppearence = getDialogAppearence(props.config.definition);
 var menuDefinitions = getMenuDefinitions(props.config.definition);
 var testVar = 'test var one';
 const addActions = getActions(props.config.definition);
-const existingData = getDefaultData(props.config.definition);
+const emit = defineEmits(['cevt']);
+
+const currentDialogDataLoader = getDialogData(props.config.definition);
+var existingData;
+if(typeof(currentDialogDataLoader)=='function'){
+  debugger;
+  existingData = currentDialogDataLoader(emit, c);
+}else{
+  existingData = getDefaultData(props.config.definition);
+}
+
+
 
 const dialogFieldsConfig = ref({});
 dialogFieldsConfig.value.dialogFields = dialogFields;
@@ -66,7 +77,7 @@ dialogFieldsConfig.value.existingData = existingData;
 const dialogFieldsData = ref({});
 
 const {handleEvent} = useEventHandler();
-const emit = defineEmits(['cevt']);
+
 const name = 'dialog'
 const funcs = [];
 const existingFuncs = [];
