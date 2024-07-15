@@ -11,6 +11,9 @@
 </template>
 
 <script setup>
+import {whenever} from "@vueuse/core";
+
+
 const props = defineProps({
   config: {
     type: Object,
@@ -30,6 +33,7 @@ import {useEventHandler} from "./eventHandler.js";
 //const {handleCmd} = getHandleCmd();
 
 import {ref} from 'vue';
+import {toRaw} from 'vue'
 
 import inputText from "../components/inputText.vue";
 import inputNumber from "../components/inputNumber.vue"
@@ -62,19 +66,31 @@ const emit = defineEmits(['cevt']);
 
 const currentDialogDataLoader = getDialogData(props.config.definition);
 var existingData;
+const dialogFieldsConfig = ref({});
 if(typeof(currentDialogDataLoader)=='function'){
   debugger;
   const store = useLogStateStore();
-  existingData = currentDialogDataLoader(emit, c, store);
+  const ready = ref(false);
+  const result = ref({});
+  currentDialogDataLoader(emit, c, store, ready, result);
+  whenever(ready, () => {
+    debugger;
+    existingData = toRaw(result.value);
+    console.log('existingData loaded',existingData);
+    dialogFieldsConfig.value.dialogFields = dialogFields;
+    dialogFieldsConfig.value.existingData = existingData;
+
+  })
+
 }else{
   existingData = getDefaultData(props.config.definition);
+  dialogFieldsConfig.value.dialogFields = dialogFields;
+  dialogFieldsConfig.value.existingData = existingData;
 }
 
 
 
-const dialogFieldsConfig = ref({});
-dialogFieldsConfig.value.dialogFields = dialogFields;
-dialogFieldsConfig.value.existingData = existingData;
+//const dialogFieldsConfig = ref({});
 
 const dialogFieldsData = ref({});
 

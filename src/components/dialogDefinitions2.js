@@ -2,6 +2,8 @@ import {c} from "../components/constants.js";
 import {getLogin} from "./login.js";
 import {defineEmits, toRaw} from 'vue'
 import {getTrans} from "./dbTrans.js";
+import {ref} from 'vue';
+import { useAsyncState, whenever } from '@vueuse/core'
 import {createPinia, storeToRefs} from "pinia";
 //import {useLogStateStore} from "../stores/logState.js";
 
@@ -119,19 +121,34 @@ const defs = function(dialogDef){
                     pageName: "New Page",
                     pageDescription: "New Page Description",
                 },
-                dialogData: function(emit, c, store) {
+                dialogData: function(emit, c, store, ready, result) {
  //                   import { createPinia } from 'pinia'
  //                   const pinia = createPinia();
                     debugger;
 //                    const store = useLogStateStore();
                     const loginResult= toRaw(store.loginStatus)
                     console.log('loginResult dialog4 - ', loginResult);
-/*
+                    const parms   = {
+                        orgId:1,
+                        userId:1,
+                        layoutId:1
+                    }
                     const {executeTrans} = getTrans();
                     const header = '';
-                    executeTrans(parms, c.TRANS_GET_LAYOUT,  c.API_PATH+'api/shan/getLayout?XDEBUG_SESSION_START=19884', 'GET', emit, c, header);
+                    const dataReady = ref(false);
+                    const transResult = ref({});
+                    executeTrans(parms, c.TRANS_GET_LAYOUT,  c.API_PATH+'api/shan/getLayout?XDEBUG_SESSION_START=19884', 'GET', emit, c, header, dataReady, transResult);
+                    whenever(dataReady, () => {
+                        debugger;
+                        console.log('data is ready-', transResult._rawValue);
+                        ready.value=true;
+                        result.value = {
+                            pageName: transResult._rawValue.layout.menu_label,
+                            pageDescription: transResult._rawValue.layout.description,
 
- */
+                        }
+                    })
+
                 },
                 menuDefs:{},
                 addActions:function(currentFuncs){}
