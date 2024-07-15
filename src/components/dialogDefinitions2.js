@@ -3,7 +3,7 @@ import {getLogin} from "./login.js";
 import {defineEmits, toRaw} from 'vue'
 import {getTrans} from "./dbTrans.js";
 import {createPinia, storeToRefs} from "pinia";
-import {useLoginStateStore} from "../stores/loginState.js";
+//import {useLogStateStore} from "../stores/logState.js";
 
 
 
@@ -119,12 +119,13 @@ const defs = function(dialogDef){
                     pageName: "New Page",
                     pageDescription: "New Page Description",
                 },
-                dialogData: function(emit, c) {
+                dialogData: function(emit, c, store) {
  //                   import { createPinia } from 'pinia'
  //                   const pinia = createPinia();
-                    const store = useLoginStateStore();
-                    const {structure, setStructure, getStructure} = storeToRefs(store);
-                    console.log('login structure - ', store.structure);
+                    debugger;
+//                    const store = useLogStateStore();
+                    const loginResult= toRaw(store.loginStatus)
+                    console.log('loginResult dialog4 - ', loginResult);
 /*
                     const {executeTrans} = getTrans();
                     const header = '';

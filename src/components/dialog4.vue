@@ -44,6 +44,7 @@ import htmlPasswordInput from '../components/htmlPasswordInput.vue';
 import dynamicMenu from '../components/menu3.vue';
 import Fields from '../components/dialogFields.vue';
 
+import {useLogStateStore} from "../stores/logState.js";
 debugger;
 import {getDialogDefinitions} from "../components/dialogDefinitions2.js";
 
@@ -63,7 +64,8 @@ const currentDialogDataLoader = getDialogData(props.config.definition);
 var existingData;
 if(typeof(currentDialogDataLoader)=='function'){
   debugger;
-  existingData = currentDialogDataLoader(emit, c);
+  const store = useLogStateStore();
+  existingData = currentDialogDataLoader(emit, c, store);
 }else{
   existingData = getDefaultData(props.config.definition);
 }

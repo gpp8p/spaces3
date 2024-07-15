@@ -10,8 +10,10 @@ import { ref } from 'vue';
 import {c} from "./components/constants.js";
 import spFrame from './components/spFrame.vue';
 import spDialog from './components/dialog4.vue';
-import {useLoginStateStore} from './stores/loginState.js';
-import { storeToRefs } from 'pinia';
+//import {useLoginStateStore} from './stores/loginState.js';
+//import { storeToRefs } from 'pinia';
+import {useLogStateStore} from './stores/logState.js';
+
 
 import { createApp } from 'vue'
 import {toRaw} from 'vue'
@@ -21,7 +23,9 @@ import App from './App.vue'
 const pinia = createPinia()
 const app = createApp(App)
 
-app.use(pinia)
+app.use(pinia);
+
+
 // app.mount('#app');
 
 const emit = defineEmits(['cevt']);
@@ -41,7 +45,7 @@ const cmdHandlers = {}
 var dialogConfig = {};
 var dialogData = {};
 
-
+const store = useLogStateStore();
 const showDialog = ref(false);
 const loginRequired = ref(true);
 if(loginRequired.value===true){
@@ -66,6 +70,28 @@ funcs[c.MENU_LOGIN]=function(evt){
 funcs[c.EXIT_DIALOG]=function(evt){
   showDialog.value=false;
 }
+funcs[c.LOGIN_RETURNED]=function(evt){
+  debugger;
+//  const store = useLogStateStore();
+  const loginState = evt[1];
+  store.setLoginStatus(loginState);
+  const loginResult= toRaw(store.loginStatus);
+  console.log('store.loginResult', loginResult);
+  if(loginResult.resultType=='Ok'){
+    if(loginResult.loginPerms.admin==true){
+      debugger;
+      console.log('cmdHandler for spFrame-',cmdHandlers['spFrame']);
+      debugger;
+      cmdHandlers['spFrame']([c.CMD_SET_MENU, 'adminMenu','spFrame']);
+      showDialog.value=false;
+      loginRequired.value=false;
+    }
+  }else{
+    alert('Login failed - please try again');
+  }
+
+}
+/*
 funcs[c.LOGIN_RETURNED]=function(evt){
   console.log('login was returned', evt);
 //  debugger;
@@ -93,6 +119,7 @@ funcs[c.LOGIN_RETURNED]=function(evt){
   }
   console.log('loginState structure after change-',toRaw(store.structure));
 }
+*/
 funcs[c.CHANGE_DIALOG_CONFIGURATION]= function(evt){
   console.log('in CHANGE_DIALOG_CONFIGURATION',evt);
   cmdHandlers['dialog']([evt[1], "loginMenuB", "dialog"]);
