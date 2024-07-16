@@ -115,10 +115,67 @@ const defs = function(dialogDef){
                             label: "Description"
 
                         },
+                        {
+                            name: 'pageRows',
+                            type: 'textLiteral',
+                            ref: 'pageRows',
+                            value: function(existingData){
+                                debugger;
+                                return existingData.pageRows;
+                            },
+                            required: true,
+                            size: '8',
+                            maxlength: '8',
+                            startFocus: false,
+                            label: "Rows"
+                        },
+                        {
+                            name: 'pageColumns',
+                            type: 'textLiteral',
+                            ref: 'pageColumns',
+                            value: function(existingData){
+                                debugger;
+                                return existingData.pageColumns;
+                            },
+                            required: true,
+                            size: '8',
+                            maxlength: '8',
+                            startFocus: false,
+                            label: "Columns"
+                        },
+                        {
+                            name: 'pageBackground',
+                            type: 'backgroundPicker',
+                            ref: 'pageBackground',
+                            startFocus: false,
+                            radioLabelStyle: "mr-[10px] text-lg",
+                            value: function(existingData){
+                                debugger;
+                                if(existingData.pageBackground.backgroundType=='I'){
+                                    console.log('pageBackground is image');
+                                    return {
+                                        backgroundType:'image',
+                                        backgroundUrl:existingData.pageBackground.backgroundUrl,
+                                        backgroundDisplay:existingData.pageBackground.backgroundDisplay
+                                    }
+                                }else{
+                                    console.log('pageBackground is color');
+                                    return {
+                                        backgroundType:'color',
+                                        colorValue:existingData.pageBackground.colorValue,
+
+                                    }
+                                    btype = 'color';
+                                }
+                                return existingData.pageBackground;
+                            },
+                            label: "Background"
+                        },
+
 
                     ],
                 defaultData:{
-                    pageName: "New Page",
+                    pageName: "New Page (default)",
                     pageDescription: "New Page Description",
                 },
                 dialogData: function(emit, c, store, ready, result) {
@@ -145,7 +202,14 @@ const defs = function(dialogDef){
                         result.value = {
                             pageName: transResult._rawValue.layout.menu_label,
                             pageDescription: transResult._rawValue.layout.description,
-
+                            pageRows: transResult._rawValue.layout.height,
+                            pageColumns:transResult._rawValue.layout.width,
+                            pageBackground: {
+                                backgroundType: transResult._rawValue.layout.backgroundType,
+                                backgroundColor: transResult._rawValue.layout.backgroundColor,
+                                backgroundDisplay: transResult._rawValue.layout.backgroundDisplay,
+                                backgroundImageUrl: transResult._rawValue.layout.backgroundImageUrl
+                            }
                         }
                     })
 

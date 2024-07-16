@@ -2,7 +2,7 @@
   <div class="inputCss">
     <label v-if="config.label" :class="config.labelStyle || 'text-xl text-blue-500'">{{ config.label }}</label>
     <span>
-      <span :style="fieldStyle">
+      <span>
             {{fieldValue}}
          </span>
       </span>
