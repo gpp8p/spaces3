@@ -1,6 +1,6 @@
 <template>
   <div class="inputCss">
-    <span>{{props.config.label}}</span>
+    <label v-if="config.label" :class="config.labelStyle || 'text-xl text-blue-500'">{{ config.label }}</label>
     <div class="componentStyle">
 
         {{props.config.fieldLabel}}

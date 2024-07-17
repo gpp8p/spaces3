@@ -171,9 +171,27 @@ const defs = function(dialogDef){
                             },
                             label: "Background"
                         },
+                        {
+                            name: 'template',
+                            type: 'inputCheckbox',
+                            ref: 'template',
+                            startFocus: false,
+                            value: function(existingData){
+                                debugger;
+                                return existingData.template;
+                            },
+                            label: "Template ?"
+                        },
 
 
                     ],
+                menuDefs:{
+                    twStyling:'text-xs text-blue-500 w-[100%]',
+                    items: [
+                        { type: 'menuItem', config: { label: 'Cancel', actionCode: c.MENU_EXIT_DIALOG } },
+                        { type: 'menuItem', config: { label: 'Update', actionCode: c.MENU_SAVE_DIALOG_DATA} },
+                    ],
+                },
                 defaultData:{
                     pageName: "New Page (default)",
                     pageDescription: "New Page Description",
@@ -209,13 +227,24 @@ const defs = function(dialogDef){
                                 backgroundColor: transResult._rawValue.layout.backgroundColor,
                                 backgroundDisplay: transResult._rawValue.layout.backgroundDisplay,
                                 backgroundImageUrl: transResult._rawValue.layout.backgroundImageUrl
-                            }
+                            },
+                            template:transResult._rawValue.layout.width.template
                         }
                     })
 
                 },
-                menuDefs:{},
-                addActions:function(currentFuncs){}
+                addActions:function(currentFuncs){
+                    currentFuncs[c.MENU_SAVE_DIALOG_DATA]=function(emit, dialogData){
+                        debugger;
+                        console.log('in update page settings');
+                    }
+                    currentFuncs[c.MENU_EXIT_DIALOG]=function(emit, dialogData){
+                        debugger;
+                        console.log('new func exit dialog');
+                        //                      const emit = defineEmits(['cevt']);
+                        emit('cevt',[c.EXIT_DIALOG])
+                    }
+                }
             }
         }
 
