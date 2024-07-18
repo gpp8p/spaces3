@@ -67,12 +67,15 @@ const emit = defineEmits(['cevt']);
 
 const currentDialogDataLoader = getDialogData(props.config.definition);
 var existingData;
+var dialogData;
 const dialogFieldsConfig = ref({});
+const store = useLogStateStore();
+const ready = ref(false);
+const result = ref({});
+console.log('dialog4 loginInfo-', store.loginStatus);
 if(typeof(currentDialogDataLoader)=='function'){
   debugger;
-  const store = useLogStateStore();
-  const ready = ref(false);
-  const result = ref({});
+
   currentDialogDataLoader(emit, c, store, ready, result);
   whenever(ready, () => {
     debugger;
@@ -80,6 +83,7 @@ if(typeof(currentDialogDataLoader)=='function'){
     console.log('existingData loaded',existingData);
     dialogFieldsConfig.value.dialogFields = dialogFields;
     dialogFieldsConfig.value.existingData = existingData;
+    dialogData = existingData;
 
   })
 
@@ -87,6 +91,7 @@ if(typeof(currentDialogDataLoader)=='function'){
   existingData = getDefaultData(props.config.definition);
   dialogFieldsConfig.value.dialogFields = dialogFields;
   dialogFieldsConfig.value.existingData = existingData;
+  dialogData = existingData;
 }
 
 
@@ -130,7 +135,7 @@ const passCmdDown = function(args){
 }
 
 
-var dialogData = props.data;
+
 const morphs = {
   inputText,
   inputNumber,
@@ -194,6 +199,7 @@ onMounted(() => {
 //  debugger;
   emit('cevt', [c.SET_CMD_HANDLER, handleCmd, name]);
 //  cmdHandlers['mainPage'](['createNewCard', msg[1], 'mainPage']);
+  dialogData = existingData;
 
 })
 

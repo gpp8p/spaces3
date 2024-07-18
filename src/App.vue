@@ -13,6 +13,7 @@ import spDialog from './components/dialog4.vue';
 //import {useLoginStateStore} from './stores/loginState.js';
 //import { storeToRefs } from 'pinia';
 import {useLogStateStore} from './stores/logState.js';
+import {useCurrentPage} from './stores/currentPage.js'
 
 
 import { createApp } from 'vue'
@@ -46,6 +47,9 @@ var dialogConfig = {};
 var dialogData = {};
 
 const store = useLogStateStore();
+const pageStore = useCurrentPage();
+debugger;
+
 const showDialog = ref(false);
 const loginRequired = ref(true);
 if(loginRequired.value===true){
@@ -77,6 +81,9 @@ funcs[c.LOGIN_RETURNED]=function(evt){
   store.setLoginStatus(loginState);
   const loginResult= toRaw(store.loginStatus);
   console.log('store.loginResult', loginResult);
+  pageStore.setCurrentPageId(loginResult.orgHome);
+  pageStore.setCurrentPagePerms(loginResult.loginPerms);
+  console.log('pageStore-', pageStore.getCurrentPageId, pageStore.getCurrentPagePerms);
   if(loginResult.resultType=='Ok'){
     if(loginResult.loginPerms.admin==true){
       debugger;

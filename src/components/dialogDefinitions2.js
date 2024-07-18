@@ -5,6 +5,7 @@ import {getTrans} from "./dbTrans.js";
 import {ref} from 'vue';
 import { useAsyncState, whenever } from '@vueuse/core'
 import {createPinia, storeToRefs} from "pinia";
+import {useLogStateStore} from "../stores/logState.js";
 //import {useLogStateStore} from "../stores/logState.js";
 
 
@@ -196,17 +197,17 @@ const defs = function(dialogDef){
                     pageName: "New Page (default)",
                     pageDescription: "New Page Description",
                 },
-                dialogData: function(emit, c, store, ready, result) {
+                dialogData: function(emit, c, loginStore, ready, result) {
  //                   import { createPinia } from 'pinia'
  //                   const pinia = createPinia();
                     debugger;
 //                    const store = useLogStateStore();
-                    const loginResult= toRaw(store.loginStatus)
+                    const loginResult= toRaw(loginStore.loginStatus);
                     console.log('loginResult dialog4 - ', loginResult);
                     const parms   = {
-                        orgId:1,
-                        userId:1,
-                        layoutId:1
+                        orgId:loginResult.orgId,
+                        userId:loginResult.userName,
+                        layoutId:loginResult.orgHome,
                     }
                     const {executeTrans} = getTrans();
                     const header = '';
@@ -237,6 +238,9 @@ const defs = function(dialogDef){
                     currentFuncs[c.MENU_SAVE_DIALOG_DATA]=function(emit, dialogData){
                         debugger;
                         console.log('in update page settings');
+                        const store = useLogStateStore();
+                        const ready = ref(false);
+                        const result = ref({});
                     }
                     currentFuncs[c.MENU_EXIT_DIALOG]=function(emit, dialogData){
                         debugger;
