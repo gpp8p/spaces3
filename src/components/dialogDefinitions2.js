@@ -6,6 +6,7 @@ import {ref} from 'vue';
 import { useAsyncState, whenever } from '@vueuse/core'
 import {createPinia, storeToRefs} from "pinia";
 import {useLogStateStore} from "../stores/logState.js";
+import {useCurrentPage} from "../stores/currentPage.js";
 //import {useLogStateStore} from "../stores/logState.js";
 
 
@@ -166,7 +167,6 @@ const defs = function(dialogDef){
                                         colorValue:existingData.pageBackground.colorValue,
 
                                     }
-                                    btype = 'color';
                                 }
                                 return existingData.pageBackground;
                             },
@@ -241,6 +241,36 @@ const defs = function(dialogDef){
                         const store = useLogStateStore();
                         const ready = ref(false);
                         const result = ref({});
+                        const pageStore = useCurrentPage();
+                        const loginResult= toRaw(store.loginStatus)
+                        console.log('store.loginResult', loginResult);
+                        console.log('pageStore-', pageStore.getCurrentPageId, pageStore.getCurrentPagePerms);
+                        const {executeTrans} = getTrans();
+                        const header = '';
+                        const dataReady = ref(false);
+                        const transResult = ref({});
+                        const parms = {
+                            name: dialogData.pageName,
+                            description: dialogData.pageDescription,
+                            height:dialogData.pageRows,
+                            width: dialogData.pageColumns,
+                            backgroundColor: dialogData.pageBackground.backgroundColor,
+                            backgroundType: dialogData.pageBackground.backgroundType,
+                            backgroundImage: dialogData.pageBackground.backgroundImage,
+                            backgroundDisplay: dialogData.pageBackground.backgroundDisplay,
+                            template: dialogData.template,
+                            userId: loginResult.userId,
+                            orgId: loginResult.orgId,
+                            layoutId: pageStore.getCurrentPageId,
+                            permType: loginResult.loginPerms,
+                        }
+                        executeTrans(parms, c.UPDATE_PAGE_SETTINGS,  c.API_PATH+'api/shan/updateLayout?XDEBUG_SESSION_START=19884', 'POST', emit, c, header, dataReady, transResult);
+                        whenever(dataReady, () => {
+                            debugger;
+                            console.log('update completed-', transResult._rawValue);
+                        })
+
+
                     }
                     currentFuncs[c.MENU_EXIT_DIALOG]=function(emit, dialogData){
                         debugger;
