@@ -6,7 +6,9 @@
       </div>
       <div v-else class="text-center my-[1.5%]">{{message}}</div>
     </div>
-    <div class="w-98vw h-84-5vh mx-auto border-2 border-blue-500 sp-background rounded-lg"></div>
+    <div class="w-98vw h-84-5vh mx-auto border-2 border-blue-500 sp-background rounded-lg">
+      <Page :config="pageConfig" :data="pageData" @cevt="handleEvent($event, funcs, emit)" :key="pageReload"></Page>
+    </div>
   </div>
 </template>
 
@@ -18,6 +20,8 @@ import {useEventHandler} from "./eventHandler";
 import dynamicMenu from './dynamicMenu.vue';
 import {getMenu} from '../components/menuOpts.js';
 
+import Page from '../components/Page.vue';
+
 const emit = defineEmits(['cevt']);
 
 const leafComponent = false;
@@ -28,12 +32,17 @@ const message = ref('');
 const showMenu=ref(false);
 const name = 'spFrame';
 
+const pageConfig = ref({});
+pageConfig.value.name='Page';
+const pageData = ref({});
+const pageReload = ref(0);
 
 const cmdHandlers = {}
 const funcs = [];
 const {handleEvent} = useEventHandler();
 const handleCmd = function(args){
   console.log('handleCmd-', name, args);
+//  debugger;
   if(name==args[2]) {
     if(typeof(funcs[args[0]]!='undefined')){
       console.log('spFrame found func-', args[1]);
@@ -62,6 +71,12 @@ funcs[c.CMD_SET_MENU]= function(args){
 funcs[c.CMD_SET_MESSAGE]=function(args){
   console.log('in CMD_SET_MESSAGE-', args);
   message.value = args[1];
+}
+
+funcs[c.RELOAD_PAGE]=function(args){
+  debugger;
+  console.log('RELOAD_PAGE called', args);
+  pageReload.value+=1;
 }
 
 

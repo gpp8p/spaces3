@@ -85,6 +85,7 @@ funcs[c.LOGIN_RETURNED]=function(evt){
   pageStore.setCurrentPagePerms(loginResult.loginPerms);
   console.log('pageStore-', pageStore.getCurrentPageId, pageStore.getCurrentPagePerms);
   if(loginResult.resultType=='Ok'){
+    cmdHandlers['spFrame']([c.RELOAD_PAGE,'reloadPage', 'spFrame']);
     if(loginResult.loginPerms.admin==true){
       debugger;
       console.log('cmdHandler for spFrame-',cmdHandlers['spFrame']);
