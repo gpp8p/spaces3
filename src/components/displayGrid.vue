@@ -21,7 +21,12 @@ import {c} from "../components/constants.js";
 import { onMounted, onUnmounted } from 'vue'
 import {useEventHandler} from "./eventHandler.js";
 import {ref} from 'vue';
+import {usePageCss} from "../components/pageCss.js";
+const {setupPageCss} = usePageCss();
 
+import {toRaw} from 'vue';
+console.log('config at open', toRaw(props.config));
+const pageCss = setupPageCss(props.config);
 
 const {handleEvent} = useEventHandler();
 const emit = defineEmits(['cevt']);

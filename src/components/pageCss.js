@@ -3,7 +3,7 @@ import { ref } from 'vue';
 
 export function usePageCss(){
 
-    const setupPageCss = function(configs, contentHeight, contentWidth){
+    const setupPageCss = function(configs){
         console.log('setupPageCss-', configs);
         debugger;
         var gridRows = configs.height;
@@ -12,21 +12,21 @@ export function usePageCss(){
         var cellGap = cellGapAmt+'px';
         let gapTotal = Number(gridColumns*cellGapAmt)+cellGapAmt;
         var cellHeight;
-        if(typeof(configs.rowHeight)!=undefined){
+        if(typeof(configs.rowHeight)!='undefined'){
             cellHeight = Number(configs.rowHeight);
         }else {
-            cellHeight = Math.round(contentHeight / gridRows);
+            cellHeight = Math.round(configs.pageDimensions.contentHeight / gridRows);
         }
-        let cellWidth = Math.round((contentWidth-gapTotal)/this.gridColumns);
-        var gridParameters = this.layoutGridParameters(gridRows, gridColumns, cellHeight, cellWidth);
+        let cellWidth = Math.round((configs.pageDimensions.contentWidth-gapTotal)/gridColumns);
+        var gridParameters = layoutGridParameters(gridRows, gridColumns, cellHeight, cellWidth);
         var gridCss;
-        if(configs.pageBackground.backgroundType=='color'){
+        if(configs.backgroundType=='C'){
             gridCss = 'display:grid; '+'grid-gap:'+ cellGap+'; background-color: '+configs.pageBackground.colorSelect+'; ';
             gridCss = gridCss + gridParameters.rowGrid+gridParameters.columnGrid;
         }else{
-            gridCss = this.backgroundImageCss(configs.backgroundImageUrl,
-                contentWidth,
-                contentHeight,
+            gridCss = backgroundImageCss(configs.backgroundImageUrl,
+                configs.pageDimensions.contentWidth,
+                configs.pageDimensions.contentHeight,
                 gridParameters.rowGrid,
                 gridParameters.columnGrid,
                 configs.backgroundDisplay);
