@@ -8,10 +8,10 @@ export const useCurrentPage = defineStore('currentPage', {
     //getters
     getters: {
         getCurrentPageId(){
-            return this.currentPage.pageId
+            return this.currentPage.pageId;
         },
         getCurrentPagePerms(){
-            return this.currentPage.currentPagePerms;
+            return this.currentPagePerms;
         }
     },
     //actions
@@ -21,7 +21,7 @@ export const useCurrentPage = defineStore('currentPage', {
             this.currentPage.pageId = pageId;
         },
         setCurrentPagePerms(perms){
-            this.currentPage.currentPagePerms = perms;
+            this.currentPagePerms = perms;
         }
     }
 

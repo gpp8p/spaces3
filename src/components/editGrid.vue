@@ -1,5 +1,5 @@
 <template>
-
+  <h2>Edit Grid</h2>
 </template>
 
 <script setup>

@@ -130,6 +130,7 @@ funcs[c.LOGIN_RETURNED]=function(evt){
 */
 funcs[c.CHANGE_DIALOG_CONFIGURATION]= function(evt){
   console.log('in CHANGE_DIALOG_CONFIGURATION',evt);
+  debugger;
   cmdHandlers['dialog']([evt[1], "loginMenuB", "dialog"]);
 }
 funcs[c.MENU_PAGE_SETTINGS]= function(evt){

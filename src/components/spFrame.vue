@@ -6,7 +6,7 @@
       </div>
       <div v-else class="text-center my-[1.5%]">{{message}}</div>
     </div>
-    <div class="w-98vw h-84-5vh mx-auto border-2 border-blue-500 sp-background rounded-lg">
+    <div class="w-98vw h-84-5vh mx-auto border-2 border-blue-500 sp-background rounded-lg" id="contentArea">
       <Page :config="pageConfig" :data="pageData" @cevt="handleEvent($event, funcs, emit)" :key="pageReload"></Page>
     </div>
   </div>
@@ -19,6 +19,13 @@ import {c} from "./constants";
 import {useEventHandler} from "./eventHandler";
 import dynamicMenu from './dynamicMenu.vue';
 import {getMenu} from '../components/menuOpts.js';
+
+//import {screenGeometry} from "../components/screenGeometry.js";
+//const {refreshDims, thisScreenDims} = screenGeometry();
+
+import {useDims} from "../stores/dims.js";
+const dimStore = useDims();
+
 
 import Page from '../components/Page.vue';
 
@@ -89,6 +96,16 @@ onMounted(() => {
   resizeHandler();
   window.addEventListener('resize', resizeHandler);
   emit('cevt', [c.SET_CMD_HANDLER, handleCmd, name]);
+  var element = document.getElementById('contentArea');
+  var positionInfo = element.getBoundingClientRect();
+  debugger;
+  dimStore.setDims(positionInfo);
+  var pageDimensions = {
+    contentHeight: Math.round(positionInfo.height),
+    contentWidth: Math.round(positionInfo.width)
+  }
+  pageConfig.value.pageDimensions = pageDimensions;
+  cmdHandlers['Page']([c.SET_CONTENT_DIMENSIONS, pageDimensions,'Page']);
 });
 
 onUnmounted(() => {

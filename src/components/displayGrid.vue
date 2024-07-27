@@ -1,5 +1,5 @@
 <template>
-
+  <h2>Display Grid</h2>
 </template>
 
 <script setup>

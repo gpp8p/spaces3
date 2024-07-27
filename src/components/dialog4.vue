@@ -196,7 +196,7 @@ funcs[c.MENU_ITEM_SELECTED] = function(evt){
 */
 
 onMounted(() => {
-//  debugger;
+  debugger;
   emit('cevt', [c.SET_CMD_HANDLER, handleCmd, name]);
 //  cmdHandlers['mainPage'](['createNewCard', msg[1], 'mainPage']);
   dialogData = existingData;
