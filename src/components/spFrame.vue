@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col h-screen p-1vh">
-    <div  class="w-98vw h-14-5vh mx-auto mb-1vh border-2 border-blue-500 sp-background rounded-lg">
-      <div v-if="showMenu" class="my-[1.5%]">
+    <div  class="w-98vw h-14 mx-auto mb-1vh border-2 border-blue-500 sp-background rounded-lg">
+      <div v-if="showMenu" class="my-[1%]">
         <dynamicMenu :config="menuConfig" @cevt="handleEvent($event, funcs, emit)" />
       </div>
       <div v-else class="text-center my-[1.5%]">{{message}}</div>

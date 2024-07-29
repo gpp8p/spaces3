@@ -1,5 +1,5 @@
 <template>
-  <h2>Display Grid</h2>
+  <span :style="pageCss"></span>
 </template>
 
 <script setup>

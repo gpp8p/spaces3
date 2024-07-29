@@ -1,5 +1,4 @@
 <template>
-<h2>Page Component Here</h2>
   <displayGrid :config="fieldValue.layout" :data="fieldValue.cards" v-if="pageMode==c.PAGE_DISPLAY" :key="pageReload"/>
   <editGrid :config="fieldValue.layout" :data="fieldValue.cards" v-if="pageMode==c.PAGE_EDIT" :key="pageReload"/>
 </template>

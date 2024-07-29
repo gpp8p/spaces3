@@ -281,7 +281,102 @@ const defs = function(dialogDef){
                 }
             }
         }
+        case 'allSpaces':{
+            return {
+                dialogAppearence: {
+                    twPrompt: 'text-lg text-current ml-[30%] my-[5%]',
+                    prompt: 'My Spaces',
+                    twstyle:"fixed w-[50%] h-auto p-[2%] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-200 rounded border-2 border-blue-500 shadow-xl shadow-black",
+                },
+                dialogFields:
+                 [
+                     {
+                         name: 'mySpaces',
+                         type: 'listTable',
+                         ref: 'mySpaces',
+                         selectSize:'4',
+                         startFocus: false,
+                         twhead: 'bg-blue-800 flex text-white w-full h-10',
+                         twheadtr: 'flex w-full mb-4',
+                         twbody: 'bg-grey-light flex flex-col items-center justify-between overflow-y-scroll w-full',
+                         twtr:'flex w-full mb-[1px] hover:bg-green-400 text-xs',
+                         testtwheadth:'py-2 pl-3.5 w-1/4',
+                         twtd:'flex w-full mb-4 hover:bg-green-400',
+                         pagerButtonCss:"mr-[3px] mt-[10px] px-3 py-1 text-xs font-medium text-center text-black bg-white rounded-lg active:bg-red-400",
+                         pagerButtonCssActive:"mr-[3px] mt-[10px] px-3 py-1 text-xs font-medium text-center text-black bg-blue-300 rounded-lg active:bg-red-400",
+                         includePager:true,
+                         columns: [
+                             {
+                                 field: 'id',
+                                 label: 'ID',
+                                 width: '10%',
+                                 numeric: true,
+                                 visible: true,
+                                 twtd:'py-2 pl-3.5 w-1/6',
+                                 twheadth:'py-2 pl-3.5 w-1/6'
+                             },
+                             {
+                                 field: 'menu_label',
+                                 label: 'Name',
+                                 width: '30%',
+                                 visible: true,
+                                 twtd:'py-2 pl-3.5 w-1/4',
+                                 twheadth:'py-2 pl-3.5 w-1/4'
+                             },
+                             {
+                                 field: 'description',
+                                 label: 'Description',
+                                 width: '30%',
+                                 visible: true,
+                                 twtd:'py-2 pl-3.5 w-1/4',
+                                 twheadth:'py-2 pl-3.5 w-1/4'
 
+                             },
+
+
+                             {
+                                 field: 'width',
+                                 label: 'Width',
+                                 width: '10%',
+                                 visible: true,
+                                 twtd:'py-2 pl-3.5 w-1/4',
+                                 twheadth:'py-2 pl-3.5 w-1/4'
+                             }
+                         ],
+
+                         value: function(existingData, loaders, loaderFunctionsReady){
+                             async function loadModule() {
+                                 const targetModule = './defaultData.js';
+                                 try {
+                                     const myModule = await import(targetModule);
+                                     console.log('successful module import');
+                                     const {readAllData, getCapabilities, readNext, readPrev, readFirst, readLast, readThisRecord, getRecordCount} = myModule.getDataSource();
+                                     console.log('readAllData-', readAllData);
+
+                                     loaders.value = {
+                                         funcReadAllData: readAllData,
+                                         funcGetCapabilities: getCapabilities,
+                                         funcReadNext: readNext,
+                                         funcReadPrev: readPrev,
+                                         funcReadFirst: readFirst,
+                                         funcReadLast: readLast,
+                                         funcReadThisRecord: readThisRecord,
+                                         funcGetRecordCount: getRecordCount
+                                     }
+                                     loaderFunctionsReady.value=true;
+//                                        debugger;
+                                 } catch (error) {
+                                     console.error('Error importing module:', error);
+                                 }
+                             }
+                             loadModule();
+                             return existingData.mySpaces;
+                         },
+                         label: "My Spaces"
+                     }
+                ]
+            }
+        }
         case 'testDialog':{
             return {
                 dialogAppearence: {
