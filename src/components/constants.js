@@ -38,6 +38,7 @@ export const c = {
     MENU_CANCEL_LOGIN: 1009,
 
 
+
     MENU_EXIT_DIALOG: 1020,
     MENU_SAVE_DIALOG_DATA: 1021,
     MENU_ITEM_SELECTED: 1022,
@@ -49,6 +50,7 @@ export const c = {
     THIS_PAGE: 1034,
     PAGE_CHANGED: 1035,
     ALL_PAGES:  1036,
+    PAGE_COUNT: 1040,
 
     CMD_SET_MENU: 1200,
     CMD_SET_MESSAGE: 1201,

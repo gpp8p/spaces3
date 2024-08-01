@@ -46,6 +46,7 @@ import listTable from "../components/listTable.vue";
 import htmlPasswordInput from '../components/htmlPasswordInput.vue';
 import textLiteral from "../components/textLiteral.vue";
 
+
 import dynamicMenu from '../components/menu3.vue';
 import Fields from '../components/dialogFields.vue';
 
@@ -65,6 +66,7 @@ var testVar = 'test var one';
 const addActions = getActions(props.config.definition);
 const emit = defineEmits(['cevt']);
 
+debugger;
 const currentDialogDataLoader = getDialogData(props.config.definition);
 var existingData;
 var dialogData;

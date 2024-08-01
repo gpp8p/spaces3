@@ -7,6 +7,7 @@ import { useAsyncState, whenever } from '@vueuse/core'
 import {createPinia, storeToRefs} from "pinia";
 import {useLogStateStore} from "../stores/logState.js";
 import {useCurrentPage} from "../stores/currentPage.js";
+import {getLoaders} from "../components/ltLoader.js";
 //import {useLogStateStore} from "../stores/logState.js";
 
 
@@ -213,7 +214,7 @@ const defs = function(dialogDef){
                     const header = '';
                     const dataReady = ref(false);
                     const transResult = ref({});
-                    executeTrans(parms, c.TRANS_GET_LAYOUT,  c.API_PATH+'api/shan/getLayout?XDEBUG_SESSION_START=19884', 'GET', emit, c, header, dataReady, transResult);
+                    executeTrans(parms, c.ALL_PAGES,  c.API_PATH+'api/shan/getLayout?XDEBUG_SESSION_START=19884', 'GET', emit, c, header, dataReady, transResult);
                     whenever(dataReady, () => {
                         debugger;
                         console.log('data is ready-', transResult._rawValue);
@@ -281,7 +282,7 @@ const defs = function(dialogDef){
                 }
             }
         }
-        case 'allSpaces':{
+        case 'mySpaces':{
             return {
                 dialogAppearence: {
                     twPrompt: 'text-lg text-current ml-[30%] my-[5%]',
@@ -346,9 +347,10 @@ const defs = function(dialogDef){
 
                          value: function(existingData, loaders, loaderFunctionsReady){
                              async function loadModule() {
-                                 const targetModule = './defaultData.js';
+            //                     const targetModule = './defaultData.js';
+                                 const targetModule = 'defaultData';
                                  try {
-                                     const myModule = await import(targetModule);
+                                     const myModule = await import('./'+targetModule+'.js');
                                      console.log('successful module import');
                                      const {readAllData, getCapabilities, readNext, readPrev, readFirst, readLast, readThisRecord, getRecordCount} = myModule.getDataSource();
                                      console.log('readAllData-', readAllData);

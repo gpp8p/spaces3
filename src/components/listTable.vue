@@ -39,6 +39,7 @@ import lTab from "../components/iTab4.vue";
 import {ref} from 'vue';
 import Pager from "../components/Pager.vue";
 import { watch } from 'vue'
+import {getLoaders} from '../components/ltLoader.js';
 
 const {handleEvent} = useEventHandler();
 const emit = defineEmits(['cevt']);
@@ -51,6 +52,9 @@ const loaderFunctions = ref({});
 const loaderFunctionsReady = ref(false);
 
 const dataToShow = ref([]);
+
+const loaders = getLoaders(props.config.loaderType);
+
 
 
 watch(
