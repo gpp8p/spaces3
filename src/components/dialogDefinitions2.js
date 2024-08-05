@@ -7,7 +7,7 @@ import { useAsyncState, whenever } from '@vueuse/core'
 import {createPinia, storeToRefs} from "pinia";
 import {useLogStateStore} from "../stores/logState.js";
 import {useCurrentPage} from "../stores/currentPage.js";
-import {getLoaders} from "../components/ltLoader.js";
+//import {getLoaders} from "../components/ltLoader.js";
 //import {useLogStateStore} from "../stores/logState.js";
 
 
@@ -22,7 +22,7 @@ export function getDialogDefinitions(){
         return currentDefs.dialogAppearence;
     }
     const getDialogFields = function(dialogDef){
-        debugger;
+//        debugger;
         var currentDefs = defs(dialogDef);
         return currentDefs.dialogFields;
     }
@@ -345,38 +345,37 @@ const defs = function(dialogDef){
                              }
                          ],
 
-                         value: function(existingData, loaders, loaderFunctionsReady){
-                             async function loadModule() {
-            //                     const targetModule = './defaultData.js';
-                                 const targetModule = 'defaultData';
-                                 try {
-                                     const myModule = await import('./'+targetModule+'.js');
-                                     console.log('successful module import');
-                                     const {readAllData, getCapabilities, readNext, readPrev, readFirst, readLast, readThisRecord, getRecordCount} = myModule.getDataSource();
-                                     console.log('readAllData-', readAllData);
-
-                                     loaders.value = {
-                                         funcReadAllData: readAllData,
-                                         funcGetCapabilities: getCapabilities,
-                                         funcReadNext: readNext,
-                                         funcReadPrev: readPrev,
-                                         funcReadFirst: readFirst,
-                                         funcReadLast: readLast,
-                                         funcReadThisRecord: readThisRecord,
-                                         funcGetRecordCount: getRecordCount
-                                     }
-                                     loaderFunctionsReady.value=true;
-//                                        debugger;
-                                 } catch (error) {
-                                     console.error('Error importing module:', error);
-                                 }
-                             }
-                             loadModule();
-                             return existingData.mySpaces;
-                         },
                          label: "My Spaces"
                      }
-                ]
+                ],
+                dialogData: function(emit, c, loginStore, ready, result) {
+                    debugger;
+
+                    result.value = {
+
+                            funcReadAllData: function(){console.log('readAllData-invoked from list table')},
+                            funcGetCapabilities: function(){console.log('getCapabilities')},
+                            funcReadNext: function(){console.log('readNext')},
+                            funcReadPrev: function(){console.log('readPrev')},
+                            funcReadFirst: function(){console.log('readFirst')},
+                            funcReadLast: function(){console.log('readLast')},
+                            funcReadThisRecord: function(){console.log('readThis Record')},
+                            funcGetRecordCount: function(){console.log('recordCount')},
+
+
+                    }
+                    ready.value = true;
+                    console.log('msypaces dialog data', result.value, ready.value);
+                },
+                addActions:function(currentFuncs){
+                    console.log('my spaces add acctions');
+                },
+                menuDefs:{
+                    twStyling:'text-xs text-blue-500 w-[100%]',
+                    items: [
+                        { type: 'menuItem', config: { label: 'Cancel', actionCode: c.MENU_EXIT_DIALOG } },
+                    ],
+                },
             }
         }
         case 'testDialog':{

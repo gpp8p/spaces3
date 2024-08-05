@@ -3,7 +3,7 @@
       <component v-for="(aComponent, i) in props.config.dialogFields"
                  :key="i"
                  :config="props.config.dialogFields[i]"
-                 :data="props.config.existingData"
+                 :data="props.data"
                  :is="morphs[aComponent.type]"
                  :name="aComponent"
                  @cevt="handleEvent($event, funcs, emit)"
@@ -25,7 +25,7 @@ const props = defineProps({
 });
 
 
-
+debugger;
 import {c} from "../components/constants.js";
 import { onMounted, onUnmounted } from 'vue'
 import {useEventHandler} from "./eventHandler.js";
@@ -40,7 +40,6 @@ import vselect from "../components/vselect.vue";
 import vtextarea from "../components/vtextarea.vue"
 import listTable from "../components/listTable.vue";
 import htmlPasswordInput from '../components/htmlPasswordInput.vue';
-import textLiteral from "../components/textLiteral.vue";
 
 
 const {handleEvent} = useEventHandler();
@@ -48,6 +47,8 @@ const emit = defineEmits(['cevt']);
 const name = props.config.name;
 const funcs = [];
 const cmdHandlers = {}
+
+console.log('dialogFields data-', props.data);
 
 const fieldValue = ref('');
 if(typeof(props.config.value)=='function'){
@@ -62,8 +63,7 @@ const morphs = {
   vselect,
   vtextarea,
   listTable,
-  htmlPasswordInput,
-  textLiteral
+  htmlPasswordInput
 }
 
 const handleCmd = function(args){

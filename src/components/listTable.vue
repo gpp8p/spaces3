@@ -40,6 +40,7 @@ import {ref} from 'vue';
 import Pager from "../components/Pager.vue";
 import { watch } from 'vue'
 import {getLoaders} from '../components/ltLoader.js';
+import { toRaw} from 'vue'
 
 const {handleEvent} = useEventHandler();
 const emit = defineEmits(['cevt']);
@@ -91,6 +92,8 @@ watch(
 
     }
 )
+debugger;
+console.log('loader function read all data-', toRaw(props.data).funcReadAllData());
 console.log('loaderFunctions',loaderFunctions.value);
 //fieldValue.value = loaderFunctions.value.readAllData(props.data);
 const tableReload = ref(1);

@@ -2,7 +2,7 @@
 <template>
   <span :class = dialogAppearence.twstyle>
     <span >
-      <Fields :config="dialogFieldsConfig" :data = "dialogFeildsData" :key="reloadDialogFields" @cevt="handleEvent($event, funcs, emit)"></Fields>
+      <Fields :config="dialogFieldsConfig" :data = "dialogFieldsData" :key="reloadDialogFields" @cevt="handleEvent($event, funcs, emit)"></Fields>
     </span>
     <div :class="menuDefinitions.twStyling" >
       <dynamicMenu :config="menuDefinitions" :key = "reloadMenu" :data="menuData" @cevt="handleEvent($event, funcs, emit)" />
@@ -65,8 +65,7 @@ var menuDefinitions = getMenuDefinitions(props.config.definition);
 var testVar = 'test var one';
 const addActions = getActions(props.config.definition);
 const emit = defineEmits(['cevt']);
-
-debugger;
+const dialogFieldsData = ref({});
 const currentDialogDataLoader = getDialogData(props.config.definition);
 var existingData;
 var dialogData;
@@ -79,20 +78,33 @@ if(typeof(currentDialogDataLoader)=='function'){
   debugger;
 
   currentDialogDataLoader(emit, c, store, ready, result);
-  whenever(ready, () => {
-    debugger;
+  console.log('loader ready',ready);
+  if(ready.value==false){
+    whenever(ready, () => {
+      debugger;
+      existingData = toRaw(result.value);
+      console.log('existingData loaded',existingData);
+      dialogFieldsConfig.value.dialogFields = dialogFields;
+//      dialogFieldsConfig.value.existingData = existingData;
+      dialogFieldsData.value = existingData;
+//    dialogData = existingData;
+//    reloadDialogFields+=1;
+
+    })
+  }else{
     existingData = toRaw(result.value);
     console.log('existingData loaded',existingData);
     dialogFieldsConfig.value.dialogFields = dialogFields;
-    dialogFieldsConfig.value.existingData = existingData;
-    dialogData = existingData;
+//    dialogFieldsConfig.value.existingData = existingData;
+    dialogFieldsData.value = existingData;
+  }
 
-  })
 
 }else{
   existingData = getDefaultData(props.config.definition);
   dialogFieldsConfig.value.dialogFields = dialogFields;
   dialogFieldsConfig.value.existingData = existingData;
+  dialogFieldsData.value = existingData;
   dialogData = existingData;
 }
 
@@ -100,7 +112,7 @@ if(typeof(currentDialogDataLoader)=='function'){
 
 //const dialogFieldsConfig = ref({});
 
-const dialogFieldsData = ref({});
+debugger;
 
 const {handleEvent} = useEventHandler();
 
