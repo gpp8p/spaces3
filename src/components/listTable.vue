@@ -168,7 +168,7 @@ funcs[c.FIRST_PAGE]=function(evt){
   console.log('currentTableConfig.value.pageAt', currentTableConfig.value.pageAt);
   console.log('currentTableConfig.value.totalPages', currentTableConfig.value.totalPages);
   console.log('pagerProps.value.currentPage', pagerProps.value.currentPage);
-  dataToShow.value = loaderFunctions.value.funcReadFirst(props.data[props.config.name], pagerProps.value.perPage, currentRowPointer.value);
+  dataToShow.value = props.data.funcReadFirst(props.data[props.config.name], pagerProps.value.perPage, currentRowPointer.value);
   currentTableConfig.value.rowStart = 0;
   currentTableConfig.value.rowsToShow = pagerProps.value.perPage;
   console.log('dataToShow---',dataToShow.value);
@@ -193,7 +193,7 @@ funcs[c.NEXT_PAGE]=function(evt){
     currentRowPointer.value = currentRowPointer.value + currentTableConfig.value.rowsToShow;
     currentTableConfig.value.pageAt = currentTableConfig.value.pageAt + 1;
     pagerProps.value.currentPage+=1;
-    dataToShow.value = loaderFunctions.value.funcReadNext(props.data[props.config.name], pagerProps.value.perPage, currentRowPointer.value);
+    dataToShow.value = props.data.funcReadNext(props.data[props.config.name], pagerProps.value.perPage, currentRowPointer.value);
     tableReload.value += 1;
   }else{
     alert('End of data reached');
@@ -207,7 +207,7 @@ funcs[c.PREV_PAGE]=function(evt){
   debugger;
   if(currentTableConfig.value.pageAt>1){
     currentRowPointer.value = currentRowPointer.value-currentTableConfig.value.rowsToShow;
-    dataToShow.value = loaderFunctions.value.funcReadPrev(props.data[props.config.name], pagerProps.value.perPage, currentRowPointer.value);
+    dataToShow.value = props.data.funcReadPrev(props.data[props.config.name], pagerProps.value.perPage, currentRowPointer.value);
     currentTableConfig.value.pageAt = currentTableConfig.value.pageAt-1;
     currentTableConfig.value.rowStart = 0;
     currentTableConfig.value.rowsToShow = pagerProps.value.perPage;
@@ -225,7 +225,7 @@ funcs[c.LAST_PAGE]=function(evt){
   console.log('pagerProps.value.currentPage', pagerProps.value.currentPage);
   currentTableConfig.value.pageAt = currentTableConfig.value.totalPages;
   currentRowPointer.value=(currentTableConfig.value.spacesCount-pagerProps.value.perPage);
-  dataToShow.value = loaderFunctions.value.funcReadLast(props.data[props.config.name], pagerProps.value.perPage, currentRowPointer.value);
+  dataToShow.value = props.data.funcReadLast(props.data[props.config.name], pagerProps.value.perPage, currentRowPointer.value);
   currentTableConfig.value.rowStart = 0;
   currentTableConfig.value.rowsToShow = pagerProps.value.perPage;
 //  currentRowPointer.value=currentTableConfig.value.spacesCount;
@@ -243,7 +243,7 @@ funcs[c.THIS_PAGE]=function(evt){
   currentRowPointer.value=(evt[1]-1)*currentTableConfig.value.rowsToShow;
   pagerProps.value.currentPage=evt[1];
   currentTableConfig.value.rowStart = 0;
-  dataToShow.value = loaderFunctions.value.funcReadThisRecord(props.data[props.config.name], pagerProps.value.perPage, currentRowPointer.value);
+  dataToShow.value = props.data.funcReadThisRecord(props.data[props.config.name], pagerProps.value.perPage, currentRowPointer.value);
   tableReload.value+=1;
 
 

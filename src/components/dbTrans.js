@@ -7,6 +7,7 @@ import { useAsyncState, whenever } from '@vueuse/core'
 export function getTrans(){
     const executeTrans = function(transParams, transId, transUrl, transMethod, emit, c, header, dataReady, transResult){
         const { execute, data, isFinished } = useAxios(transUrl, { method: transMethod }, { immediate: false })
+        axios.defaults.headers.common['Authorization'] = `Bearer ${header}`;
         debugger;
         data.value='';
         execute(

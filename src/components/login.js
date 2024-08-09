@@ -26,6 +26,7 @@ export function getLogin(){
         whenever(isFinished, () => {
             debugger;
             console.log('returned-', data._rawValue);
+            axios.defaults.headers.common['Authorization'] = `Bearer ${data._rawValue.access_token}`;
             const loginResults = ref(data._rawValue);
 //            store.setStructure(loginResults);
             emit('cevt',[c.LOGIN_RETURNED, data._rawValue])
