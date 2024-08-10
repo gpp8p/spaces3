@@ -54,44 +54,11 @@ const loaderFunctionsReady = ref(false);
 
 const dataToShow = ref([]);
 
-const loaders = getLoaders(props.config.loaderType);
+//const loaders = getLoaders(props.config.loaderType);
 
 
 
-watch(
-    () => loaderFunctionsReady.value,
-    (newValue) => {
-      console.log('loaderFunctionsReady', newValue);
-      console.log('loaders:', loaderFunctions.value);
-      console.log('getCapabilities',loaderFunctions.value.funcGetCapabilities());
-//      dataToShow.value = loaderFunctions.value.funcReadAllData(props.data[props.config.name]);
 
-
-
-      currentTableConfig.value.spacesCount = loaderFunctions.value.funcGetRecordCount(props.data[props.config.name]);
-      currentTableConfig.value.totalPages = Math.floor(currentTableConfig.value.spacesCount/pagerProps.value.perPage);
-/*
-      dataToShow.value = loaderFunctions.value.funcReadFirst(props.data[props.config.name], pagerProps.value.perPage, 0);
-      console.log('dataToShow',dataToShow.value);
-      tableReload.value+=1;
-*/
-      if(currentTableConfig.value.includePager){
-        dataToShow.value = loaderFunctions.value.funcReadFirst(props.data[props.config.name], pagerProps.value.perPage, currentRowPointer.value);
-        currentTableConfig.value.rowStart = 0;
-        currentTableConfig.value.rowsToShow = pagerProps.value.perPage;
-        console.log('dataToShow---',dataToShow.value);
-        console.log('currentTableConfig.value.pageAt', currentTableConfig.value.pageAt);
-        console.log('currentTableConfig.value.totalPages', currentTableConfig.value.totalPages);
-//      currentRowPointer.value = currentRowPointer.value+currentTableConfig.value.rowsToShow;
-        currentRowPointer.value = 0;
-      }else{
-        dataToShow.value = loaderFunctions.value.funcReadAllData(props.data[props.config.name]);
-        currentTableConfig.value.rowsToShow=dataToShow.value.length;
-        tableReload.value+=1;
-      }
-
-    }
-)
 debugger;
 console.log('loader function read all data-', toRaw(props.data).funcReadAllData());
 console.log('loaderFunctions',loaderFunctions.value);
@@ -258,6 +225,23 @@ funcs[c.LOADERS_AVAILABLE]=function(evt){
 onMounted(() => {
   debugger;
   emit('cevt', [c.SET_CMD_HANDLER, handleCmd, name]);
+  currentTableConfig.value.spacesCount = props.data.funcGetRecordCount(currentTableConfig, pagerProps.value.perPage);
+//  currentTableConfig.value.totalPages = Math.floor(currentTableConfig.value.spacesCount/pagerProps.value.perPage);
+  currentRowPointer.value = 0;
+  if(currentTableConfig.value.includePager){
+    dataToShow.value = props.data.funcReadPagedData(currentTableConfig, pagerProps.value.perPage, currentRowPointer.value, loaderFunctionsReady,);
+    currentTableConfig.value.rowStart = 0;
+    currentTableConfig.value.rowsToShow = pagerProps.value.perPage;
+    console.log('dataToShow---',dataToShow.value);
+    console.log('currentTableConfig.value.pageAt', currentTableConfig.value.pageAt);
+    console.log('currentTableConfig.value.totalPages', currentTableConfig.value.totalPages);
+//      currentRowPointer.value = currentRowPointer.value+currentTableConfig.value.rowsToShow;
+    currentRowPointer.value = 0;
+  }else{
+    dataToShow.value = loaderFunctions.value.funcReadAllData(props.data[props.config.name]);
+    currentTableConfig.value.rowsToShow=dataToShow.value.length;
+    tableReload.value+=1;
+  }
 })
 
 onUnmounted(() => {

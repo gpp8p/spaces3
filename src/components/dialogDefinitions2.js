@@ -367,6 +367,28 @@ const defs = function(dialogDef){
                                     console.log('update completed-', transResult._rawValue);
                                 })
                             },
+                            funcReadPagedData: function(tableConfig, limit, offset, loaderFunctionsReady, tableReload){
+                                debugger;
+                                const loginResult= toRaw(loginStore.loginStatus);
+                                const {executeTrans} = getTrans();
+                                const parms = {
+                                    orgId:loginResult.orgId,
+                                    userId:loginResult.userName,
+                                    limit: limit,
+                                    offset: offset,
+                                }
+                                const header = loginResult.access_token;
+                                const dataReady = ref(false);
+                                const transResult = ref({});
+                                executeTrans(parms, c.FIRST_PAGE,  c.API_PATH+'api/shan/getMySpacesPaged?XDEBUG_SESSION_START=19884', 'GET', emit, c, header, dataReady, transResult);
+                                whenever(dataReady, () => {
+                                    debugger;
+                                    console.log('readPagedData-', transResult._rawValue);
+                                    tableConfig.value.dataToShow = transResult._rawValue;
+                                    loaderFunctionsReady.value = true;
+                                    tableReload.value+=1;
+                                })
+                            },
                             funcGetCapabilities: function(){console.log('getCapabilities')},
                             funcReadNext: function(){console.log('readNext')},
                             funcReadPrev: function(){console.log('readPrev')},
@@ -389,7 +411,26 @@ const defs = function(dialogDef){
                             },
                             funcReadLast: function(){console.log('readLast')},
                             funcReadThisRecord: function(){console.log('readThis Record')},
-                            funcGetRecordCount: function(){console.log('recordCount')},
+                            funcGetRecordCount: function(tableConfig, perPage){
+                                debugger;
+                                const loginResult= toRaw(loginStore.loginStatus);
+                                const {executeTrans} = getTrans();
+                                const parms = {
+                                    orgId:loginResult.orgId,
+                                    userId:loginResult.userName,
+                                }
+                                const header = loginResult.access_token;
+                                const dataReady = ref(false);
+                                const transResult = ref({});
+                                executeTrans(parms, c.PAGE_COUNT,  c.API_PATH+'api/shan/countMySpaces?XDEBUG_SESSION_START=19884', 'GET', emit, c, header, dataReady, transResult);
+                                whenever(dataReady, () => {
+                                    debugger;
+                                    console.log('record count-', transResult._rawValue, );
+                                    tableConfig.value.spacesCount = transResult._rawValue;
+                                    tableConfig.value.totalPages = transResult._rawValue/perPage;
+                                })
+
+                            },
 
 
                     }
