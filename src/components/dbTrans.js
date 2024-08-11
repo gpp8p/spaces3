@@ -8,7 +8,7 @@ export function getTrans(){
     const executeTrans = function(transParams, transId, transUrl, transMethod, emit, c, header, dataReady, transResult){
         const { execute, data, isFinished } = useAxios(transUrl, { method: transMethod }, { immediate: false })
         axios.defaults.headers.common['Authorization'] = `Bearer ${header}`;
-        debugger;
+//        debugger;
         data.value='';
         execute(
             { params: transParams,
@@ -17,7 +17,7 @@ export function getTrans(){
 
 
         whenever(isFinished, () => {
-            debugger;
+ //           debugger;
             console.log('returned dbTrans point1-', transId, data._rawValue);
             const loginResults = ref(data._rawValue);
             axios.defaults.headers.common['Authorization'] = `Bearer ${loginResults.access_token}`;

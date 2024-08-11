@@ -367,7 +367,7 @@ const defs = function(dialogDef){
                                     console.log('update completed-', transResult._rawValue);
                                 })
                             },
-                            funcReadPagedData: function(tableConfig, limit, offset, loaderFunctionsReady, tableReload){
+                            funcReadPagedData: function(tableConfig, limit, offset, loaderFunctionsReady, tableReload, dataToShow){
                                 debugger;
                                 const loginResult= toRaw(loginStore.loginStatus);
                                 const {executeTrans} = getTrans();
@@ -385,6 +385,7 @@ const defs = function(dialogDef){
                                     debugger;
                                     console.log('readPagedData-', transResult._rawValue);
                                     tableConfig.value.dataToShow = transResult._rawValue;
+                                    dataToShow.value = transResult._rawValue;
                                     loaderFunctionsReady.value = true;
                                     tableReload.value+=1;
                                 })
@@ -411,7 +412,7 @@ const defs = function(dialogDef){
                             },
                             funcReadLast: function(){console.log('readLast')},
                             funcReadThisRecord: function(){console.log('readThis Record')},
-                            funcGetRecordCount: function(tableConfig, perPage){
+                            funcGetRecordCount: function(tableConfig, perPage, pagerProps){
                                 debugger;
                                 const loginResult= toRaw(loginStore.loginStatus);
                                 const {executeTrans} = getTrans();
@@ -428,6 +429,7 @@ const defs = function(dialogDef){
                                     console.log('record count-', transResult._rawValue, );
                                     tableConfig.value.spacesCount = transResult._rawValue;
                                     tableConfig.value.totalPages = transResult._rawValue/perPage;
+                                    pagerProps.value.totalPages = tableConfig.value.totalPages;
                                 })
 
                             },
@@ -438,7 +440,12 @@ const defs = function(dialogDef){
                     console.log('msypaces dialog data', result.value, ready.value);
                 },
                 addActions:function(currentFuncs){
-                    console.log('my spaces add acctions');
+                    currentFuncs[c.MENU_EXIT_DIALOG]=function(emit, dialogData){
+                        debugger;
+                        console.log('new func exit dialog');
+                        //                      const emit = defineEmits(['cevt']);
+                        emit('cevt',[c.EXIT_DIALOG])
+                    }
                 },
                 menuDefs:{
                     twStyling:'text-xs text-blue-500 w-[100%]',
