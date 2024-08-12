@@ -353,18 +353,26 @@ const defs = function(dialogDef){
 
                     result.value = {
 
-                            funcReadAllData: function(){
+                            funcReadAllData: function(tableReload, dataToShow, loaderFunctionsReady, currentTableConfig){
+                                debugger;
                                 const {executeTrans} = getTrans();
-                                const parms = {
-                                }
+
                                 const loginResult= toRaw(loginStore.loginStatus);
                                 const header = loginResult.access_token;
                                 const dataReady = ref(false);
                                 const transResult = ref({});
+                                const parms = {
+                                    orgId:loginResult.orgId,
+                                    userId:loginResult.userName,
+                                }
                                 executeTrans(parms, c.ALL_PAGES,  c.API_PATH+'api/shan/getMySpaces?XDEBUG_SESSION_START=19884', 'GET', emit, c, header, dataReady, transResult);
                                 whenever(dataReady, () => {
                                     debugger;
                                     console.log('update completed-', transResult._rawValue);
+                                    dataToShow.value = transResult._rawValue;
+                                    currentTableConfig.value.rowsToShow = dataToShow.value.length;
+                                    loaderFunctionsReady.value = true;
+                                    tableReload.value+=1;
                                 })
                             },
                             funcReadPagedData: function(tableConfig, limit, offset, loaderFunctionsReady, tableReload, dataToShow){

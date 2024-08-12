@@ -153,7 +153,7 @@ const pages = computed(() => {
       i++
   ) {
     range.push({
-      name: i,
+      name: Math.round(i),
       isDisabled: i === props.config.currentPage
     });
   }
@@ -231,6 +231,7 @@ onUnmounted(() => {
 
 .pagination {
   list-style-type: none;
+  margin-top: 1%;
 }
 
 .pagination-item {

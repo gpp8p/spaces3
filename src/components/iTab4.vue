@@ -1,6 +1,6 @@
 <template>
   <div>
-    <table class="text-left w-full">
+    <table class="text-left w-full ">
       <thead :class="props.config.twhead">
         <tr :class="props.config.twheadtr">
           <span :class="thisColumn.twheadth" v-for="(thisColumn, index) in props.config.columns"

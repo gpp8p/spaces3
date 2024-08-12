@@ -60,8 +60,7 @@ const dataToShow = ref([]);
 
 
 debugger;
-console.log('loader function read all data-', toRaw(props.data).funcReadAllData());
-console.log('loaderFunctions',loaderFunctions.value);
+
 //fieldValue.value = loaderFunctions.value.readAllData(props.data);
 const tableReload = ref(1);
 const rowStart = ref(0);
@@ -75,7 +74,7 @@ pagerProps.value.currentPage = 1;
 //pagerProps.value.totalPages =100;
 pagerProps.value.name = 'pager';
 pagerProps.value.maxVisibleButtons = 3;
-pagerProps.value.perPage = 4;
+pagerProps.value.perPage = 7;
 pagerProps.value.buttonCss = props.config.pagerButtonCss;
 pagerProps.value.buttonCssActive = props.config.pagerButtonCssActive;
 
@@ -239,8 +238,8 @@ onMounted(() => {
 //      currentRowPointer.value = currentRowPointer.value+currentTableConfig.value.rowsToShow;
     currentRowPointer.value = 0;
   }else{
-    dataToShow.value = loaderFunctions.value.funcReadAllData(props.data[props.config.name]);
-    currentTableConfig.value.rowsToShow=dataToShow.value.length;
+    debugger;
+    props.data.funcReadAllData(tableReload, dataToShow, loaderFunctionsReady, currentTableConfig);
     tableReload.value+=1;
   }
 })
