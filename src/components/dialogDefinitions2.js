@@ -285,27 +285,46 @@ const defs = function(dialogDef){
         case 'mySpaces':{
             return {
                 dialogAppearence: {
+                    // styling for the prompt
                     twPrompt: 'text-lg text-current ml-[30%] my-[5%]',
+                    // the prompt itself
                     prompt: 'My Spaces',
+                    // overall styling for the dialog
                     twstyle:"fixed w-[50%] h-auto p-[2%] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-200 rounded border-2 border-blue-500 shadow-xl shadow-black",
                 },
+                // an array of objects represewnting the fields in the dialog
                 dialogFields:
                  [
                      {
+                         // the field name
                          name: 'mySpaces',
+                         // the component type of the field
                          type: 'listTable',
+                         // the ref inserted into the field so it can be referenced later
                          ref: 'mySpaces',
+                         // this sets rowsToShow, but I think it's overwritten later - do we really need this ???
                          selectSize:'4',
+                         // will this get initial focus
                          startFocus: false,
+                         // styling of the table header
                          twhead: 'bg-blue-800 flex text-white w-full h-10',
+                         // styling of the row (tr) element in the header
                          twheadtr: 'flex w-full mb-4',
+                         // styling for the table body
                          twbody: 'bg-grey-light flex flex-col items-center justify-between overflow-y-scroll w-full',
+                         //row styling in the body
                          twtr:'flex w-full mb-[1px] hover:bg-green-400 text-xs',
+                         // not in use
                          testtwheadth:'py-2 pl-3.5 w-1/4',
+                         //cell styling in the body
                          twtd:'flex w-full mb-4 hover:bg-green-400',
+                         // pager button styling
                          pagerButtonCss:"mr-[3px] mt-[10px] px-3 py-1 text-xs font-medium text-center text-black bg-white rounded-lg active:bg-red-400",
+                         // active pager button styling -= not sure this does anything
                          pagerButtonCssActive:"mr-[3px] mt-[10px] px-3 py-1 text-xs font-medium text-center text-black bg-blue-300 rounded-lg active:bg-red-400",
+                         // should the pager be included
                          includePager:true,
+                         // the actual columns to be displayed.  Styling for those columns is included
                          columns: [
                              {
                                  field: 'id',
@@ -344,15 +363,16 @@ const defs = function(dialogDef){
                                  twheadth:'py-2 pl-3.5 w-1/4'
                              }
                          ],
-
+                         // label for the table
                          label: "My Spaces"
                      }
                 ],
+                // functions related to loading the data to populate the table
                 dialogData: function(emit, c, loginStore, ready, result) {
                     debugger;
 
                     result.value = {
-
+                            // load everything in the database into dataToShow
                             funcReadAllData: function(tableReload, dataToShow, loaderFunctionsReady, currentTableConfig){
                                 debugger;
                                 const {executeTrans} = getTrans();
@@ -375,6 +395,8 @@ const defs = function(dialogDef){
                                     tableReload.value+=1;
                                 })
                             },
+                            // read a portion of the data into dataToShow.  Defined by offset (where to start) and
+                            // limit (how much to read)  Completion of this function triggers a refresh of the table
                             funcReadPagedData: function(tableConfig, limit, offset, loaderFunctionsReady, tableReload, dataToShow){
                                 debugger;
                                 const loginResult= toRaw(loginStore.loginStatus);
@@ -447,14 +469,26 @@ const defs = function(dialogDef){
                     ready.value = true;
                     console.log('msypaces dialog data', result.value, ready.value);
                 },
+                // actions added to the dialog triggered by events
                 addActions:function(currentFuncs){
                     currentFuncs[c.MENU_EXIT_DIALOG]=function(emit, dialogData){
                         debugger;
                         console.log('new func exit dialog');
-                        //                      const emit = defineEmits(['cevt']);
+                        //const emit = defineEmits(['cevt']);
                         emit('cevt',[c.EXIT_DIALOG])
                     }
+                    currentFuncs[c.ROW_SELECTED]=function(emit, evt){
+                        debugger;
+                        console.log('new func row selected mySpaces', evt);
+                        emit('cevt',[c.CHANGE_LAYOUT, evt]);
+                    }
+                    currentFuncs[c.RESOLVE_DATA]=function(dialogFields, evt){
+                        debugger;
+                        return dialogFields[0].dataToShow[evt[1]].id;
+  //                      return dataToShow.value[evt[1]];
+                    }
                 },
+                // the menu displayed at the bottom of the dialog
                 menuDefs:{
                     twStyling:'text-xs text-blue-500 w-[100%]',
                     items: [

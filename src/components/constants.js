@@ -22,6 +22,11 @@ export const c = {
     PAGE_DISPLAY_NAME:'pageDisplay',
     PAGE_EDIT_NAME:'pageEdit',
     SET_CONTENT_DIMENSIONS:21,
+    ROW_SELECTED:22,
+    CHANGE_LAYOUT:23,
+    ROW_SELECT:24,
+    SET_NEW_LAYOUT:25,
+    RESOLVE_DATA:26,
 
 
 

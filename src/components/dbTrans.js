@@ -10,6 +10,7 @@ export function getTrans(){
         axios.defaults.headers.common['Authorization'] = `Bearer ${header}`;
 //        debugger;
         data.value='';
+        console.log('dbtrans dataReady.value 1',dataReady.value);
         execute(
             { params: transParams,
                 headers: {hdr1: 'header1'}
@@ -23,6 +24,7 @@ export function getTrans(){
             axios.defaults.headers.common['Authorization'] = `Bearer ${loginResults.access_token}`;
             dataReady.value=true;
             transResult.value = data._rawValue;
+            console.log('dbtrans dataReady.value 2',dataReady.value);
 //            emit('cevt',[c.TRANSACTION_COMPLETED, transId, data._rawValue])
 
         });

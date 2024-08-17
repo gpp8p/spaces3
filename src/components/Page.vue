@@ -23,9 +23,10 @@ const props = defineProps({
 import {c} from "../components/constants.js";
 import {onMounted, onUnmounted, toRaw} from 'vue'
 import {useEventHandler} from "./eventHandler.js";
-import {ref} from 'vue';
+import {ref, nextTick} from 'vue';
 import displayGrid from "../components/displayGrid.vue";
 import editGrid from "../components/editGrid.vue";
+
 
 
 import {useCurrentPage} from "../stores/currentPage.js";
@@ -52,15 +53,33 @@ const contentDimensions = ref({});
 const fieldValue = ref('');
 const pageReload = ref(0);
 const loginResult= toRaw(loginStore.loginStatus);
-const parms   = {
-  orgId:loginResult.orgId,
-  userId:loginResult.userId,
-  layoutId:pageStore.getCurrentPageId,
-}
-console.log('page parms-', parms);
+
+//console.log('page parms-', parms);
 const header = '';
 const dataReady = ref(false);
 const transResult = ref({});
+const parms = ref({});
+
+const reloadThisPage = function(){
+
+  console.log('page parms-', parms);
+  debugger;
+//const ready = ref(false);
+  executeTrans(parms.value, c.TRANS_GET_LAYOUT,  c.API_PATH+'api/shan/getLayout?XDEBUG_SESSION_START=19884', 'GET', emit, c, header, dataReady, transResult);
+  dataReady.value = false;
+  whenever(dataReady, () => {
+    console.log('data is ready-', transResult);
+    debugger;
+    fieldValue.value = transResult.value;
+    fieldValue.value.pageName=c.PAGE_DISPLAY_NAME;
+    fieldValue.value.layout.pageDimensions=toRaw(props.config).pageDimensions;
+    pageMode.value=c.PAGE_DISPLAY;
+    pageReload.value+=1;
+    console.log('pageReload');
+  })
+}
+
+/*
 //const ready = ref(false);
 executeTrans(parms, c.TRANS_GET_LAYOUT,  c.API_PATH+'api/shan/getLayout?XDEBUG_SESSION_START=19884', 'GET', emit, c, header, dataReady, transResult);
 whenever(dataReady, () => {
@@ -73,12 +92,12 @@ whenever(dataReady, () => {
   pageReload.value+=1;
 })
 //fieldValue.value = transResult.value;
+*/
 
-/*
 if(typeof(props.config.value)=='function'){
   fieldValue.value = props.config.value(props.data);
 }
-*/
+
 const handleCmd = function(args){
   console.log('handleCmd-', name, args);
   debugger;
@@ -103,6 +122,8 @@ const passCmdDown = function(args){
   }
 }
 
+
+
 funcs[c.SET_CMD_HANDLER]= function(evt){
   console.log('in SET_CMD_HANDLER-', evt);
   cmdHandlers[evt[2]]=evt[1];
@@ -116,9 +137,32 @@ funcs[c.SET_CONTENT_DIMENSIONS]=function(evt){
 //  contentDimensions.value = evt[1];
 
 }
+funcs[c.SET_NEW_LAYOUT]= function(cmd){
+  console.log('in SET_NEW_LAYOUT handler-', cmd);
+  debugger;
+  pageStore.setCurrentPageId(cmd[1]);
+  console.log('currentPageId',pageStore.getCurrentPageId)
+  parms.value   = {
+    orgId:loginResult.orgId,
+    userId:loginResult.userId,
+    layoutId:pageStore.getCurrentPageId,
+  }
+  emit('cevt',[c.EXIT_DIALOG])
+  nextTick(() => {
+    reloadThisPage();
+  });
+
+}
 
 onMounted(() => {
   debugger;
+  parms.value   = {
+    orgId:loginResult.orgId,
+    userId:loginResult.userId,
+    layoutId:pageStore.getCurrentPageId,
+  }
+  reloadThisPage();
+
   emit('cevt', [c.SET_CMD_HANDLER, handleCmd, name]);
 })
 

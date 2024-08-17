@@ -128,6 +128,7 @@ funcs[c.UNSET_CMD_HANDLER]= function(evt){
   console.log('in SET_CMD_HANDLER-', evt);
   let dlt = delete cmdHandlers[evt[2]];
 }
+
 funcs[c.FIRST_PAGE]=function(evt){
   console.log('in FIRST_PAGE-', evt);
   currentRowPointer.value = 0;
@@ -220,6 +221,18 @@ funcs[c.PAGE_CHANGED]=function(evt){
 funcs[c.LOADERS_AVAILABLE]=function(evt){
   console.log('in LOADERS_AVAILABLE in listTable-', evt);
 }
+/*
+funcs[c.ROW_SELECT]=function(evt){
+  console.log('in listTable ROW_SELECT-', evt);
+  debugger;
+  if(typeof(funcs[c.RESOLVE_DATA])!='undefined'){
+    emit('cevt', [c.CHANGE_LAYOUT, name], funcs[c.RESOLVE_DATA](evt));
+  }else{
+    emit('cevt', evt);
+  }
+}
+
+ */
 
 onMounted(() => {
   debugger;

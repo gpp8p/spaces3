@@ -201,6 +201,16 @@ funcs[c.MENU_ITEM_SELECTED]= function(evt){
   debugger;
   funcs[evt[1]](emit, dialogData);
 }
+funcs[c.ROW_SELECT]= function(evt){
+  debugger;
+  if(typeof(funcs[c.RESOLVE_DATA])!='undefined'){
+    var resolvedData = funcs[c.RESOLVE_DATA](dialogFields,evt);
+    emit('cevt', [c.CHANGE_LAYOUT, resolvedData]);
+  }else{
+    emit('cevt', evt);
+  }
+//  funcs[c.ROW_SELECTED](emit, evt)
+}
 debugger;
 addActions(funcs);
 /*

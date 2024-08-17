@@ -146,6 +146,11 @@ funcs[c.MENU_MYSPACES]= function(evt){
 funcs[c.TRANSACTION_COMPLETED] = function(evt){
   console.log('in TRANSACTION_COMPLETED-', evt);
 }
+funcs[c.CHANGE_LAYOUT] = function(evt){
+  console.log('in CHANGE_LAYOUT-', evt);
+  debugger;
+  cmdHandlers['spFrame']([c.SET_NEW_LAYOUT, evt[1], "Page"]);
+}
 
 
 </script>
