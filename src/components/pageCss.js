@@ -21,8 +21,8 @@ export function usePageCss(){
         var gridParameters = layoutGridParameters(gridRows, gridColumns, cellHeight, cellWidth);
         var gridCss;
         if(configs.backgroundType=='C'){
-            gridCss = 'display:grid; '+'grid-gap:'+ cellGap+'; background-color: '+configs.pageBackground.colorSelect+'; ';
-            gridCss = gridCss + gridParameters.rowGrid+gridParameters.columnGrid;
+            gridCss = 'display:grid; '+'grid-gap:'+ cellGap+'; background-color: '+configs.backgroundColor+'; ';
+            gridCss = gridCss + gridParameters.rowGrid+';'+gridParameters.columnGrid+';';
         }else{
             gridCss = backgroundImageCss(configs.backgroundImageUrl,
                 configs.pageDimensions.contentWidth,
@@ -31,6 +31,7 @@ export function usePageCss(){
                 gridParameters.columnGrid,
                 configs.backgroundDisplay);
         }
+        console.log('current gridCss is-', gridCss);
         return gridCss;
     }
 
@@ -45,8 +46,8 @@ export function usePageCss(){
             gridWidthCss = gridWidthCss + cellWidth + "px ";
         }
         var gridCssObject = {};
-        gridCssObject.rowGrid = gridHeightCss+";";
-        gridCssObject.columnGrid = gridWidthCss+";";
+        gridCssObject.rowGrid = gridHeightCss;
+        gridCssObject.columnGrid = gridWidthCss;
         return gridCssObject;
 
     }
