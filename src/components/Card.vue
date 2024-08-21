@@ -81,21 +81,48 @@ const getMenuDefinitions = function(menuType){
       }
     }
     case 'NavigationMenu':{
+      return {
+        twStyling:'text-xs text-blue-500 w-[100%]',
+        items: [
+          { type: 'menuItemDrop', config: {label: 'Navigation Menu', subItems: [
+                { subLabel: 'Edit', actionCode: c.CARD_MENU_EDIT  },
+                { subLabel: 'Configure', actionCode: c.CARD_MENU_CONFIGURE },
+                { subLabel: 'Delete', actionCode: c.CARD_MENU_DELETE  },
+                { subLabel: 'Resize/Move', actionCode: c.CARD_MENU_CONFIGURE },
+                { subLabel: 'Save', actionCode: c.CARD_MENU_SAVE },
+                { subLabel: 'Exit', actionCode: c.CARD_MENU_EXIT },
+              ]
+            }
+          },
+        ]
 
+      }
     }
     case 'RichText':{
+      return {
+        twStyling:'text-xs text-blue-500 w-[100%]',
+        items: [
+          { type: 'menuItem', config: { label: 'Edit', actionCode: c.CARD_MENUS_EDIT } },
+          { type: 'menuItem', config: { label: 'Configure', actionCode: c.CARD_MENUS_CONFIGURE } },
+          { type: 'menuItem', config: { label: 'Resize/Move', actionCode: c.CARD_MENUS_RESIZE } },
+          { type: 'menuItem', config: { label: 'Delete', actionCode: c.CARD_MENUS_DELETE } },
+          { type: 'menuItem', config: { label: 'Exit', actionCode: c.CARD_MENUS_EXIT } },
 
+        ]
+      }
     }
     case 'RichText_A':{
-
+      return {
+        twStyling:'text-xs text-blue-500 w-[100%]',
+        items: [
+          { type: 'menuItem', config: { label: 'Card Setup', actionCode: c.CARD_MENUE_SETUP } },
+          { type: 'menuItem', config: { label: 'Link', actionCode: c.CARD_MENUE_LINK} },
+          { type: 'menuItem', config: { label: 'Upload', actionCode: c.CARD_MENUE_UPLOAD } },
+          { type: 'menuItem', config: { label: 'Meta Data', actionCode: c.CARD_MENUE_METADATA } },
+          { type: 'menuItem', config: { label: 'Save', actionCode: c.CARD_MENUE_SAVE } },
+        ]
+      }
     }
-  }
-
-  return {
-    twStyling:'text-xs text-blue-500 w-[100%]',
-    items: [
-      { type: 'menuItem', config: { label: 'Cancel', actionCode: c.MENU_EXIT_DIALOG } },
-    ],
   }
 }
 
