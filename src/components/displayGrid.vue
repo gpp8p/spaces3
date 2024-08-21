@@ -1,8 +1,17 @@
 <template>
-  <span :style="pageCss"></span>
+  <span :style="pageCss">
+    <Card v-for="(aCard, i) in props.data"
+          :key="i"
+          :config="cardConfig"
+          :data="aCard"
+          @cevt="handleEvent($event, funcs, emit)"
+          ></Card>
+  </span>
 </template>
 
 <script setup>
+
+import inputText from "./inputText.vue";
 
 const props = defineProps({
   config: {
@@ -16,7 +25,7 @@ const props = defineProps({
 });
 
 
-
+import Card from "../components/Card.vue";
 import {c} from "../components/constants.js";
 import { onMounted, onUnmounted } from 'vue'
 import {useEventHandler} from "./eventHandler.js";
@@ -25,6 +34,14 @@ import {usePageCss} from "../components/pageCss.js";
 const {setupPageCss} = usePageCss();
 
 import {toRaw} from 'vue';
+import inputNumber from "./inputNumber.vue";
+import inputCheckbox from "./inputCheckbox.vue";
+import backgroundPicker from "./backgroundPicker.vue";
+import radioGroup from "./radioGroup.vue";
+import vselect from "./vselect.vue";
+import vtextarea from "./vtextarea.vue";
+import listTable from "./listTable.vue";
+import htmlPasswordInput from "./htmlPasswordInput.vue";
 console.log('config at open', toRaw(props.config));
 const pageCss = setupPageCss(props.config);
 
@@ -38,6 +55,8 @@ const fieldValue = ref('');
 if(typeof(props.config.value)=='function'){
   fieldValue.value = props.config.value(props.data);
 }
+const cardConfig = ref({});
+cardConfig.value.mode = c.MODE_DISPLAY;
 
 const handleCmd = function(args){
   console.log('handleCmd-', name, args);
@@ -62,6 +81,7 @@ const passCmdDown = function(args){
     }
   }
 }
+
 
 funcs[c.SET_CMD_HANDLER]= function(evt){
   console.log('in SET_CMD_HANDLER-', evt);

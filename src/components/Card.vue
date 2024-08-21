@@ -1,7 +1,15 @@
 <template>
-  <div :class="menuDefinitions.twStyling" >
-    <dynamicMenu :config="menuDefinitions" :key = "reloadMenu" :data="menuData" @cevt="handleEvent($event, funcs, emit)" />
-  </div>
+<span :style = "props.data.card_parameters.style">
+    <div :class="menuDefinitions.twStyling" v-if="props.config.mode=c.MODE_DISPLAY">
+      <dynamicMenu :config="menuDefinitions" :key = "reloadMenu" :data="menuData" @cevt="handleEvent($event, funcs, emit)" />
+    </div>
+    <div>
+      <component :is="morphs[props.data.card_component]"
+                 :config="props.data.card_parameters"
+                 :data="props.data.card_parameters.content"
+                 @cevt="handleEvent($event, funcs, emit)"/>
+    </div>
+</span>
 
 </template>
 
@@ -61,6 +69,18 @@ const passCmdDown = function(args){
     }
   }
 }
+/*
+const morphs = {
+  Headline,
+  RichText,
+  NavigationMenu,
+  imageCard
+}
+ */
+const morphs = {
+
+}
+
 const getMenuDefinitions = function(menuType){
 
   switch(menuType){
@@ -137,6 +157,7 @@ funcs[c.UNSET_CMD_HANDLER]= function(evt){
 
 onMounted(() => {
   debugger;
+  console.log('card style is', props.data.card_parameters.style);
   emit('cevt', [c.SET_CMD_HANDLER, handleCmd, name]);
 
 })

@@ -27,6 +27,8 @@ export const c = {
     ROW_SELECT:24,
     SET_NEW_LAYOUT:25,
     RESOLVE_DATA:26,
+    MODE_DISPLAY:27,
+    MODE_EDIT:28,
 
 
 
