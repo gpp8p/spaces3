@@ -69,17 +69,20 @@ const passCmdDown = function(args){
     }
   }
 }
-/*
+import Headline from './Headline.vue';
+import RichText from './RichText.vue';
+import NavigationMenu from './NavigationMenu.vue';
+import imageCard from './imageCard.vue';
+
+
 const morphs = {
   Headline,
   RichText,
   NavigationMenu,
   imageCard
 }
- */
-const morphs = {
 
-}
+
 
 const getMenuDefinitions = function(menuType){
 

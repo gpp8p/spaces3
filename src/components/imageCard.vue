@@ -1,5 +1,5 @@
 <template>
-
+  <h2>imageCard</h2>
 </template>
 
 <script setup>

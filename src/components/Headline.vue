@@ -1,5 +1,5 @@
 <template>
-
+  <dynamicMenu :config="headlineMenu" @cevt="handleEvent($event, funcs, emit)" />
 </template>
 
 <script setup>
@@ -21,7 +21,9 @@ import {c} from "../components/constants.js";
 import { onMounted, onUnmounted } from 'vue'
 import {useEventHandler} from "./eventHandler.js";
 import {ref} from 'vue';
+import {toRaw} from 'vue'
 
+import dynamicMenu from "./dynamicMenu.vue";
 
 const {handleEvent} = useEventHandler();
 const emit = defineEmits(['cevt']);
@@ -33,6 +35,8 @@ const fieldValue = ref('');
 if(typeof(props.config.value)=='function'){
   fieldValue.value = props.config.value(props.data);
 }
+
+const headlineMenu = ref({});
 
 const handleCmd = function(args){
   console.log('handleCmd-', name, args);
@@ -70,6 +74,23 @@ funcs[c.UNSET_CMD_HANDLER]= function(evt){
 onMounted(() => {
   debugger;
   emit('cevt', [c.SET_CMD_HANDLER, handleCmd, name]);
+  headlineMenu.value.twStyling = 'border-4 my-10 w-3/4 mx-auto border-blue-200';
+  headlineMenu.value.items = [];
+  debugger;
+  for(var i=0;i<toRaw(props.data.availableLinks).length;i++){
+    var thisItem = {
+      type: 'menuItem',
+      config:{
+        label: toRaw(props.data.availableLinks)[i].description,
+        link: toRaw(props.data.availableLinks)[i].layout_link_to,
+        actionCode: c.MENU_ITEM_SELECTED,
+        external: toRaw(props.data.availableLinks)[i].isExternal,
+        showOrder: toRaw(props.data.availableLinks)[i].showOrder,
+      }
+    }
+    headlineMenu.value.items.push(thisItem);
+  }
+  console.log('headline menu is ', headlineMenu.value );
 })
 
 onUnmounted(() => {

@@ -1,5 +1,5 @@
 <template>
-
+<h2>NavigationMenu</h2>
 </template>
 
 <script setup>

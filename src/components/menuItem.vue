@@ -20,6 +20,11 @@ export default defineComponent({
   },
   setup(props, { emit }) {
     const handleClick = () => {
+      if(typeof(props.config.layout_linkTo)=='undefined'){
+        emit('input', props.config.actionCode);
+      }else{
+        emit('input', [props.config.actionCode, props.config.layout_link_to, props.config.isExternal]);
+      }
       emit('input', props.config.actionCode);
     };
 

@@ -1,5 +1,5 @@
 <template>
-
+<h2>RichText</h2>
 </template>
 
 <script setup>
