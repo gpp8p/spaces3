@@ -1,6 +1,6 @@
 <template>
-  <displayGrid :config="fieldValue.layout" :data="fieldValue.cards" v-if="pageMode==c.PAGE_DISPLAY" :key="pageReload"/>
-  <editGrid :config="fieldValue.layout" :data="fieldValue.cards" v-if="pageMode==c.PAGE_EDIT" :key="pageReload"/>
+  <displayGrid :config="fieldValue.layout" :data="fieldValue.cards" v-if="pageMode==c.PAGE_DISPLAY" :key="pageReload" @cevt="handleEvent($event, funcs, emit)"/>
+  <editGrid :config="fieldValue.layout" :data="fieldValue.cards" v-if="pageMode==c.PAGE_EDIT" :key="pageReload" @cevt="handleEvent($event, funcs, emit)"/>
 </template>
 
 <script setup>

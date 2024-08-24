@@ -8,7 +8,7 @@
           :key="index"
           :is="item.type"
           :config="item.config"
-          @input="handleInput"
+          @cevt="handleInput"
       ></component>
     </div>
 
@@ -44,7 +44,7 @@ export default defineComponent({
   },
   setup(props, { emit }) {
     const handleInput = (data) => {
-//      debugger;
+      debugger;
       emit('cevt', [data]);
     };
 

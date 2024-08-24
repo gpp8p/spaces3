@@ -1,5 +1,12 @@
 <template>
-  <dynamicMenu :config="headlineMenu" @cevt="handleEvent($event, funcs, emit)" />
+  <span v-if="hasHeadline==true">
+      <span>{{props.data.linkMenuTitle}}</span>
+      <dynamicMenu :config="headlineMenu" @cevt="handleEvent($event, funcs, emit)" />
+  </span>
+  <span v-if="hasHeadline==false">
+      <dynamicMenu :config="headlineMenu" @cevt="handleEvent($event, funcs, emit)" />
+  </span>
+
 </template>
 
 <script setup>
@@ -23,7 +30,7 @@ import {useEventHandler} from "./eventHandler.js";
 import {ref} from 'vue';
 import {toRaw} from 'vue'
 
-import dynamicMenu from "./dynamicMenu.vue";
+import dynamicMenu from "./menu3.vue";
 
 const {handleEvent} = useEventHandler();
 const emit = defineEmits(['cevt']);
@@ -35,7 +42,7 @@ const fieldValue = ref('');
 if(typeof(props.config.value)=='function'){
   fieldValue.value = props.config.value(props.data);
 }
-
+const hasHeadline = ref(false);
 const headlineMenu = ref({});
 
 const handleCmd = function(args){
@@ -61,7 +68,12 @@ const passCmdDown = function(args){
     }
   }
 }
+funcs[c.MENU_ITEM_SELECTED]= function(evt){
+  console.log('in headline  c.-MENU_ITEM_SELECTED', evt);
+  debugger;
+  emit('cevt', [c.CHANGE_LAYOUT, evt[1]]);
 
+}
 funcs[c.SET_CMD_HANDLER]= function(evt){
   console.log('in SET_CMD_HANDLER-', evt);
   cmdHandlers[evt[2]]=evt[1];
@@ -76,6 +88,13 @@ onMounted(() => {
   emit('cevt', [c.SET_CMD_HANDLER, handleCmd, name]);
   headlineMenu.value.twStyling = 'border-4 my-10 w-3/4 mx-auto border-blue-200';
   headlineMenu.value.items = [];
+  //console.log('card data',trim(props.data.linkMenuTitle).length);
+
+  if(typeof(props.data.linkMenuTitle)=='string'){
+    hasHeadline.value = true;
+  }
+
+
   debugger;
   for(var i=0;i<toRaw(props.data.availableLinks).length;i++){
     var thisItem = {

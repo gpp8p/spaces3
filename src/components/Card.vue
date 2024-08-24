@@ -149,6 +149,7 @@ const getMenuDefinitions = function(menuType){
   }
 }
 
+
 funcs[c.SET_CMD_HANDLER]= function(evt){
   console.log('in SET_CMD_HANDLER-', evt);
   cmdHandlers[evt[2]]=evt[1];

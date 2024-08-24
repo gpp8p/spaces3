@@ -17,7 +17,7 @@ import { onMounted, onUnmounted } from 'vue';
 import {ref} from 'vue';
 import {c} from "./constants";
 import {useEventHandler} from "./eventHandler";
-import dynamicMenu from './dynamicMenu.vue';
+import dynamicMenu from './menu3.vue';
 import {getMenu} from '../components/menuOpts.js';
 
 //import {screenGeometry} from "../components/screenGeometry.js";
@@ -93,6 +93,10 @@ funcs[c.RELOAD_PAGE]=function(args){
   debugger;
   console.log('RELOAD_PAGE called', args);
   pageReload.value+=1;
+}
+funcs[c.MENU_ITEM_SELECTED]=function(args){
+  console.log('in spFrame args', args);
+  emit('cevt', [args[1]]);
 }
 
 

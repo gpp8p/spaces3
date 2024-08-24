@@ -9,6 +9,7 @@
 
 <script>
 import { defineComponent } from 'vue';
+import {toRaw} from 'vue'
 
 export default defineComponent({
   name: 'menuItem',
@@ -20,12 +21,13 @@ export default defineComponent({
   },
   setup(props, { emit }) {
     const handleClick = () => {
-      if(typeof(props.config.layout_linkTo)=='undefined'){
-        emit('input', props.config.actionCode);
+      debugger;
+      if(typeof(toRaw(props.config.link))=='undefined'){
+        emit('cevt', [props.config.actionCode]);
       }else{
-        emit('input', [props.config.actionCode, props.config.layout_link_to, props.config.isExternal]);
+        emit('cevt', [props.config.actionCode, props.config.link, props.config.external]);
       }
-      emit('input', props.config.actionCode);
+ //     emit('cevt', props.config.actionCode);
     };
 
     return {

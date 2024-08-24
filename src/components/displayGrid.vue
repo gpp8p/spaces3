@@ -82,7 +82,12 @@ const passCmdDown = function(args){
   }
 }
 
+funcs[c.CHANGE_LAYOUT]= function(evt){
+  console.log('in displayGrid  c.-CHANGE_LAYOUT', evt);
+  debugger;
+  emit('cevt', [c.CHANGE_LAYOUT, evt[1]]);
 
+}
 funcs[c.SET_CMD_HANDLER]= function(evt){
   console.log('in SET_CMD_HANDLER-', evt);
   cmdHandlers[evt[2]]=evt[1];

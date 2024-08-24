@@ -23,7 +23,7 @@ const props = defineProps({
 
 
 import {c} from "../components/constants.js";
-import { onMounted, onUnmounted } from 'vue'
+import {onMounted, onUnmounted, toRaw} from 'vue'
 import {useEventHandler} from "./eventHandler.js";
 import {ref} from 'vue';
 
@@ -38,11 +38,22 @@ const fieldValue = ref('');
 if(typeof(props.config.value)=='function'){
   fieldValue.value = props.config.value(props.data);
 }
-
+/*
 const handleClick = function(){
 //  debugger;
   emit('cevt', [c.MENU_ITEM_SELECTED, props.config.actionCode]);
 }
+*/
+const handleClick = () => {
+  debugger;
+  if(typeof(toRaw(props.config.link))=='undefined'){
+    //emit('cevt', [props.config.actionCode]);
+    emit('cevt', [c.MENU_ITEM_SELECTED, props.config.actionCode]);
+  }else{
+    emit('cevt', [props.config.actionCode, props.config.link, props.config.external]);
+  }
+  //     emit('cevt', props.config.actionCode);
+};
 
 const handleCmd = function(args){
   console.log('handleCmd-', name, args);
