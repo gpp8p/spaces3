@@ -1,7 +1,9 @@
 <template>
-  <span v-if="hasHeadline==true">
+  <span v-if="hasHeadline==true" >
       <span>{{props.data.linkMenuTitle}}</span>
-      <dynamicMenu :config="headlineMenu" @cevt="handleEvent($event, funcs, emit)" />
+      <span :style="props.config.elementStyles.sub[0]">
+        <dynamicMenu :config="headlineMenu" @cevt="handleEvent($event, funcs, emit)" />
+      </span>
   </span>
   <span v-if="hasHeadline==false">
       <dynamicMenu :config="headlineMenu" @cevt="handleEvent($event, funcs, emit)" />
@@ -86,7 +88,10 @@ funcs[c.UNSET_CMD_HANDLER]= function(evt){
 onMounted(() => {
   debugger;
   emit('cevt', [c.SET_CMD_HANDLER, handleCmd, name]);
-  headlineMenu.value.twStyling = 'border-4 my-10 w-3/4 mx-auto border-blue-200';
+  //headlineMenu.value.twStyling = 'border-4 my-10 w-3/4 mx-auto border-blue-200';
+  console.log('element styles-', props.config.elementStyles.sub[0]);
+  //headlineMenu.value.style = props.data.elementStyles.sub[0];
+  headlineMenu.value.style = "";
   headlineMenu.value.items = [];
   //console.log('card data',trim(props.data.linkMenuTitle).length);
 

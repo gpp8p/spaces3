@@ -5,7 +5,7 @@
     </div>
     <div>
       <component :is="morphs[props.data.card_component]"
-                 :config="props.data.card_parameters"
+                 :config="cardConfigs"
                  :data="props.data.card_parameters.content"
                  @cevt="handleEvent($event, funcs, emit)"/>
     </div>
@@ -32,6 +32,7 @@ import {c} from "../components/constants.js";
 import { onMounted, onUnmounted } from 'vue'
 import {useEventHandler} from "./eventHandler.js";
 import {ref} from 'vue';
+import {onBeforeMount} from "vue";
 
 
 const {handleEvent} = useEventHandler();
@@ -45,6 +46,7 @@ if(typeof(props.config.value)=='function'){
   fieldValue.value = props.config.value(props.data);
 }
 const menuDefinitions = ref({});
+const cardConfigs = ref({});
 
 const handleCmd = function(args){
   console.log('handleCmd-', name, args);
@@ -158,11 +160,16 @@ funcs[c.UNSET_CMD_HANDLER]= function(evt){
   console.log('in SET_CMD_HANDLER-', evt);
   let dlt = delete cmdHandlers[evt[2]];
 }
+onBeforeMount(()=>{
+  cardConfigs.value = props.data.card_parameters;
+  cardConfigs.value.elementStyles = props.data.elementStyles;
+})
 
 onMounted(() => {
   debugger;
   console.log('card style is', props.data.card_parameters.style);
   emit('cevt', [c.SET_CMD_HANDLER, handleCmd, name]);
+
 
 })
 

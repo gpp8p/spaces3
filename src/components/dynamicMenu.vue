@@ -2,7 +2,7 @@
 
 
 
-    <div class="flex justify-evenly">
+    <div  class="flex justify-evenly">
       <component
           v-for="(item, index) in config.items"
           :key="index"
