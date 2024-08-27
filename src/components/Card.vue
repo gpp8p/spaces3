@@ -73,7 +73,7 @@ const passCmdDown = function(args){
 }
 import Headline from './Headline.vue';
 import RichText from './RichText.vue';
-import NavigationMenu from './NavigationMenu.vue';
+import NavigationMenu from './Headline.vue';
 import imageCard from './imageCard.vue';
 
 

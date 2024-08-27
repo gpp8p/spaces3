@@ -1,5 +1,5 @@
 <template>
-  <div class="flex justify-evenly">
+  <div :class="orientClass||'flex justify-evenly'">
     <component
         v-for="(item, index) in props.config.items"
         :key="index"
@@ -29,6 +29,7 @@ import {c} from "../components/constants.js";
 import { onMounted, onUnmounted } from 'vue'
 import {useEventHandler} from "./eventHandler.js";
 import {ref} from 'vue';
+import {toRaw} from 'vue';
 import menuItem from './menuItem1.vue';
 import menuItemDrop from '../components//menuItemDrop.vue';
 
@@ -42,6 +43,14 @@ const cmdHandlers = {}
 const fieldValue = ref('');
 if(typeof(props.config.value)=='function'){
   fieldValue.value = props.config.value(props.data);
+}
+
+console.log('menu orient-', toRaw(props.config.orient));
+const orientClass = ref('');
+if(props.config.orient=='vertical'){
+  orientClass.value = 'flex justify-evenly flex-col ml-2 mt-5';
+}else{
+  orientClass.value = 'flex justify-evenly';
 }
 
 const handleCmd = function(args){

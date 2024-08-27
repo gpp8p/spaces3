@@ -2,11 +2,11 @@
   <span v-if="hasHeadline==true" >
       <span>{{props.data.linkMenuTitle}}</span>
       <span :style="props.config.elementStyles.sub[0]">
-        <dynamicMenu :config="headlineMenu" @cevt="handleEvent($event, funcs, emit)" />
+        <dynamicMenu :config="headlineMenu" :key="reloadMenu" @cevt="handleEvent($event, funcs, emit)" />
       </span>
   </span>
   <span v-if="hasHeadline==false">
-      <dynamicMenu :config="headlineMenu" @cevt="handleEvent($event, funcs, emit)" />
+      <dynamicMenu :config="headlineMenu" :key="reloadMenu" @cevt="handleEvent($event, funcs, emit)" />
   </span>
 
 </template>
@@ -46,6 +46,7 @@ if(typeof(props.config.value)=='function'){
 }
 const hasHeadline = ref(false);
 const headlineMenu = ref({});
+const reloadMenu = ref(0);
 
 const handleCmd = function(args){
   console.log('handleCmd-', name, args);
@@ -98,6 +99,8 @@ onMounted(() => {
   if(typeof(props.data.linkMenuTitle)=='string'){
     hasHeadline.value = true;
   }
+  //console.log('orient-', props.config.content.orient);
+  //headlineMenu.value.orient = props.config.content.orient;
 
 
   debugger;
@@ -113,8 +116,14 @@ onMounted(() => {
       }
     }
     headlineMenu.value.items.push(thisItem);
+    console.log('orient-', props.config.content.orient);
+    headlineMenu.value.orient = props.config.content.orient;
+
   }
   console.log('headline menu is ', headlineMenu.value );
+  console.log('orient-', props.config.content.orient);
+  headlineMenu.value.orient = props.config.content.orient;
+  reloadMenu.value+=1;
 })
 
 onUnmounted(() => {
