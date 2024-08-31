@@ -45,6 +45,8 @@ const fieldValue = ref('');
 if(typeof(props.config.value)=='function'){
   fieldValue.value = props.config.value(props.data);
 }
+
+
 const menuDefinitions = ref({});
 const cardConfigs = ref({});
 
@@ -71,9 +73,9 @@ const passCmdDown = function(args){
     }
   }
 }
-import Headline from './Headline.vue';
-import RichText from './RichText.vue';
-import NavigationMenu from './Headline.vue';
+import Headline from './Navigation.vue';
+import RichText from './textShow.vue';
+import NavigationMenu from './Navigation.vue';
 import imageCard from './imageCard.vue';
 
 

@@ -33,7 +33,7 @@ const fieldValue = ref('');
 if(typeof(props.config.value)=='function'){
   fieldValue.value = props.config.value(props.data);
 }
-
+console.log('card content-', props.data.cardText);
 const handleCmd = function(args){
   console.log('handleCmd-', name, args);
   debugger;
