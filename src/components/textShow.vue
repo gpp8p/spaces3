@@ -1,6 +1,8 @@
 <template>
-  <div class="cardBody" ref="textContent"  v-html="props.data.cardText">
-  </div>
+  <span  class="cardStyle ck-content scrollbar-hidden">
+    <span class="cardBody" style="overflow: scroll;"  v-html="props.data.cardText"></span>
+  </span>
+
 </template>
 
 <script setup>
@@ -80,13 +82,7 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-.cardStyle {
-  height: 100%;
-  width: 100%;
-  overflow: auto;
-  scrollbar-width:none;
 
-}
 .scrollbar-hidden::-webkit-scrollbar {
   display: none;
 }
@@ -107,9 +103,7 @@ onUnmounted(() => {
   font-weight: bold;
 }
 .cardBody {
-  height: 90%;
-  margin:10px;
-  scrollbar-width:none;
+
 
 
 }
@@ -131,6 +125,7 @@ onUnmounted(() => {
   max-width: 100%;
   display: block;
   box-sizing: border-box;
+
 }
 /* ckeditor5-image/theme/imageresize.css */
 .ck-content .image.image_resized img {

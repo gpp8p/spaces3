@@ -1,5 +1,5 @@
 <template>
-<span :style = "props.data.card_parameters.style">
+<span :style = "props.data.card_parameters.style" class="cardStyle">
     <div :class="menuDefinitions.twStyling" v-if="props.config.mode=c.MODE_DISPLAY">
       <dynamicMenu :config="menuDefinitions" :key = "reloadMenu" :data="menuData" @cevt="handleEvent($event, funcs, emit)" />
     </div>
@@ -186,6 +186,13 @@ onUnmounted(() => {
   margin-top: 1%;
   display: grid;
   grid-template-columns: 20% 40%;
+}
+.cardStyle {
+  height: 100%;
+  width: 100%;
+  overflow: auto;
+  scrollbar-width:none;
+  padding:10px;
 }
 
 </style>
