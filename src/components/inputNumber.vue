@@ -1,9 +1,8 @@
 <template>
   <div class="inputCss">
-    <span>{{props.config.label}}</span>
-    <span>
+    <label v-if="config.label" :class="config.labelStyle || 'text-xl text-blue-500'">{{ config.label }}</label>
       <input type="number"
-             :class="props.config.tailwindStyle || 'text-lg outline outline-2 outline-blue-500 focus:outline-red-500 hover:outline-red-500 rounded'"
+             :class="props.config.tailwindStyle || 'text-lg outline outline-2 outline-blue-500 focus:outline-red-500 hover:outline-red-500 rounded w-24'"
              :size = "props.config.size"
              :value = "fieldValue"
              :placeholder = "fieldPlaceholder"
@@ -17,7 +16,7 @@
              @change="checkInputOnTab"
              ref="thisInput"
       />
-    </span>
+
   </div>
 </template>
 

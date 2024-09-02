@@ -43,7 +43,8 @@ export default {
     };
 
     const emitActionCode = (actionCode) => {
-      emit('input', actionCode);
+  //    debugger;
+      emit('cevt', [actionCode]);
       showSubItems.value = false;
     };
 

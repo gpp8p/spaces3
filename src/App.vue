@@ -143,6 +143,11 @@ funcs[c.MENU_MYSPACES]= function(evt){
   dialogConfig.definition = 'mySpaces';
   showDialog.value=true;
 }
+funcs[c.MENU_CREATE]= function(evt){
+  console.log('in MENU_CREATE-', evt);
+  dialogConfig.definition = 'pageCreate';
+  showDialog.value=true;
+}
 funcs[c.TRANSACTION_COMPLETED] = function(evt){
   console.log('in TRANSACTION_COMPLETED-', evt);
 }
