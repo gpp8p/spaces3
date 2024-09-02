@@ -452,7 +452,7 @@ const defs = function(dialogDef){
                             template: dialogData.template,
                             userId: loginResult.userId,
                             orgId: loginResult.orgId,
-                            //layoutId: pageStore.getCurrentPageId,
+                            layoutId: pageStore.getCurrentPageId,
                             permType: loginResult.loginPerms,
                         }
                         executeTrans(parms, c.UPDATE_PAGE_SETTINGS,  c.API_PATH+'api/shan/createLayoutNoBlanks?XDEBUG_SESSION_START=19884', 'POST', emit, c, header, dataReady, transResult);
