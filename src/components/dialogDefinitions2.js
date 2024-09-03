@@ -428,9 +428,9 @@ const defs = function(dialogDef){
                         debugger;
                         console.log('in update page settings');
                         const store = useLogStateStore();
+                        const pageStore = useCurrentPage();
                         const ready = ref(false);
                         const result = ref({});
-                        const pageStore = useCurrentPage();
                         const loginResult= toRaw(store.loginStatus)
                         console.log('store.loginResult', loginResult);
                         console.log('pageStore-', pageStore.getCurrentPageId, pageStore.getCurrentPagePerms);
@@ -459,6 +459,8 @@ const defs = function(dialogDef){
                         whenever(dataReady, () => {
                             debugger;
                             console.log('update completed-', transResult._rawValue);
+//                            pageStore.setCurrentPageId(transResult._rawValue);
+                            emit('cevt',[c.CHANGE_LAYOUT, transResult._rawValue]);
                         })
 
 

@@ -24,7 +24,7 @@ export function getTrans(){
             axios.defaults.headers.common['Authorization'] = `Bearer ${loginResults.access_token}`;
             dataReady.value=true;
             transResult.value = data._rawValue;
-            console.log('dbtrans dataReady.value 2',dataReady.value);
+            console.log('dbtrans dataReady.value 2',dataReady.value, transResult.value);
 //            emit('cevt',[c.TRANSACTION_COMPLETED, transId, data._rawValue])
 
         });
