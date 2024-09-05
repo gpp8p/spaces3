@@ -29,6 +29,7 @@ export const c = {
     RESOLVE_DATA:26,
     MODE_DISPLAY:27,
     MODE_EDIT:28,
+    SET_PAGE_EDIT:29,
 
 
 

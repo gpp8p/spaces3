@@ -73,7 +73,9 @@ const reloadThisPage = function(){
     fieldValue.value = transResult.value;
     fieldValue.value.pageName=c.PAGE_DISPLAY_NAME;
     fieldValue.value.layout.pageDimensions=toRaw(props.config).pageDimensions;
-    pageMode.value=c.PAGE_DISPLAY;
+    if(props.config.mode==c.MODE_DISPLAY){
+      pageMode.value=c.PAGE_DISPLAY;
+    }
     pageReload.value+=1;
     console.log('pageReload');
   })
@@ -122,7 +124,9 @@ const passCmdDown = function(args){
   }
 }
 
-
+funcs[c.SET_PAGE_EDIT]= function(cmd){
+  console.log('set page edit called', cmd);
+}
 
 funcs[c.SET_CMD_HANDLER]= function(evt){
   console.log('in SET_CMD_HANDLER-', evt);
