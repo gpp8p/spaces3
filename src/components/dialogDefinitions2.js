@@ -438,6 +438,12 @@ const defs = function(dialogDef){
                         const header = loginResult.access_token;
                         const dataReady = ref(false);
                         const transResult = ref({});
+                        var bType ='';
+                        if(dialogData.pageBackground.backgroundType=='color'){
+                            bType = 'C';
+                        }else{
+                            bType = 'I';
+                        }
                         const parms = {
                             name: dialogData.pageName,
                             description: dialogData.pageDescription,
@@ -446,7 +452,7 @@ const defs = function(dialogDef){
                             pageRows: dialogData.pageRows,
                             pageColumns: dialogData.pageColumns,
                             backgroundColor: dialogData.pageBackground.backgroundColor,
-                            backgroundType: dialogData.pageBackground.backgroundType,
+                            backgroundType: bType,
                             backgroundImage: dialogData.pageBackground.backgroundImage,
                             backgroundDisplay: dialogData.pageBackground.backgroundDisplay,
                             template: dialogData.template,
