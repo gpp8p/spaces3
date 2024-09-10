@@ -106,9 +106,30 @@ export function usePageCss(){
     }
 
 
+    const computeGridCss = function(row, col, height, width){
+//        debugger;
+        var startRow = row;
+        var startColumn = col;
+        var endRow=0;
+        var endCol=0;
+        if(height==1){
+            endRow = row;
+        }else{
+            endRow = height+1;
+        }
+        if(width==1){
+            endCol=startColumn+width;
+        }else{
+            endCol = width+1;
+        }
+        var thisCss = "grid-area:"+startRow+"/"+startColumn+"/"+endRow+"/"+endCol;
+        return thisCss;
+
+    }
 
 
-    return {setupPageCss}
+
+    return {setupPageCss, computeGridCss}
 
 
 }

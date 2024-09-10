@@ -1,17 +1,10 @@
 <template>
-  <span :style="pageCss">
-    <Card v-for="(aCard, i) in props.data"
-          :key="i"
-          :config="cardConfig"
-          :data="aCard"
-          @cevt="handleEvent($event, funcs, emit)"
-          ></Card>
+  <span :style="cellCss" v-on:mousedown="mouseDown"  v-on:mousemove="mouseOver" v-on:mouseup="mouseUp">
+
   </span>
 </template>
 
 <script setup>
-
-import inputText from "./inputText.vue";
 
 const props = defineProps({
   config: {
@@ -25,38 +18,27 @@ const props = defineProps({
 });
 
 
-import Card from "../components/Card.vue";
+
 import {c} from "../components/constants.js";
 import { onMounted, onUnmounted } from 'vue'
 import {useEventHandler} from "./eventHandler.js";
 import {ref} from 'vue';
-import {usePageCss} from "../components/pageCss.js";
-const {setupPageCss, computeGridCss} = usePageCss();
 
-import {toRaw} from 'vue';
-import inputNumber from "./inputNumber.vue";
-import inputCheckbox from "./inputCheckbox.vue";
-import backgroundPicker from "./backgroundPicker.vue";
-import radioGroup from "./radioGroup.vue";
-import vselect from "./vselect.vue";
-import vtextarea from "./vtextarea.vue";
-import listTable from "./listTable.vue";
-import htmlPasswordInput from "./htmlPasswordInput.vue";
-console.log('config at open', toRaw(props.config));
-const pageCss = setupPageCss(props.config);
 
 const {handleEvent} = useEventHandler();
 const emit = defineEmits(['cevt']);
-const name = props.config.name;
+debugger;
+const name = props.config.cell_parameters.name;
 const funcs = [];
 const cmdHandlers = {}
 
 const fieldValue = ref('');
+const cellCss = ref('');
+
+
 if(typeof(props.config.value)=='function'){
   fieldValue.value = props.config.value(props.data);
 }
-const cardConfig = ref({});
-cardConfig.value.mode = c.MODE_DISPLAY;
 
 const handleCmd = function(args){
   console.log('handleCmd-', name, args);
@@ -82,12 +64,6 @@ const passCmdDown = function(args){
   }
 }
 
-funcs[c.CHANGE_LAYOUT]= function(evt){
-  console.log('in displayGrid  c.-CHANGE_LAYOUT', evt);
-  debugger;
-  emit('cevt', [c.CHANGE_LAYOUT, evt[1]]);
-
-}
 funcs[c.SET_CMD_HANDLER]= function(evt){
   console.log('in SET_CMD_HANDLER-', evt);
   cmdHandlers[evt[2]]=evt[1];
@@ -97,27 +73,33 @@ funcs[c.UNSET_CMD_HANDLER]= function(evt){
   let dlt = delete cmdHandlers[evt[2]];
 }
 
-
-
 onMounted(() => {
   debugger;
   emit('cevt', [c.SET_CMD_HANDLER, handleCmd, name]);
+  cellCss.value = props.config.cell_parameters.style;
+  console.log("cellCss-",cellCss.value);
+  var thisCellAddress = cellAddress(props.config.cell_position[1], props.config.cell_position[0]);
+  emit('cevt', ['setPageCmdHandler', handleCmd, name, thisCellAddress]);
 })
 
 onUnmounted(() => {
   emit('cevt', [c.UNSET_CMD_HANDLER, name]);
 })
 
-
+const cellAddress = function(x,y){
+  debugger;
+  var zeros='000000';
+  var addrX = x.toString();
+  var addrY = y.toString();
+  addrX = zeros+addrX;
+  addrY = zeros+addrY;
+  return addrX.slice(-4)+addrY.slice(-4);
+}
 
 </script>
 
 <style scoped>
-.inputCss {
-  margin-top: 1%;
-  display: grid;
-  grid-template-columns: 20% 40%;
-}
+
 
 </style>
 
