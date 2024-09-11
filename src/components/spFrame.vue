@@ -6,7 +6,7 @@
       </div>
       <div v-else class="text-center my-[1.5%]">{{message}}</div>
     </div>
-    <div class="w-98vw h-84-5vh mx-auto border-2 border-blue-500 sp-background rounded-lg" id="contentArea">
+    <div class="w-98vw h-84-5vh mx-auto border-2 border-blue-500 sp-background rounded-lg scrollable" id="contentArea">
       <Page :config="pageConfig" :data="pageData" @cevt="handleEvent($event, funcs, emit)" :key="pageReload"></Page>
     </div>
   </div>
@@ -156,5 +156,9 @@ onUnmounted(() => {
 }
 .sp-background {
   background-color: #ffcd90;
+}
+
+.scrollable {
+  overflow-y: scroll;
 }
 </style>

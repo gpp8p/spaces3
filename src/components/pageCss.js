@@ -12,11 +12,14 @@ export function usePageCss(){
         var cellGap = cellGapAmt+'px';
         let gapTotal = Number(gridColumns*cellGapAmt)+cellGapAmt;
         var cellHeight;
+        /*
         if(typeof(configs.rowHeight)!='undefined'){
             cellHeight = Number(configs.rowHeight);
         }else {
             cellHeight = Math.round(configs.pageDimensions.contentHeight / gridRows);
         }
+         */
+        cellHeight = 60;
         let cellWidth = Math.round((configs.pageDimensions.contentWidth-gapTotal)/gridColumns);
         var gridParameters = layoutGridParameters(gridRows, gridColumns, cellHeight, cellWidth);
         var gridCss;

@@ -1,5 +1,8 @@
 <template>
-  <span :style="cellCss" v-on:mousedown="mouseDown"  v-on:mousemove="mouseOver" v-on:mouseup="mouseUp">
+  <span :style="cellCss"
+        v-on:mousedown="mouseDown"
+        v-on:mousemove="mouseOver"
+        v-on:mouseup="mouseUp">
 
   </span>
 </template>
@@ -34,6 +37,8 @@ const cmdHandlers = {}
 
 const fieldValue = ref('');
 const cellCss = ref('');
+
+const thisCellAddress = ref('');
 
 
 if(typeof(props.config.value)=='function'){
@@ -75,16 +80,28 @@ funcs[c.UNSET_CMD_HANDLER]= function(evt){
 
 onMounted(() => {
   debugger;
-  emit('cevt', [c.SET_CMD_HANDLER, handleCmd, name]);
+//  emit('cevt', [c.SET_CMD_HANDLER, handleCmd, name]);
   cellCss.value = props.config.cell_parameters.style;
   console.log("cellCss-",cellCss.value);
-  var thisCellAddress = cellAddress(props.config.cell_position[1], props.config.cell_position[0]);
-  emit('cevt', ['setPageCmdHandler', handleCmd, name, thisCellAddress]);
+  thisCellAddress.value = cellAddress(props.config.cell_position[1], props.config.cell_position[0]);
+  emit('cevt', [c.SET_CMD_HANDLER, handleCmd, thisCellAddress.value]);
+//  emit('cevt', ['setPageCmdHandler', handleCmd, name, thisCellAddress]);
 })
 
 onUnmounted(() => {
   emit('cevt', [c.UNSET_CMD_HANDLER, name]);
 })
+
+const mouseUp = function(evt){
+  console.log('mouseUp -', thisCellAddress.value );
+}
+
+const mouseDown = function(evt){
+  console.log('mouseDown -', thisCellAddress.value );
+}
+const mouseOver = function(evt){
+  console.log('mouseOver -', thisCellAddress.value );
+}
 
 const cellAddress = function(x,y){
   debugger;

@@ -1,6 +1,9 @@
 <template>
+
   <displayGrid :config="fieldValue.layout" :data="fieldValue.cards" v-if="pageMode==c.PAGE_DISPLAY" :key="pageReload" @cevt="handleEvent($event, funcs, emit)"/>
   <editGrid :config="fieldValue" :data="fieldValue.cards" v-if="pageMode==c.PAGE_EDIT" :key="pageReload" @cevt="handleEvent($event, funcs, emit)"/>
+
+
 </template>
 
 <script setup>
@@ -137,6 +140,7 @@ funcs[c.SET_PAGE_EDIT]= function(cmd){
 
 funcs[c.SET_CMD_HANDLER]= function(evt){
   console.log('in SET_CMD_HANDLER-', evt);
+  debugger;
   cmdHandlers[evt[2]]=evt[1];
 }
 funcs[c.UNSET_CMD_HANDLER]= function(evt){
@@ -297,6 +301,9 @@ const cellAddress = function(x,y){
   margin-top: 1%;
   display: grid;
   grid-template-columns: 20% 40%;
+}
+.autoScroll {
+  overflow: scroll;
 }
 
 </style>
