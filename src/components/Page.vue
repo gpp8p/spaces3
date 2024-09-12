@@ -65,6 +65,10 @@ const parms = ref({});
 
 const pageCells = ref([]);
 
+const mouseStatus = ref(c.MOUSE_STATUS_NOT_CLICKED);
+const dragtartX = ref(0);
+const dragtartY = ref(0);
+
 const reloadThisPage = function(){
 
   console.log('page parms-', parms);
@@ -168,7 +172,18 @@ funcs[c.SET_NEW_LAYOUT]= function(cmd){
   });
 
 }
-
+funcs[c.MOUSE_EVT] = function(evt){
+  console.log('in MOUSE_EVT', evt);
+  switch(mouseStatus.value){
+    case c.MOUSE_STATUS_NOT_CLICKED:{
+      if(evt[1]==c.MOUSE_DOWN){
+        mouseStatus.value = c.MOUSE_DOWN;
+        dragStartX.value = evt[3];
+        dragStartY.value = evt[4];
+      }
+    }
+  }
+}
 
 
 onMounted(() => {

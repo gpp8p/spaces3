@@ -93,14 +93,17 @@ onUnmounted(() => {
 })
 
 const mouseUp = function(evt){
-  console.log('mouseUp -', thisCellAddress.value );
+  // console.log('mouseUp -', thisCellAddress.value );
+  emit('cevt', [c.MOUSE_EVT, c.MOUSE_UP, thisCellAddress.value, props.config.cell_position[1], props.config.cell_position[0]]);
 }
 
 const mouseDown = function(evt){
-  console.log('mouseDown -', thisCellAddress.value );
+  // console.log('mouseDown -', thisCellAddress.value );
+  emit('cevt', [c.MOUSE_EVT, c.MOUSE_DOWN, thisCellAddress.value, props.config.cell_position[1], props.config.cell_position[0]]);
 }
 const mouseOver = function(evt){
-  console.log('mouseOver -', thisCellAddress.value );
+  // console.log('mouseOver -', thisCellAddress.value );
+  emit('cevt', [c.MOUSE_EVT, c.MOUSE_OVER, thisCellAddress.value, props.config.cell_position[1], props.config.cell_position[0]]);
 }
 
 const cellAddress = function(x,y){
