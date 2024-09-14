@@ -66,8 +66,10 @@ const parms = ref({});
 const pageCells = ref([]);
 
 const mouseStatus = ref(c.MOUSE_STATUS_NOT_CLICKED);
-const dragtartX = ref(0);
-const dragtartY = ref(0);
+const dragStartX = ref(0);
+const dragStartY = ref(0);
+const dragEndX = ref(0);
+const dragEndY = ref(0);
 
 const reloadThisPage = function(){
 
@@ -173,17 +175,33 @@ funcs[c.SET_NEW_LAYOUT]= function(cmd){
 
 }
 funcs[c.MOUSE_EVT] = function(evt){
-  console.log('in MOUSE_EVT', evt);
+  //console.log('in MOUSE_EVT', evt);
+  //if(evt[1]==c.MOUSE_UP){
+    //console.log('mouse up recieved', evt, mouseStatus.value);
+  //}
   switch(mouseStatus.value){
     case c.MOUSE_STATUS_NOT_CLICKED:{
       if(evt[1]==c.MOUSE_DOWN){
-        mouseStatus.value = c.MOUSE_DOWN;
+        //console.log('mouse event down-', evt);
+        mouseStatus.value = c.MOUSE_STATUS_DOWN;
         dragStartX.value = evt[3];
         dragStartY.value = evt[4];
       }
+      break;
+    }
+    case c.MOUSE_STATUS_DOWN: {
+      //console.log('in mouse down-', evt);
+      if(evt[1]==c.MOUSE_UP){
+        debugger;
+        //console.log('mouse event up-', evt);
+        dragEndX.value = evt[3];
+        dragEndY.value = evt[4];
+      }
+
     }
   }
 }
+
 
 
 onMounted(() => {
@@ -202,6 +220,33 @@ onUnmounted(() => {
   emit('cevt', [c.UNSET_CMD_HANDLER, name]);
 })
 
+const dragDirection = function(dragX, dragY, topLeftX, topLeftY){
+  var dragDirection;
+  if(dragX < topLeftX){
+    if(dragY == topLeftY){
+      dragDirection = c.DIRECTION_STRAIGHT_LEFT;
+    }else if(dragY < topLeftY){
+      dragDirection = c.DIRECTION_UP_LEFT;
+    }else{
+      dragDirection = c.DIRECTION_DOWN_LEFT;
+    }
+  }else if(dragX>topLeftX){
+    if(dragY == topLeftY){
+      dragDirection = c.DIRECTION_STRAIGHT_RIGHT;
+    }else if(dragY < topLeftY){
+      dragDirection = c.DIRECTION_UP_RIGHT;
+    }else{
+      dragDirection = c.DIRECTION_DOWN_RIGHT;
+    }
+  }else if(dragX==topLeftX){
+    if(dragY < topLeftY){
+      dragDirection = c.DIRECTION_STRAIGHT_UP;
+    }else{
+      dragDirection=c.DIRECTION_STRAIGHT_DOWN;
+    }
+  }
+  return dragDirection;
+}
 
 const createBlankPage = function(height, width, backgroundColor) {
   debugger;
@@ -227,7 +272,8 @@ const createBlankCellInstance = function(row, col, height, width, id, background
   var thisGridCss = computeGridCss(row, col, height, width);
   var thisCellStyle = thisGridCss+";"+"background-color:"+background+";color:#0000FF;";
 //      debugger;
-  var thisCellName = 'c'+id;
+//  var thisCellName = 'c'+id;
+  var thisCellName = cellAddress(col, row);
   var thisCellParams = {
     style: thisCellStyle,
     backgroundColor: background,

@@ -77,6 +77,12 @@ funcs[c.UNSET_CMD_HANDLER]= function(evt){
   console.log('in SET_CMD_HANDLER-', evt);
   let dlt = delete cmdHandlers[evt[2]];
 }
+funcs[c.SET_CELL] = function(cmd){
+  console.log('in SET_CELL-', cmd);
+  var thisCellStyle = this.config.cell_parameters.gridCss+";"+"background-color:"+args[1]+";color:"+args[2];
+  cellCss.value = thisCellStyle;
+
+}
 
 onMounted(() => {
   debugger;
@@ -93,7 +99,7 @@ onUnmounted(() => {
 })
 
 const mouseUp = function(evt){
-  // console.log('mouseUp -', thisCellAddress.value );
+  console.log('mouseUp -', thisCellAddress.value );
   emit('cevt', [c.MOUSE_EVT, c.MOUSE_UP, thisCellAddress.value, props.config.cell_position[1], props.config.cell_position[0]]);
 }
 
@@ -102,7 +108,7 @@ const mouseDown = function(evt){
   emit('cevt', [c.MOUSE_EVT, c.MOUSE_DOWN, thisCellAddress.value, props.config.cell_position[1], props.config.cell_position[0]]);
 }
 const mouseOver = function(evt){
-  // console.log('mouseOver -', thisCellAddress.value );
+  //console.log('mouseOver -', thisCellAddress.value );
   emit('cevt', [c.MOUSE_EVT, c.MOUSE_OVER, thisCellAddress.value, props.config.cell_position[1], props.config.cell_position[0]]);
 }
 
