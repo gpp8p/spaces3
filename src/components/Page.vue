@@ -70,6 +70,7 @@ const dragStartX = ref(0);
 const dragStartY = ref(0);
 const dragEndX = ref(0);
 const dragEndY = ref(0);
+const widthNow = ref(0);
 
 const reloadThisPage = function(){
 
@@ -196,6 +197,23 @@ funcs[c.MOUSE_EVT] = function(evt){
         //console.log('mouse event up-', evt);
         dragEndX.value = evt[3];
         dragEndY.value = evt[4];
+        try {
+          fillCellsInArea(dragEndX.value, dragEndY.value, dragStartX.value, dragStartY.value, c.SELECTED_COLOR);
+          mouseStatus.value = c.MOUSE_STATUS_NOT_CLICKED;
+          dragEndX.value = 0;
+          dragEndY.value = 0;
+          dragStartX.value = 0;
+          dragStartY.value = 0;
+
+
+
+
+        } catch (e) {
+//              debugger;
+//              console.log('error 1', e);
+//              console.log('error in fillCells',this.dragEndX, this.dragEndY, this.dragStartX, this.dragStartY);
+        }
+
       }
 
     }
@@ -219,6 +237,30 @@ onMounted(() => {
 onUnmounted(() => {
   emit('cevt', [c.UNSET_CMD_HANDLER, name]);
 })
+
+const fillCellsInArea = function(dragX, dragY, topLeftX, topLeftY, fillColor){
+  console.log('fillCellsInArea called', dragX, dragY, topLeftX, topLeftY, fillColor);
+  var thisDragDirectiion = dragDirection(dragX, dragY, topLeftX, topLeftY);
+  console.log('dragDirection-',thisDragDirectiion);
+  debugger;
+  switch(thisDragDirectiion){
+    case c.DIRECTION_DOWN_RIGHT:{
+      widthNow.value = dragX-topLeftX;
+      for (var row = (topLeftY); row < (dragY+1); row++) {
+        for (var col = (topLeftX); col < (dragX+1); col++) {
+          var thisCellAddress = cellAddress(col, row);
+          cmdHandlers[thisCellAddress]([c.SET_CELL, c.SELECTED_COLOR, thisCellAddress]);
+/*
+          var cellHandler = this.findHandler(col+1, row+1);
+          cellHandler(['setCell', fillColor, 'blue']);
+
+ */
+        }
+      }
+      break;
+    }
+  }
+}
 
 const dragDirection = function(dragX, dragY, topLeftX, topLeftY){
   var dragDirection;

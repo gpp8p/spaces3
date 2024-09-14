@@ -78,9 +78,11 @@ funcs[c.UNSET_CMD_HANDLER]= function(evt){
   let dlt = delete cmdHandlers[evt[2]];
 }
 funcs[c.SET_CELL] = function(cmd){
+  debugger;
   console.log('in SET_CELL-', cmd);
-  var thisCellStyle = this.config.cell_parameters.gridCss+";"+"background-color:"+args[1]+";color:"+args[2];
+  var thisCellStyle = props.config.cell_parameters.gridCss+";"+"background-color:"+cmd[1]+";";
   cellCss.value = thisCellStyle;
+  console.log('cellCss now', cellCss.value);
 
 }
 

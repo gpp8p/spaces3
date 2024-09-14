@@ -31,6 +31,8 @@ export const c = {
     MODE_EDIT:28,
     SET_PAGE_EDIT:29,
     SET_CELL:30,
+    SELECTED_COLOR: '#ad74b3',
+    UNSELECTED_COLOR: '#DBAA6E',
 
 
 
