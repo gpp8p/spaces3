@@ -250,14 +250,28 @@ const fillCellsInArea = function(dragX, dragY, topLeftX, topLeftY, fillColor){
         for (var col = (topLeftX); col < (dragX+1); col++) {
           var thisCellAddress = cellAddress(col, row);
           cmdHandlers[thisCellAddress]([c.SET_CELL, c.SELECTED_COLOR, thisCellAddress]);
-/*
-          var cellHandler = this.findHandler(col+1, row+1);
-          cellHandler(['setCell', fillColor, 'blue']);
-
- */
         }
       }
       break;
+    }
+    case c.DIRECTION_DOWN_LEFT:{
+      widthNow.value = topLeftX - dragX;
+      for (var row = (topLeftY); row < (dragY+1); row++)  {
+        for (var col = dragX; (col<(topLeftX+1));  col++) {
+          var thisCellAddress = cellAddress(col, row);
+          cmdHandlers[thisCellAddress]([c.SET_CELL, c.SELECTED_COLOR, thisCellAddress]);
+        }
+      }
+      break;
+    }
+    case c.DIRECTION_UP_RIGHT:{
+      widthNow.value = topLeftX - dragX;
+      for (var row = (topLeftY); row >= (dragY); row--){
+        for (var col = (topLeftX); col < (dragX+1); col++) {
+          var thisCellAddress = cellAddress(col, row);
+          cmdHandlers[thisCellAddress]([c.SET_CELL, c.SELECTED_COLOR, thisCellAddress]);
+        }
+      }
     }
   }
 }
