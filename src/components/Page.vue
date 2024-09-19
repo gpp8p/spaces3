@@ -272,6 +272,51 @@ const fillCellsInArea = function(dragX, dragY, topLeftX, topLeftY, fillColor){
           cmdHandlers[thisCellAddress]([c.SET_CELL, c.SELECTED_COLOR, thisCellAddress]);
         }
       }
+      break;
+    }
+    case c.DIRECTION_UP_LEFT:{
+      widthNow.value = topLeftX - dragX;
+      for (var row = (topLeftY); row >= (dragY); row--){
+        for (var col = dragX; (col<(topLeftX+1));  col++)  {
+          var thisCellAddress = cellAddress(col, row);
+          cmdHandlers[thisCellAddress]([c.SET_CELL, c.SELECTED_COLOR, thisCellAddress]);
+        }
+      }
+      break;
+    }
+    case c.DIRECTION_STRAIGHT_UP:{
+      debugger;
+      var col = dragX;
+      for (var row = dragY; row< topLeftY+1; row++){
+        var thisCellAddress = cellAddress(col, row);
+        cmdHandlers[thisCellAddress]([c.SET_CELL, c.SELECTED_COLOR, thisCellAddress]);
+      }
+      break;
+    }
+    case c.DIRECTION_STRAIGHT_DOWN:{
+      debugger;
+      var col = dragX;
+      for (var row = topLeftY; row< dragY+1; row++){
+        var thisCellAddress = cellAddress(col, row);
+        cmdHandlers[thisCellAddress]([c.SET_CELL, c.SELECTED_COLOR, thisCellAddress]);
+      }
+      break;
+    }
+    case c.DIRECTION_STRAIGHT_RIGHT:{
+      var row = dragY;
+      for (var col = (topLeftX); col < dragX+1; col++) {
+        var thisCellAddress = cellAddress(col, row);
+        cmdHandlers[thisCellAddress]([c.SET_CELL, c.SELECTED_COLOR, thisCellAddress]);
+      }
+      break;
+    }
+    case c.DIRECTION_STRAIGHT_LEFT:{
+      var row = dragY;
+      for (var col = dragX; col < topLeftX+1; col++) {
+        var thisCellAddress = cellAddress(col, row);
+        cmdHandlers[thisCellAddress]([c.SET_CELL, c.SELECTED_COLOR, thisCellAddress]);
+      }
+      break;
     }
   }
 }
