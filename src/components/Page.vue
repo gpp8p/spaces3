@@ -396,12 +396,33 @@ const createBlankPage = function(height, width, backgroundColor) {
   width++;
   for (var h = 1; h < height; h++) {
     for (var w = 1; w < width; w++) {
-      var c = createBlankCellInstance(h, w, 1, 1, newCellId,backgroundColor);
-      pageCells.push(c);
-      newCellId++;
+      if(isCellInSelectedArea(w,h)==false){
+        var c = createBlankCellInstance(h, w, 1, 1, newCellId,backgroundColor);
+        pageCells.push(c);
+        newCellId++;
+      }
     }
   }
   return pageCells;
+}
+
+const isCellInSelectedArea = function(x,y){
+  var cards = fieldValue.value.cards;
+  console.log('cards-',cards, x,y);
+  debugger;
+  for(var c = 0; c< cards.length; c++){
+    var thisCard = toRaw(cards[c]);
+    console.log('thisCard',thisCard, c);
+    if(y>=thisCard.card_position[0] && y<=thisCard.card_position[2]){
+      if(x>=thisCard.card_position[1] && x<=((thisCard.card_position[3]+thisCard.card_position[1])-1)){
+        return true;
+      }else{
+        return false;
+      }
+    }else{
+      return false;
+    }
+  }
 }
 
 
@@ -442,17 +463,7 @@ const computeGridCss = function(row, col, height, width){
 
 }
 
-const isCellInSelectedArea = function(x,y,selectedArea){
-  if(y>=selectedArea.topLeftY&&y<=selectedArea.bottomRightY){
-    if(x>=selectedArea.topLeftX&&x<=selectedArea.bottomRightX){
-      return true;
-    }else{
-      return false;
-    }
-  }else{
-    return false;
-  }
-}
+
 
 const updateBlankPage = function(height, width, backgroundColor, selectedArea, existingPageCells){
   var pageCells = [];
