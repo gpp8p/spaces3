@@ -46,11 +46,11 @@ if(typeof(props.config.value)=='function'){
 }
 
 const handleCmd = function(args){
-  console.log('handleCmd-', name, args);
+  //console.log('handleCmd-', name, args);
   debugger;
   if(name==args[2] || args[2]=='*') {
     if(typeof(funcs[args[0]])!='undefined'){
-      console.log('Found func-', args[1]);
+      //console.log('Found func-', args[1]);
       funcs[args[0]](args);
     }else{
       passCmdDown(args);
@@ -79,10 +79,10 @@ funcs[c.UNSET_CMD_HANDLER]= function(evt){
 }
 funcs[c.SET_CELL] = function(cmd){
   debugger;
-  console.log('in SET_CELL-', cmd);
+  //console.log('in SET_CELL-', cmd);
   var thisCellStyle = props.config.cell_parameters.gridCss+";"+"background-color:"+cmd[1]+";";
   cellCss.value = thisCellStyle;
-  console.log('cellCss now', cellCss.value);
+  //console.log('cellCss now', cellCss.value);
 
 }
 

@@ -71,7 +71,10 @@ const dragStartY = ref(0);
 const dragEndX = ref(0);
 const dragEndY = ref(0);
 const widthNow = ref(0);
-
+const dragAtX = ref(0);
+const dragAtY = ref(0);
+const dragWasAtX = ref(0);
+const dragWasAtY = ref(0);
 const reloadThisPage = function(){
 
   console.log('page parms-', parms);
@@ -187,14 +190,16 @@ funcs[c.MOUSE_EVT] = function(evt){
         mouseStatus.value = c.MOUSE_STATUS_DOWN;
         dragStartX.value = evt[3];
         dragStartY.value = evt[4];
+        dragWasAtX.value = evt[3];
+        dragWasAtY.value = evt[4];
       }
       break;
     }
     case c.MOUSE_STATUS_DOWN: {
-      //console.log('in mouse down-', evt);
+      console.log('in mouse down-', evt, evt[1]);
       if(evt[1]==c.MOUSE_UP){
         debugger;
-        //console.log('mouse event up-', evt);
+        console.log('mouse event up-', evt);
         dragEndX.value = evt[3];
         dragEndY.value = evt[4];
         try {
@@ -213,6 +218,38 @@ funcs[c.MOUSE_EVT] = function(evt){
 //              console.log('error 1', e);
 //              console.log('error in fillCells',this.dragEndX, this.dragEndY, this.dragStartX, this.dragStartY);
         }
+
+      }
+      if(evt[1]==c.MOUSE_OVER){
+        console.log('drag over',evt, dragAtX.value, dragAtY.value, dragWasAtX.value, dragWasAtY.value );
+        dragAtX.value = evt[3];
+        dragAtY.value = evt[4];
+        if(dragAtX.value==dragWasAtX.value && dragAtY.value==dragWasAtY.value){
+          console.log('same cell-',dragWasAtX.value, dragWasAtY.value, dragStartX.value, dragStartY.value);
+          try {
+            console.log('filling selected', dragWasAtX.value, dragWasAtY.value, dragStartX.value, dragStartY.value)
+            fillCellsInArea(dragAtX.value, dragAtY.value, dragStartX.value, dragStartY.value, c.SELECTED_COLOR);
+          } catch (e) {
+//              debugger;
+            console.log('error 2', e);
+//              console.log('error in fillCells',this.dragEndX, this.dragEndY, this.dragStartX, this.dragStartY);
+          }
+        }else{
+          console.log('different cell-',dragWasAtX.value, dragWasAtY.value, dragStartX.value, dragStartY.value);
+          try {
+            console.log('filling unselected', dragWasAtX.value, dragWasAtY.value, dragStartX.value, dragStartY.value);
+            fillCellsInArea(dragWasAtX.value, dragWasAtY.value, dragStartX.value, dragStartY.value, c.UNSELECTED_COLOR);
+          } catch (e) {
+//              debugger;
+            console.log('error 1', e);
+//              console.log('error in fillCells',this.dragEndX, this.dragEndY, this.dragStartX, this.dragStartY);
+          }
+          dragWasAtX.value = evt[3];
+          dragWasAtY.value = evt[4];
+        }
+
+
+
 
       }
 
@@ -249,7 +286,7 @@ const fillCellsInArea = function(dragX, dragY, topLeftX, topLeftY, fillColor){
       for (var row = (topLeftY); row < (dragY+1); row++) {
         for (var col = (topLeftX); col < (dragX+1); col++) {
           var thisCellAddress = cellAddress(col, row);
-          cmdHandlers[thisCellAddress]([c.SET_CELL, c.SELECTED_COLOR, thisCellAddress]);
+          cmdHandlers[thisCellAddress]([c.SET_CELL, fillColor, thisCellAddress]);
         }
       }
       break;
@@ -259,7 +296,7 @@ const fillCellsInArea = function(dragX, dragY, topLeftX, topLeftY, fillColor){
       for (var row = (topLeftY); row < (dragY+1); row++)  {
         for (var col = dragX; (col<(topLeftX+1));  col++) {
           var thisCellAddress = cellAddress(col, row);
-          cmdHandlers[thisCellAddress]([c.SET_CELL, c.SELECTED_COLOR, thisCellAddress]);
+          cmdHandlers[thisCellAddress]([c.SET_CELL, fillColor, thisCellAddress]);
         }
       }
       break;
@@ -269,7 +306,7 @@ const fillCellsInArea = function(dragX, dragY, topLeftX, topLeftY, fillColor){
       for (var row = (topLeftY); row >= (dragY); row--){
         for (var col = (topLeftX); col < (dragX+1); col++) {
           var thisCellAddress = cellAddress(col, row);
-          cmdHandlers[thisCellAddress]([c.SET_CELL, c.SELECTED_COLOR, thisCellAddress]);
+          cmdHandlers[thisCellAddress]([c.SET_CELL, fillColor, thisCellAddress]);
         }
       }
       break;
@@ -279,7 +316,7 @@ const fillCellsInArea = function(dragX, dragY, topLeftX, topLeftY, fillColor){
       for (var row = (topLeftY); row >= (dragY); row--){
         for (var col = dragX; (col<(topLeftX+1));  col++)  {
           var thisCellAddress = cellAddress(col, row);
-          cmdHandlers[thisCellAddress]([c.SET_CELL, c.SELECTED_COLOR, thisCellAddress]);
+          cmdHandlers[thisCellAddress]([c.SET_CELL, fillColor, thisCellAddress]);
         }
       }
       break;
@@ -289,7 +326,7 @@ const fillCellsInArea = function(dragX, dragY, topLeftX, topLeftY, fillColor){
       var col = dragX;
       for (var row = dragY; row< topLeftY+1; row++){
         var thisCellAddress = cellAddress(col, row);
-        cmdHandlers[thisCellAddress]([c.SET_CELL, c.SELECTED_COLOR, thisCellAddress]);
+        cmdHandlers[thisCellAddress]([c.SET_CELL, fillColor, thisCellAddress]);
       }
       break;
     }
@@ -298,7 +335,7 @@ const fillCellsInArea = function(dragX, dragY, topLeftX, topLeftY, fillColor){
       var col = dragX;
       for (var row = topLeftY; row< dragY+1; row++){
         var thisCellAddress = cellAddress(col, row);
-        cmdHandlers[thisCellAddress]([c.SET_CELL, c.SELECTED_COLOR, thisCellAddress]);
+        cmdHandlers[thisCellAddress]([c.SET_CELL, fillColor, thisCellAddress]);
       }
       break;
     }
@@ -306,7 +343,7 @@ const fillCellsInArea = function(dragX, dragY, topLeftX, topLeftY, fillColor){
       var row = dragY;
       for (var col = (topLeftX); col < dragX+1; col++) {
         var thisCellAddress = cellAddress(col, row);
-        cmdHandlers[thisCellAddress]([c.SET_CELL, c.SELECTED_COLOR, thisCellAddress]);
+        cmdHandlers[thisCellAddress]([c.SET_CELL, fillColor, thisCellAddress]);
       }
       break;
     }
@@ -314,7 +351,7 @@ const fillCellsInArea = function(dragX, dragY, topLeftX, topLeftY, fillColor){
       var row = dragY;
       for (var col = dragX; col < topLeftX+1; col++) {
         var thisCellAddress = cellAddress(col, row);
-        cmdHandlers[thisCellAddress]([c.SET_CELL, c.SELECTED_COLOR, thisCellAddress]);
+        cmdHandlers[thisCellAddress]([c.SET_CELL, fillColor, thisCellAddress]);
       }
       break;
     }
