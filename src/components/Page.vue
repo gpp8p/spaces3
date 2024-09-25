@@ -408,21 +408,26 @@ const createBlankPage = function(height, width, backgroundColor) {
 
 const isCellInSelectedArea = function(x,y){
   var cards = fieldValue.value.cards;
-  console.log('cards-',cards, x,y);
+  console.log('cards-',cards, x,y, cards.length);
   debugger;
-  for(var c = 0; c< cards.length; c++){
+  var returnValue;
+  for(let c = 0; c < cards.length; c++){
     var thisCard = toRaw(cards[c]);
     console.log('thisCard',thisCard, c);
     if(y>=thisCard.card_position[0] && y<=thisCard.card_position[2]){
       if(x>=thisCard.card_position[1] && x<=((thisCard.card_position[3]+thisCard.card_position[1])-1)){
-        return true;
+        returnValue = true;
       }else{
-        return false;
+        returnValue = false;
       }
     }else{
-      return false;
+      returnValue = false;
+    }
+    if(returnValue==true){
+      return true;
     }
   }
+  return false;
 }
 
 
