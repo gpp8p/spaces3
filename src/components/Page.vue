@@ -414,7 +414,7 @@ const isCellInSelectedArea = function(x,y){
   for(let c = 0; c < cards.length; c++){
     var thisCard = toRaw(cards[c]);
     console.log('thisCard',thisCard, c);
-    if(y>=thisCard.card_position[0] && y<=thisCard.card_position[2]){
+    if(y>=thisCard.card_position[0] && y<=((thisCard.card_position[2]+thisCard.card_position[0])-1)){
       if(x>=thisCard.card_position[1] && x<=((thisCard.card_position[3]+thisCard.card_position[1])-1)){
         returnValue = true;
       }else{

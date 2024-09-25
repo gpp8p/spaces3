@@ -8,6 +8,12 @@
            :name="thisCell.cell_parameters.name"
            @cevt="handleEvent($event, funcs, emit)"
      ></cell>
+    <Card v-for="(aCard, i) in props.data"
+          :key="i"
+          :config="cardConfig"
+          :data="aCard"
+          @cevt="handleEvent($event, funcs, emit)"
+    ></Card>
   </span>
 
 </template>
@@ -32,6 +38,7 @@ import { onMounted, onUnmounted } from 'vue'
 import {useEventHandler} from "./eventHandler.js";
 import {ref} from 'vue';
 import cell from "../components/Cell.vue";
+import Card from "../components/Card.vue";
 
 import {usePageCss} from "../components/pageCss.js";
 const {setupPageCss, computeGridCss} = usePageCss();
@@ -49,6 +56,8 @@ if(typeof(props.config.value)=='function'){
   fieldValue.value = props.config.value(props.data);
 }
 //const pageCells = ref([]);
+const cardConfig = ref({});
+cardConfig.value.mode = c.MODE_EDIT;
 
 const handleCmd = function(args){
   console.log('handleCmd-', name, args);
