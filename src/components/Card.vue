@@ -1,7 +1,7 @@
 <template>
-<span :style = "props.data.card_parameters.style" class="cardStyle">
-    <div :class="menuDefinitions.twStyling" v-if="props.config.mode=c.MODE_DISPLAY">
-      <dynamicMenu :config="menuDefinitions" :key = "reloadMenu" :data="menuData" @cevt="handleEvent($event, funcs, emit)" />
+<div :style = "props.data.card_parameters.style" class="cardStyle">
+    <div  v-if="props.config.mode==c.MODE_EDIT" >
+      <dynamicMenu :config="toRaw(menuDefinitions)" :key = "reloadMenu" :data="menuData" @cevt="handleEvent($event, funcs, emit)" />
     </div>
     <div>
       <component :is="morphs[props.data.card_component]"
@@ -9,7 +9,7 @@
                  :data="props.data.card_parameters.content"
                  @cevt="handleEvent($event, funcs, emit)"/>
     </div>
-</span>
+</div>
 
 </template>
 
@@ -33,11 +33,12 @@ import { onMounted, onUnmounted } from 'vue'
 import {useEventHandler} from "./eventHandler.js";
 import {ref} from 'vue';
 import {onBeforeMount} from "vue";
+import {toRaw} from "vue";
 
 
 const {handleEvent} = useEventHandler();
 const emit = defineEmits(['cevt']);
-const name = props.config.name;
+const name = props.data.card_parameters.content.card_name;
 const funcs = [];
 const cmdHandlers = {}
 
@@ -48,6 +49,7 @@ if(typeof(props.config.value)=='function'){
 
 
 const menuDefinitions = ref({});
+
 const cardConfigs = ref({});
 
 const handleCmd = function(args){
@@ -77,13 +79,16 @@ import Headline from './Navigation.vue';
 import RichText from './textShow.vue';
 import NavigationMenu from './Navigation.vue';
 import imageCard from './imageCard.vue';
+import loginLink from './loginLink.vue';
+import dynamicMenu from "./menu3.vue";
 
 
 const morphs = {
   Headline,
   RichText,
   NavigationMenu,
-  imageCard
+  imageCard,
+  loginLink,
 }
 
 
@@ -94,9 +99,11 @@ const getMenuDefinitions = function(menuType){
     case 'pdf':
     case 'youTube':
     case 'imageCard':
+    case 'loginLink':
     case 'Headline':{
       return {
-        twStyling:'text-xs text-blue-500 w-[100%]',
+        twStyling:'text-sm text-blue-500 w-[100%]',
+        name: 'cardMenu',
         items: [
           { type: 'menuItem', config: { label: 'Configure', actionCode: c.CARD_MENU_CONFIGURE } },
           { type: 'menuItem', config: { label: 'Resize/Move', actionCode: c.CARD_MENU_RESIZE } },
@@ -109,7 +116,8 @@ const getMenuDefinitions = function(menuType){
     }
     case 'NavigationMenu':{
       return {
-        twStyling:'text-xs text-blue-500 w-[100%]',
+        twStyling:'text-sm text-blue-500 w-[100%] bg-yellow-200',
+        name: 'cardMenu',
         items: [
           { type: 'menuItemDrop', config: {label: 'Navigation Menu', subItems: [
                 { subLabel: 'Edit', actionCode: c.CARD_MENU_EDIT  },
@@ -127,7 +135,8 @@ const getMenuDefinitions = function(menuType){
     }
     case 'RichText':{
       return {
-        twStyling:'text-xs text-blue-500 w-[100%]',
+        twStyling:'text-xs text-blue-500 w-[100%] bg-yellow-200',
+        name: 'cardMenu',
         items: [
           { type: 'menuItem', config: { label: 'Edit', actionCode: c.CARD_MENUS_EDIT } },
           { type: 'menuItem', config: { label: 'Configure', actionCode: c.CARD_MENUS_CONFIGURE } },
@@ -140,7 +149,8 @@ const getMenuDefinitions = function(menuType){
     }
     case 'RichText_A':{
       return {
-        twStyling:'text-xs text-blue-500 w-[100%]',
+        twStyling:'text-xs text-blue-500 w-[100%] bg-yellow-200',
+        name: 'cardMenu',
         items: [
           { type: 'menuItem', config: { label: 'Card Setup', actionCode: c.CARD_MENUE_SETUP } },
           { type: 'menuItem', config: { label: 'Link', actionCode: c.CARD_MENUE_LINK} },
@@ -165,6 +175,8 @@ funcs[c.UNSET_CMD_HANDLER]= function(evt){
 onBeforeMount(()=>{
   cardConfigs.value = props.data.card_parameters;
   cardConfigs.value.elementStyles = props.data.elementStyles;
+  menuDefinitions.value = getMenuDefinitions(props.data.card_component);
+  console.log('menu name is-',toRaw(menuDefinitions.value.name));
 })
 
 onMounted(() => {
@@ -187,6 +199,7 @@ onUnmounted(() => {
   display: grid;
   grid-template-columns: 20% 40%;
 }
+
 .cardStyle {
   height: 100%;
   width: 100%;

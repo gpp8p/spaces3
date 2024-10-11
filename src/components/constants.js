@@ -33,6 +33,8 @@ export const c = {
     SET_CELL:30,
     SELECTED_COLOR: '#ad74b3',
     UNSELECTED_COLOR: '#DBAA6E',
+    NOT_LOGGED_IN:31,
+    LOGGED_IN:32,
 
 
 

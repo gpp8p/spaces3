@@ -30,7 +30,7 @@ import {ref} from 'vue';
 
 const {handleEvent} = useEventHandler();
 const emit = defineEmits(['cevt']);
-debugger;
+//debugger;
 const name = props.config.cell_parameters.name;
 const funcs = [];
 const cmdHandlers = {}
@@ -47,7 +47,7 @@ if(typeof(props.config.value)=='function'){
 
 const handleCmd = function(args){
   //console.log('handleCmd-', name, args);
-  debugger;
+//  debugger;
   if(name==args[2] || args[2]=='*') {
     if(typeof(funcs[args[0]])!='undefined'){
       //console.log('Found func-', args[1]);
@@ -78,7 +78,7 @@ funcs[c.UNSET_CMD_HANDLER]= function(evt){
   let dlt = delete cmdHandlers[evt[2]];
 }
 funcs[c.SET_CELL] = function(cmd){
-  debugger;
+ // debugger;
   //console.log('in SET_CELL-', cmd);
   var thisCellStyle = props.config.cell_parameters.gridCss+";"+"background-color:"+cmd[1]+";";
   cellCss.value = thisCellStyle;
@@ -87,7 +87,7 @@ funcs[c.SET_CELL] = function(cmd){
 }
 
 onMounted(() => {
-  debugger;
+  // debugger;
 //  emit('cevt', [c.SET_CMD_HANDLER, handleCmd, name]);
   cellCss.value = props.config.cell_parameters.style;
   console.log("cellCss-",cellCss.value);
@@ -115,7 +115,7 @@ const mouseOver = function(evt){
 }
 
 const cellAddress = function(x,y){
-  debugger;
+  //debugger;
   var zeros='000000';
   var addrX = x.toString();
   var addrY = y.toString();

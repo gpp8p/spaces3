@@ -36,7 +36,7 @@ import dynamicMenu from "./menu3.vue";
 
 const {handleEvent} = useEventHandler();
 const emit = defineEmits(['cevt']);
-const name = props.config.name;
+const name = props.data.card_name;
 const funcs = [];
 const cmdHandlers = {}
 

@@ -409,7 +409,7 @@ const createBlankPage = function(height, width, backgroundColor) {
 const isCellInSelectedArea = function(x,y){
   var cards = fieldValue.value.cards;
   console.log('cards-',cards, x,y, cards.length);
-  debugger;
+  //debugger;
   var returnValue;
   for(let c = 0; c < cards.length; c++){
     var thisCard = toRaw(cards[c]);
