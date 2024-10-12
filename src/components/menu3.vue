@@ -50,7 +50,11 @@ const orientClass = ref('');
 if(props.config.orient=='vertical'){
   orientClass.value = 'flex justify-evenly flex-col ml-2 mt-5';
 }else{
-  orientClass.value = 'flex justify-evenly';
+  if(typeof(props.config.mStyle)== 'undefined'){
+    orientClass.value = 'flex justify-evenly';
+  }else{
+    orientClass.value = props.config.mStyle;
+  }
 }
 
 const handleCmd = function(args){

@@ -49,6 +49,7 @@ if(typeof(props.config.value)=='function'){
 
 
 const menuDefinitions = ref({});
+const menuStyle = ref('');
 
 const cardConfigs = ref({});
 
@@ -99,10 +100,9 @@ const getMenuDefinitions = function(menuType){
     case 'pdf':
     case 'youTube':
     case 'imageCard':
-    case 'loginLink':
     case 'Headline':{
       return {
-        twStyling:'text-sm text-blue-500 w-[100%]',
+        twStyling:'text-sm text-blue-500 w-[100%] bg-yellow-200',
         name: 'cardMenu',
         items: [
           { type: 'menuItem', config: { label: 'Configure', actionCode: c.CARD_MENU_CONFIGURE } },
@@ -142,6 +142,7 @@ const getMenuDefinitions = function(menuType){
           { type: 'menuItem', config: { label: 'Configure', actionCode: c.CARD_MENUS_CONFIGURE } },
           { type: 'menuItem', config: { label: 'Resize/Move', actionCode: c.CARD_MENUS_RESIZE } },
           { type: 'menuItem', config: { label: 'Delete', actionCode: c.CARD_MENUS_DELETE } },
+          { type: 'menuItem', config: { label: 'Save', actionCode: c.CARD_MENU_SAVE } },
           { type: 'menuItem', config: { label: 'Exit', actionCode: c.CARD_MENUS_EXIT } },
 
         ]
@@ -160,6 +161,20 @@ const getMenuDefinitions = function(menuType){
         ]
       }
     }
+    case 'loginLink':{
+      return {
+        twStyling:'text-[8px] text-blue-500 w-[100%] bg-yellow-200',
+        name: 'cardMenu',
+        items: [
+          { type: 'menuItem', config: { label: 'Configure', actionCode: c.CARD_MENU_CONFIGURE } },
+          { type: 'menuItem', config: { label: 'Resize/Move', actionCode: c.CARD_MENU_RESIZE } },
+          { type: 'menuItem', config: { label: 'Delete', actionCode: c.CARD_MENU_DELETE } },
+          { type: 'menuItem', config: { label: 'Edit', actionCode: c.CARD_MENU_EDIT } },
+          { type: 'menuItem', config: { label: 'Save', actionCode: c.CARD_MENU_SAVE } },
+          { type: 'menuItem', config: { label: 'Exit', actionCode: c.CARD_MENU_EXIT } },
+        ],
+      }
+    }
   }
 }
 
@@ -176,7 +191,9 @@ onBeforeMount(()=>{
   cardConfigs.value = props.data.card_parameters;
   cardConfigs.value.elementStyles = props.data.elementStyles;
   menuDefinitions.value = getMenuDefinitions(props.data.card_component);
-  console.log('menu name is-',toRaw(menuDefinitions.value.name));
+  menuDefinitions.value.mStyle = menuDefinitions.value.twStyling+" "+'flex justify-evenly';
+  console.log('menu twstyle is-',toRaw(menuDefinitions.value.twStyling));
+  menuStyle.value = toRaw(menuDefinitions.value.twStyling);
 })
 
 onMounted(() => {
