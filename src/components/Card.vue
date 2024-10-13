@@ -142,7 +142,7 @@ const getMenuDefinitions = function(menuType){
           { type: 'menuItem', config: { label: 'Configure', actionCode: c.CARD_MENUS_CONFIGURE } },
           { type: 'menuItem', config: { label: 'Resize/Move', actionCode: c.CARD_MENUS_RESIZE } },
           { type: 'menuItem', config: { label: 'Delete', actionCode: c.CARD_MENUS_DELETE } },
-          { type: 'menuItem', config: { label: 'Save', actionCode: c.CARD_MENU_SAVE } },
+          { type: 'menuItem', config: { label: 'Save', actionCode: c.CARD_MENUS_SAVE } },
           { type: 'menuItem', config: { label: 'Exit', actionCode: c.CARD_MENUS_EXIT } },
 
         ]
@@ -187,10 +187,14 @@ funcs[c.UNSET_CMD_HANDLER]= function(evt){
   console.log('in SET_CMD_HANDLER-', evt);
   let dlt = delete cmdHandlers[evt[2]];
 }
+funcs[c.MENU_ITEM_SELECTED]=function(evt){
+  console.log('in card MENU_ITEM)SELECTED-', evt);
+}
 onBeforeMount(()=>{
   cardConfigs.value = props.data.card_parameters;
   cardConfigs.value.elementStyles = props.data.elementStyles;
   menuDefinitions.value = getMenuDefinitions(props.data.card_component);
+  console.log('menuDefinitions-',toRaw(menuDefinitions.value));
   menuDefinitions.value.mStyle = menuDefinitions.value.twStyling+" "+'flex justify-evenly';
   console.log('menu twstyle is-',toRaw(menuDefinitions.value.twStyling));
   menuStyle.value = toRaw(menuDefinitions.value.twStyling);
