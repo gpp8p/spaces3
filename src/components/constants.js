@@ -35,6 +35,7 @@ export const c = {
     UNSELECTED_COLOR: '#DBAA6E',
     NOT_LOGGED_IN:31,
     LOGGED_IN:32,
+    CARD_MENU_SELECTED:33,
 
 
 

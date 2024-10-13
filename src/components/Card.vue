@@ -53,6 +53,8 @@ const menuStyle = ref('');
 
 const cardConfigs = ref({});
 
+const cardContentName = ref('');
+
 const handleCmd = function(args){
   console.log('handleCmd-', name, args);
   debugger;
@@ -180,7 +182,10 @@ const getMenuDefinitions = function(menuType){
 
 
 funcs[c.SET_CMD_HANDLER]= function(evt){
-  console.log('in SET_CMD_HANDLER-', evt);
+  console.log('card -in SET_CMD_HANDLER-', evt);
+ if(evt[1]!='cardMenu'){
+   cardContentName.value = evt[2];
+ }
   cmdHandlers[evt[2]]=evt[1];
 }
 funcs[c.UNSET_CMD_HANDLER]= function(evt){
@@ -189,6 +194,8 @@ funcs[c.UNSET_CMD_HANDLER]= function(evt){
 }
 funcs[c.MENU_ITEM_SELECTED]=function(evt){
   console.log('in card MENU_ITEM)SELECTED-', evt);
+  debugger;
+  cmdHandlers[cardContentName.value]([c.CARD_MENU_SELECTED, evt, cardContentName.value]);
 }
 onBeforeMount(()=>{
   cardConfigs.value = props.data.card_parameters;

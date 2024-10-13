@@ -66,6 +66,10 @@ funcs[c.UNSET_CMD_HANDLER]= function(evt){
   console.log('in SET_CMD_HANDLER-', evt);
   let dlt = delete cmdHandlers[evt[2]];
 }
+funcs[c.CARD_MENU_SELECTED] = function(cmd){
+  console.log('RichText in CARD_MENU_SELECTED-', cmd);
+
+}
 
 onMounted(() => {
   debugger;
