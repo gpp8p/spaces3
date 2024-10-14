@@ -36,6 +36,8 @@ export const c = {
     NOT_LOGGED_IN:31,
     LOGGED_IN:32,
     CARD_MENU_SELECTED:33,
+    EXIT_EDIT_MODE:34,
+    SET_TO_DISPLAY_MODE:35,
 
 
 

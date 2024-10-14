@@ -178,6 +178,11 @@ funcs[c.SET_NEW_LAYOUT]= function(cmd){
   });
 
 }
+funcs[c.SET_TO_DISPLAY_MODE] = function(cmd){
+  console.log('in page SET_TO_DISPLAY_MODE');
+  pageMode.value=c.PAGE_DISPLAY;
+
+}
 funcs[c.MOUSE_EVT] = function(evt){
   //console.log('in MOUSE_EVT', evt);
   //if(evt[1]==c.MOUSE_UP){

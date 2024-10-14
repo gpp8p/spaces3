@@ -71,6 +71,11 @@ funcs[c.UNSET_CMD_HANDLER]= function(evt){
 }
 funcs[c.CARD_MENU_SELECTED] = function(cmd){
   console.log('TextShow in CARD_MENU_SELECTED-', cmd);
+  switch(cmd[1].cardAction){
+    case c.CARD_MENUS_EXIT:{
+      emit('cevt', [c.EXIT_EDIT_MODE]);
+    }
+  }
 
 }
 

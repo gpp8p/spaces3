@@ -157,6 +157,10 @@ funcs[c.CHANGE_LAYOUT] = function(evt){
   debugger;
   cmdHandlers['spFrame']([c.SET_NEW_LAYOUT, evt[1], "Page"]);
 }
+funcs[c.EXIT_EDIT_MODE] = function(evt){
+  console.log('in EXIT_EDIT_MODE-', evt);
+  cmdHandlers['spFrame']([c.SET_TO_DISPLAY_MODE,evt, "Page"]);
+}
 
 
 </script>
