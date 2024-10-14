@@ -128,6 +128,7 @@ funcs[c.LOGIN_RETURNED]=function(evt){
   console.log('loginState structure after change-',toRaw(store.structure));
 }
 */
+
 funcs[c.CHANGE_DIALOG_CONFIGURATION]= function(evt){
   console.log('in CHANGE_DIALOG_CONFIGURATION',evt);
   debugger;

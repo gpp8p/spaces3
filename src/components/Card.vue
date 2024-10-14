@@ -179,8 +179,6 @@ const getMenuDefinitions = function(menuType){
     }
   }
 }
-
-
 funcs[c.SET_CMD_HANDLER]= function(evt){
   console.log('card -in SET_CMD_HANDLER-', evt);
  if(evt[1]!='cardMenu'){
