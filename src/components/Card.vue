@@ -194,8 +194,12 @@ funcs[c.UNSET_CMD_HANDLER]= function(evt){
 }
 funcs[c.MENU_ITEM_SELECTED]=function(evt){
   console.log('in card MENU_ITEM)SELECTED-', evt);
+  var cardReferencedData = {
+    cardId: props.data.id,
+    cardAction: evt[1]
+  }
   debugger;
-  cmdHandlers[cardContentName.value]([c.CARD_MENU_SELECTED, evt, cardContentName.value]);
+  cmdHandlers[cardContentName.value]([c.CARD_MENU_SELECTED, cardReferencedData, cardContentName.value]);
 }
 onBeforeMount(()=>{
   cardConfigs.value = props.data.card_parameters;
