@@ -65,6 +65,10 @@ export function getDialogDefinitions(){
     }
     return {getDialogAppearence, getDialogFields, getDefaultData, getDialogData, getMenuDefinitions, getActions, getDialogParams}
 }
+
+
+
+
 /*
 const existingData = {
     name: "Curious George",
