@@ -282,6 +282,30 @@ const defs = function(dialogDef){
                 }
             }
         }
+        case 'configureCard':{
+            return {
+                dialogAppearence: {
+                    twPrompt: 'text-lg text-current ml-[30%] my-[5%]',
+                    prompt: 'Test Dialog',
+                    twstyle:"fixed w-[50%] h-auto p-[2%] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-200 rounded border-2 border-blue-500 shadow-xl shadow-black",
+                },
+                dialogFields :[
+
+                ],
+                menuDefs:{
+                    twStyling:'text-xs text-blue-500 w-[100%]',
+                    items: [
+
+                    ],
+                },
+                dialogData: function(emit, c, loginStore, ready, result){
+
+                },
+                addActions:function(currentFuncs) {
+
+                }
+            }
+        }
         case 'pageCreate':{
             return {
                 dialogAppearence: {
