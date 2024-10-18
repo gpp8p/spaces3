@@ -38,6 +38,7 @@ export const c = {
     CARD_MENU_SELECTED:33,
     EXIT_EDIT_MODE:34,
     SET_TO_DISPLAY_MODE:35,
+    SHOW_DIALOG:36,
 
 
 

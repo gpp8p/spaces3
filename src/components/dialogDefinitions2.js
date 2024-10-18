@@ -294,6 +294,56 @@ const defs = function(dialogDef){
                     twstyle:"fixed w-[50%] h-auto p-[2%] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-200 rounded border-2 border-blue-500 shadow-xl shadow-black",
                 },
                 dialogFields :[
+                    {
+                        name: 'pageBackground',
+                        type: 'backgroundPicker',
+                        ref: 'cardBackground',
+                        startFocus: false,
+                        radioLabelStyle: "mr-[10px] text-lg",
+                        value: function(existingData){
+                            debugger;
+                            if(existingData.cardBackground.backgroundType=='I'){
+                                console.log('pageBackground is image');
+                                return {
+                                    backgroundType:'image',
+                                    backgroundUrl:existingData.pageBackground.backgroundUrl,
+                                    backgroundDisplay:existingData.pageBackground.backgroundDisplay
+                                }
+                            }else{
+                                console.log('pageBackground is color');
+                                return {
+                                    backgroundType:'color',
+                                    colorValue:existingData.cardBackground.colorValue,
+
+                                }
+                            }
+                            return existingData.cardBackground;
+                        },
+                        label: "Background"
+                    },
+                    {
+                        name: 'shadow',
+                        type: 'inputCheckbox',
+                        ref: 'shadow',
+                        startFocus: false,
+                        value: function(existingData){
+                            debugger;
+                            return existingData.shadow;
+                        },
+                        label: "Shadow ?"
+                    },
+                    {
+                        name: 'roundedCorners',
+                        type: 'inputCheckbox',
+                        ref: 'roundedCorners',
+                        startFocus: false,
+                        value: function(existingData){
+                            debugger;
+                            return existingData.roundedCorners;
+                        },
+                        label: "Rounded Corners ?"
+                    },
+
 
                 ],
                 menuDefs:{
@@ -781,7 +831,7 @@ const defs = function(dialogDef){
                     currentFuncs[c.FIELD_CHANGE_EVENT]=function(evt, emit, dialogData){
                         console.log('in c.FIELD_CHANGE_EVENT-', evt, dialogData);
                         if(evt[1]==='password'){
-                            emit('cevt', [c.CHANGE_DIALOG_CONFIGURATION, c.CHANGE_MENU_CONFIGURATION, 'loginDialogB', dialogData]);
+                            emit('cevt', [c.CHANGE_DIALOG_CONFIGURATION, c.CHANGE_MENU_CONFIGURATION, "loginMenuB", dialogData]);
                         }
 
 

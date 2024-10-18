@@ -75,6 +75,9 @@ funcs[c.CARD_MENU_SELECTED] = function(cmd){
     case c.CARD_MENUS_EXIT:{
       emit('cevt', [c.EXIT_EDIT_MODE]);
     }
+    case c.CARD_MENUS_CONFIGURE:{
+      emit('cevt', [c.SHOW_DIALOG, 'configureCard']);
+    }
   }
 
 }

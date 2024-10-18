@@ -132,7 +132,7 @@ funcs[c.LOGIN_RETURNED]=function(evt){
 funcs[c.CHANGE_DIALOG_CONFIGURATION]= function(evt){
   console.log('in CHANGE_DIALOG_CONFIGURATION',evt);
   debugger;
-  cmdHandlers['dialog']([evt[1], "loginMenuB", "dialog"]);
+  cmdHandlers['dialog']([evt[1], evt[2], "dialog"]);
 }
 funcs[c.MENU_PAGE_SETTINGS]= function(evt){
   console.log('in MENU_PAGE_SETTINGS-', evt);
@@ -140,7 +140,7 @@ funcs[c.MENU_PAGE_SETTINGS]= function(evt){
   showDialog.value=true;
 }
 funcs[c.MENU_MYSPACES]= function(evt){
-  console.log('in MENU_PAGE_SETTINGS-', evt);
+  console.log('inMENU_MYSPACES-', evt);
   dialogConfig.definition = 'mySpaces';
   showDialog.value=true;
 }
@@ -160,6 +160,11 @@ funcs[c.CHANGE_LAYOUT] = function(evt){
 funcs[c.EXIT_EDIT_MODE] = function(evt){
   console.log('in EXIT_EDIT_MODE-', evt);
   cmdHandlers['spFrame']([c.SET_TO_DISPLAY_MODE,evt, "Page"]);
+}
+funcs[c.SHOW_DIALOG] = function(evt){
+  console.log('in SHOW_DIALOG-', evt);
+  dialogConfig.definition = evt[1];
+  showDialog.value=true;
 }
 
 
