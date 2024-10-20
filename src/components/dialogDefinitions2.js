@@ -353,12 +353,27 @@ const defs = function(dialogDef){
                     ],
                 },
                 dialogData: function(emit, c, loginStore, ready, result){
+                    debugger;
+//                    const store = useLogStateStore();
+                    const loginResult= toRaw(loginStore.loginStatus);
+                    console.log('loginResult dialog4 - ', loginResult);
+                    const parms   = {
+                        orgId:loginResult.orgId,
+                        userId:loginResult.userName,
+                        layoutId:loginResult.orgHome,
+                    }
+                    const {executeTrans} = getTrans();
+                    const header = loginResult.access_token;
+                    const dataReady = ref(false);
+                    const transResult = ref({});
+                    //executeTrans(parms, c.ALL_PAGES,  c.API_PATH+'api/shan/getCardDataById?XDEBUG_SESSION_START=19884', 'GET', emit, c, header, dataReady, transResult);
 
                 },
                 addActions:function(currentFuncs) {
 
                 }
             }
+            break;
         }
         case 'pageCreate':{
             return {
