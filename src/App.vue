@@ -164,6 +164,8 @@ funcs[c.EXIT_EDIT_MODE] = function(evt){
 funcs[c.SHOW_DIALOG] = function(evt){
   console.log('in SHOW_DIALOG-', evt);
   dialogConfig.definition = evt[1];
+  dialogConfig.id = evt[2];
+  dialogConfig.layoutId = pageStore.getCurrentPageId;
   showDialog.value=true;
 }
 

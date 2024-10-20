@@ -202,7 +202,7 @@ const defs = function(dialogDef){
                     pageName: "New Page (default)",
                     pageDescription: "New Page Description",
                 },
-                dialogData: function(emit, c, loginStore, ready, result) {
+                dialogData: function(emit, c, loginStore, ready, result, config) {
  //                   import { createPinia } from 'pinia'
  //                   const pinia = createPinia();
                     debugger;
@@ -352,7 +352,7 @@ const defs = function(dialogDef){
 
                     ],
                 },
-                dialogData: function(emit, c, loginStore, ready, result){
+                dialogData: function(emit, c, loginStore, ready, result, config){
                     debugger;
 //                    const store = useLogStateStore();
                     const loginResult= toRaw(loginStore.loginStatus);
@@ -366,6 +366,11 @@ const defs = function(dialogDef){
                     const header = loginResult.access_token;
                     const dataReady = ref(false);
                     const transResult = ref({});
+                    console.log('in card configure dialog data - config is-', config);
+                    params:{
+                        cardId:config.id
+                        layoutId:config.layoutId
+                    }
                     //executeTrans(parms, c.ALL_PAGES,  c.API_PATH+'api/shan/getCardDataById?XDEBUG_SESSION_START=19884', 'GET', emit, c, header, dataReady, transResult);
 
                 },
@@ -495,7 +500,7 @@ const defs = function(dialogDef){
                     pageName: "New Page (default)",
                     pageDescription: "New Page Description",
                 },
-                dialogData: function(emit, c, loginStore, ready, result) {
+                dialogData: function(emit, c, loginStore, ready, result, config) {
                     debugger;
                     result.value = {
                         pageName: '',
@@ -660,7 +665,7 @@ const defs = function(dialogDef){
                      }
                 ],
                 // functions related to loading the data to populate the table
-                dialogData: function(emit, c, loginStore, ready, result) {
+                dialogData: function(emit, c, loginStore, ready, result, config) {
                     debugger;
 
                     result.value = {

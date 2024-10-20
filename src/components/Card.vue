@@ -202,6 +202,7 @@ funcs[c.MENU_ITEM_SELECTED]=function(evt){
 onBeforeMount(()=>{
   cardConfigs.value = props.data.card_parameters;
   cardConfigs.value.elementStyles = props.data.elementStyles;
+  cardConfigs.value.id = props.data.id;
   menuDefinitions.value = getMenuDefinitions(props.data.card_component);
   console.log('menuDefinitions-',toRaw(menuDefinitions.value));
   menuDefinitions.value.mStyle = menuDefinitions.value.twStyling+" "+'flex justify-evenly';

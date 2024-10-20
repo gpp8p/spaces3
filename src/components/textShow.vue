@@ -76,7 +76,7 @@ funcs[c.CARD_MENU_SELECTED] = function(cmd){
       emit('cevt', [c.EXIT_EDIT_MODE]);
     }
     case c.CARD_MENUS_CONFIGURE:{
-      emit('cevt', [c.SHOW_DIALOG, 'configureCard']);
+      emit('cevt', [c.SHOW_DIALOG, 'configureCard', props.config.id]);
     }
   }
 

@@ -77,7 +77,7 @@ console.log('dialog4 loginInfo-', store.loginStatus);
 if(typeof(currentDialogDataLoader)=='function'){
   debugger;
 
-  currentDialogDataLoader(emit, c, store, ready, result);
+  currentDialogDataLoader(emit, c, store, ready, result, props.config);
   console.log('loader ready',ready);
   if(ready.value==false){
     whenever(ready, () => {
