@@ -371,8 +371,26 @@ const defs = function(dialogDef){
                     executeTrans(parms, c.CARD_MENUS_CONFIGURE,  c.API_PATH+'api/shan/getCardDataById?XDEBUG_SESSION_START=19884', 'GET', emit, c, header, dataReady, transResult);
                     whenever(dataReady, () => {
                         debugger;
-                        console.log('card configuration data is ready-', transResult._rawValue);
+                        var cParams = toRaw(transResult);
+                        var cardConfigParams = cParams._rawValue[0];
+                        console.log('card configuration data is ready-', cParams._rawValue[0]);
+                        var configurationCurrentValues={};
+                        var cardConfigurationDelimiterAt;
+                        var configValue;
+                        var styling = {};
+                        for(var c=0;c<cardConfigParams.length;c++){
+                            var thisCarConfigurationKey = cardConfigParams[c][0];
+                            var thisCardConfigurationValue= cardConfigParams[c][1];
+                            styling[thisCarConfigurationKey]=thisCardConfigurationValue;
+                            cardConfigurationDelimiterAt = thisCardConfigurationValue.indexOf(':');
+                            configValue = thisCardConfigurationValue.substr(cardConfigurationDelimiterAt+1);
+                            configValue = configValue.replace(';', '');
+                            configurationCurrentValues[thisCarConfigurationKey]= configValue;
+                        }
+                        console.log('configurationCurrentValues-',configurationCurrentValues);
                         ready.value=true;
+
+
                         result.value = {
 
                         }
