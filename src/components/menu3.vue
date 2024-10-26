@@ -33,7 +33,7 @@ import {toRaw} from 'vue';
 import menuItem from './menuItem1.vue';
 import menuItemDrop from '../components//menuItemDrop.vue';
 
-debugger;
+//debugger;
 const {handleEvent} = useEventHandler();
 const emit = defineEmits(['cevt']);
 const name = props.config.name;
@@ -59,7 +59,7 @@ if(props.config.orient=='vertical'){
 
 const handleCmd = function(args){
   console.log('handleCmd-', name, args);
-  debugger;
+  //debugger;
   if(name==args[2] || args[2]=='*') {
     if(typeof(funcs[args[0]])!='undefined'){
       console.log('Found func-', args[1]);
@@ -91,7 +91,7 @@ funcs[c.UNSET_CMD_HANDLER]= function(evt){
 }
 
 onMounted(() => {
-  debugger;
+  //debugger;
   emit('cevt', [c.SET_CMD_HANDLER, handleCmd, name]);
 })
 

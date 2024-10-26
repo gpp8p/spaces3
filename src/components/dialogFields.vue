@@ -25,7 +25,7 @@ const props = defineProps({
 });
 
 
-debugger;
+//debugger;
 import {c} from "../components/constants.js";
 import { onMounted, onUnmounted } from 'vue'
 import {useEventHandler} from "./eventHandler.js";
@@ -68,7 +68,7 @@ const morphs = {
 
 const handleCmd = function(args){
   console.log('handleCmd-', name, args);
-  debugger;
+  //debugger;
   if(name==args[2] || args[2]=='*') {
     if(typeof(funcs[args[0]])!='undefined'){
       console.log('Found func-', args[1]);
@@ -100,7 +100,7 @@ funcs[c.UNSET_CMD_HANDLER]= function(evt){
 }
 
 onMounted(() => {
-  debugger;
+  //debugger;
   emit('cevt', [c.SET_CMD_HANDLER, handleCmd, name]);
 })
 

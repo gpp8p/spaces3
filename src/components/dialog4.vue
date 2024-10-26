@@ -51,7 +51,7 @@ import dynamicMenu from '../components/menu3.vue';
 import Fields from '../components/dialogFields.vue';
 
 import {useLogStateStore} from "../stores/logState.js";
-debugger;
+//debugger;
 import {getDialogDefinitions} from "../components/dialogDefinitions2.js";
 
 
@@ -75,13 +75,13 @@ const ready = ref(false);
 const result = ref({});
 console.log('dialog4 loginInfo-', store.loginStatus);
 if(typeof(currentDialogDataLoader)=='function'){
-  debugger;
+  //debugger;
 
   currentDialogDataLoader(emit, c, store, ready, result, props.config);
   console.log('loader ready',ready);
   if(ready.value==false){
     whenever(ready, () => {
-      debugger;
+      //debugger;
       existingData = toRaw(result.value);
       console.log('existingData loaded',existingData);
       dialogFieldsConfig.value.dialogFields = dialogFields;
@@ -112,7 +112,7 @@ if(typeof(currentDialogDataLoader)=='function'){
 
 //const dialogFieldsConfig = ref({});
 
-debugger;
+//debugger;
 
 const {handleEvent} = useEventHandler();
 
@@ -126,7 +126,7 @@ const reloadDialogFields = ref(0);
 
 const handleCmd = function(args){
   console.log('handleCmd-', name, args);
-  debugger;
+  //debugger;
   if(name==args[2] || args[2]=='*') {
     if(typeof(funcs[args[0]])!='undefined'){
       console.log('Found func-', args[1]);
@@ -183,14 +183,14 @@ funcs[c.UNSET_CMD_HANDLER]= function(evt){
 funcs[c.FIELD_CHANGED]= function(evt){
   console.log('in c.FIELD_CHANGED-', evt);
   dialogData[evt[1]]=evt[2];
-  debugger;
+  //debugger;
   if(typeof(funcs[c.FIELD_CHANGE_EVENT])!='undefined'){
     funcs[c.FIELD_CHANGE_EVENT](evt,emit, dialogData);
   }
 }
 funcs[c.CHANGE_MENU_CONFIGURATION]=function(evt){
   console.log('in dialog CHANGE_MENU_CONFIGURATION-', evt);
-  debugger;
+  //debugger;
   menuDefinitions = getDialogParams(evt[1], "menu");
   reloadMenu.value += 1;
 }
@@ -198,11 +198,11 @@ funcs[c.CHANGE_MENU_CONFIGURATION]=function(evt){
 
 funcs[c.MENU_ITEM_SELECTED]= function(evt){
   console.log('in c.-MENU_ITEM_SELECTED', evt);
-  debugger;
+  //debugger;
   funcs[evt[1]](emit, dialogData);
 }
 funcs[c.ROW_SELECT]= function(evt){
-  debugger;
+  //debugger;
   if(typeof(funcs[c.RESOLVE_DATA])!='undefined'){
     var resolvedData = funcs[c.RESOLVE_DATA](dialogFields,evt);
     emit('cevt', [c.CHANGE_LAYOUT, resolvedData]);
@@ -211,7 +211,7 @@ funcs[c.ROW_SELECT]= function(evt){
   }
 //  funcs[c.ROW_SELECTED](emit, evt)
 }
-debugger;
+//debugger;
 addActions(funcs);
 /*
 funcs[c.MENU_ITEM_SELECTED] = function(evt){
@@ -220,7 +220,7 @@ funcs[c.MENU_ITEM_SELECTED] = function(evt){
 */
 
 onMounted(() => {
-  debugger;
+  //debugger;
   emit('cevt', [c.SET_CMD_HANDLER, handleCmd, name]);
 //  cmdHandlers['mainPage'](['createNewCard', msg[1], 'mainPage']);
   dialogData = existingData;

@@ -45,7 +45,7 @@ const handleClick = function(){
 }
 */
 const handleClick = () => {
-  debugger;
+  //debugger;
   if(typeof(toRaw(props.config.link))=='undefined'){
     //emit('cevt', [props.config.actionCode]);
     emit('cevt', [c.MENU_ITEM_SELECTED, props.config.actionCode]);
@@ -57,7 +57,7 @@ const handleClick = () => {
 
 const handleCmd = function(args){
   console.log('handleCmd-', name, args);
-  debugger;
+  // debugger;
   if(name==args[2] || args[2]=='*') {
     if(typeof(funcs[args[0]])!='undefined'){
       console.log('Found func-', args[1]);

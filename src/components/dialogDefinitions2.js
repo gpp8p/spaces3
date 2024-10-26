@@ -301,13 +301,13 @@ const defs = function(dialogDef){
                         startFocus: false,
                         radioLabelStyle: "mr-[10px] text-lg",
                         value: function(existingData){
-                            debugger;
+                            //debugger;
                             if(existingData.cardBackground.backgroundType=='I'){
                                 console.log('pageBackground is image');
                                 return {
                                     backgroundType:'image',
-                                    backgroundUrl:existingData.pageBackground.backgroundUrl,
-                                    backgroundDisplay:existingData.pageBackground.backgroundDisplay
+                                    backgroundUrl:existingData.cardBackground.backgroundUrl,
+                                    backgroundDisplay:existingData.cardBackground.backgroundDisplay
                                 }
                             }else{
                                 console.log('pageBackground is color');
@@ -327,7 +327,7 @@ const defs = function(dialogDef){
                         ref: 'shadow',
                         startFocus: false,
                         value: function(existingData){
-                            debugger;
+                            //debugger;
                             return existingData.shadow;
                         },
                         label: "Shadow ?"
@@ -338,7 +338,7 @@ const defs = function(dialogDef){
                         ref: 'roundedCorners',
                         startFocus: false,
                         value: function(existingData){
-                            debugger;
+                            //debugger;
                             return existingData.roundedCorners;
                         },
                         label: "Rounded Corners ?"
@@ -353,7 +353,7 @@ const defs = function(dialogDef){
                     ],
                 },
                 dialogData: function(emit, c, loginStore, ready, result, config){
-                    debugger;
+                    //debugger;
 //                    const store = useLogStateStore();
                     const loginResult= toRaw(loginStore.loginStatus);
                     console.log('loginResult dialog4 - ', loginResult);
@@ -370,7 +370,7 @@ const defs = function(dialogDef){
                     console.log('parms are-', parms);
                     executeTrans(parms, c.CARD_MENUS_CONFIGURE,  c.API_PATH+'api/shan/getCardDataById?XDEBUG_SESSION_START=19884', 'GET', emit, c, header, dataReady, transResult);
                     whenever(dataReady, () => {
-                        debugger;
+                        //debugger;
                         var cParams = toRaw(transResult);
                         var cardConfigParams = cParams._rawValue[0];
                         console.log('card configuration data is ready-', cParams._rawValue[0]);
@@ -388,12 +388,28 @@ const defs = function(dialogDef){
                             configurationCurrentValues[thisCarConfigurationKey]= configValue;
                         }
                         console.log('configurationCurrentValues-',configurationCurrentValues);
-                        ready.value=true;
+                        debugger;
+                        if(typeof(configurationCurrentValues)!='undefined'){
 
+                            if(configurationCurrentValues.backgroundTypeColor=='checked'){
+//                                existingData.cardBackground.backgroundType='C';
+                                result.value.cardBackground = {
+                                    backgroundType:'color',
+                                    colorValue:configurationCurrentValues.backgroundColor,
+                                }
+                            }else{
+
+                            }
+
+                        }
+                        ready.value=true;
+/*
 
                         result.value = {
 
                         }
+
+ */
                     })
                 },
                 addActions:function(currentFuncs) {
@@ -417,7 +433,7 @@ const defs = function(dialogDef){
                             type: 'inputText',
                             ref: 'pageName',
                             value: function(existingData){
-                                debugger;
+                                //debugger;
                                 return existingData.pageName;
                             },
                             required: true,
@@ -436,7 +452,7 @@ const defs = function(dialogDef){
                             maxlength: '18',
                             startFocus: false,
                             value: function(existingData){
-                                debugger;
+                                //debugger;
                                 return existingData.pageDescription;
                             },
                             label: "Description"
@@ -447,7 +463,7 @@ const defs = function(dialogDef){
                             type: 'inputNumber',
                             ref: 'pageRows',
                             value: function(existingData){
-                                debugger;
+                                //debugger;
                                 return existingData.pageRows;
                             },
                             required: true,
@@ -461,7 +477,7 @@ const defs = function(dialogDef){
                             type: 'inputNumber',
                             ref: 'pageColumns',
                             value: function(existingData){
-                                debugger;
+                                //debugger;
                                 return existingData.pageColumns;
                             },
                             required: true,
@@ -477,7 +493,7 @@ const defs = function(dialogDef){
                             startFocus: false,
                             radioLabelStyle: "mr-[10px] text-lg",
                             value: function(existingData){
-                                debugger;
+                                //debugger;
                                 if(existingData.pageBackground.backgroundType=='I'){
                                     console.log('pageBackground is image');
                                     return {
@@ -503,7 +519,7 @@ const defs = function(dialogDef){
                             ref: 'template',
                             startFocus: false,
                             value: function(existingData){
-                                debugger;
+                                //debugger;
                                 return existingData.template;
                             },
                             label: "Template ?"
@@ -523,7 +539,7 @@ const defs = function(dialogDef){
                     pageDescription: "New Page Description",
                 },
                 dialogData: function(emit, c, loginStore, ready, result, config) {
-                    debugger;
+                    //debugger;
                     result.value = {
                         pageName: '',
                         pageDescription: '',
@@ -545,7 +561,7 @@ const defs = function(dialogDef){
 
                 addActions:function(currentFuncs){
                     currentFuncs[c.MENU_SAVE_DIALOG_DATA]=function(emit, dialogData){
-                        debugger;
+                        //debugger;
                         console.log('in update page settings');
                         const store = useLogStateStore();
                         const pageStore = useCurrentPage();
@@ -583,7 +599,7 @@ const defs = function(dialogDef){
                         }
                         executeTrans(parms, c.UPDATE_PAGE_SETTINGS,  c.API_PATH+'api/shan/createLayoutNoBlanks?XDEBUG_SESSION_START=19884', 'POST', emit, c, header, dataReady, transResult);
                         whenever(dataReady, () => {
-                            debugger;
+                            //debugger;
                             console.log('update completed-', transResult._rawValue);
 //                            pageStore.setCurrentPageId(transResult._rawValue);
                             emit('cevt',[c.CHANGE_LAYOUT, transResult._rawValue]);
@@ -592,7 +608,7 @@ const defs = function(dialogDef){
 
                     }
                     currentFuncs[c.MENU_EXIT_DIALOG]=function(emit, dialogData){
-                        debugger;
+                        //debugger;
                         console.log('new func exit dialog');
                         //                      const emit = defineEmits(['cevt']);
                         emit('cevt',[c.EXIT_DIALOG])
@@ -688,12 +704,12 @@ const defs = function(dialogDef){
                 ],
                 // functions related to loading the data to populate the table
                 dialogData: function(emit, c, loginStore, ready, result, config) {
-                    debugger;
+                    //debugger;
 
                     result.value = {
                             // load everything in the database into dataToShow
                             funcReadAllData: function(tableReload, dataToShow, loaderFunctionsReady, currentTableConfig){
-                                debugger;
+                                //debugger;
                                 const {executeTrans} = getTrans();
 
                                 const loginResult= toRaw(loginStore.loginStatus);
@@ -706,7 +722,7 @@ const defs = function(dialogDef){
                                 }
                                 executeTrans(parms, c.ALL_PAGES,  c.API_PATH+'api/shan/getMySpaces?XDEBUG_SESSION_START=19884', 'GET', emit, c, header, dataReady, transResult);
                                 whenever(dataReady, () => {
-                                    debugger;
+                                    //debugger;
                                     console.log('update completed-', transResult._rawValue);
                                     dataToShow.value = transResult._rawValue;
                                     currentTableConfig.value.rowsToShow = dataToShow.value.length;
@@ -717,7 +733,7 @@ const defs = function(dialogDef){
                             // read a portion of the data into dataToShow.  Defined by offset (where to start) and
                             // limit (how much to read)  Completion of this function triggers a refresh of the table
                             funcReadPagedData: function(tableConfig, limit, offset, loaderFunctionsReady, tableReload, dataToShow){
-                                debugger;
+                                //debugger;
                                 const loginResult= toRaw(loginStore.loginStatus);
                                 const {executeTrans} = getTrans();
                                 const parms = {
@@ -731,7 +747,7 @@ const defs = function(dialogDef){
                                 const transResult = ref({});
                                 executeTrans(parms, c.FIRST_PAGE,  c.API_PATH+'api/shan/getMySpacesPaged?XDEBUG_SESSION_START=19884', 'GET', emit, c, header, dataReady, transResult);
                                 whenever(dataReady, () => {
-                                    debugger;
+                                    //debugger;
                                     console.log('readPagedData-', transResult._rawValue);
                                     tableConfig.value.dataToShow = transResult._rawValue;
                                     dataToShow.value = transResult._rawValue;
@@ -743,7 +759,7 @@ const defs = function(dialogDef){
                             funcReadNext: function(){console.log('readNext')},
                             funcReadPrev: function(){console.log('readPrev')},
                             funcReadFirst: function(){
-                                debugger;
+                                //debugger;
                                 const loginResult= toRaw(loginStore.loginStatus);
                                 const {executeTrans} = getTrans();
                                 const parms = {
@@ -755,14 +771,14 @@ const defs = function(dialogDef){
                                 const transResult = ref({});
                                 executeTrans(parms, c.FIRST_PAGE,  c.API_PATH+'api/shan/getMySpacesPaged?XDEBUG_SESSION_START=19884', 'GET', emit, c, header, dataReady, transResult);
                                 whenever(dataReady, () => {
-                                    debugger;
+                                    //debugger;
                                     console.log('update completed-', transResult._rawValue);
                                 })
                             },
                             funcReadLast: function(){console.log('readLast')},
                             funcReadThisRecord: function(){console.log('readThis Record')},
                             funcGetRecordCount: function(tableConfig, perPage, pagerProps){
-                                debugger;
+                                //debugger;
                                 const loginResult= toRaw(loginStore.loginStatus);
                                 const {executeTrans} = getTrans();
                                 const parms = {
@@ -774,7 +790,7 @@ const defs = function(dialogDef){
                                 const transResult = ref({});
                                 executeTrans(parms, c.PAGE_COUNT,  c.API_PATH+'api/shan/countMySpaces?XDEBUG_SESSION_START=19884', 'GET', emit, c, header, dataReady, transResult);
                                 whenever(dataReady, () => {
-                                    debugger;
+                                    //debugger;
                                     console.log('record count-', transResult._rawValue, );
                                     tableConfig.value.spacesCount = transResult._rawValue;
                                     tableConfig.value.totalPages = transResult._rawValue/perPage;
@@ -791,18 +807,18 @@ const defs = function(dialogDef){
                 // actions added to the dialog triggered by events
                 addActions:function(currentFuncs){
                     currentFuncs[c.MENU_EXIT_DIALOG]=function(emit, dialogData){
-                        debugger;
+                        //debugger;
                         console.log('new func exit dialog');
                         //const emit = defineEmits(['cevt']);
                         emit('cevt',[c.EXIT_DIALOG])
                     }
                     currentFuncs[c.ROW_SELECTED]=function(emit, evt){
-                        debugger;
+                        //debugger;
                         console.log('new func row selected mySpaces', evt);
                         emit('cevt',[c.CHANGE_LAYOUT, evt]);
                     }
                     currentFuncs[c.RESOLVE_DATA]=function(dialogFields, evt){
-                        debugger;
+                        //debugger;
                         return dialogFields[0].dataToShow[evt[1]].id;
   //                      return dataToShow.value[evt[1]];
                     }
@@ -858,13 +874,13 @@ const defs = function(dialogDef){
                 },
                 addActions:function(currentFuncs){
                     currentFuncs[c.MENU_CANCEL_LOGIN]=function(emit, dialogData){
-                        debugger;
+                        //debugger;
                         console.log('new func exit dialog');
   //                      const emit = defineEmits(['cevt']);
                         emit('cevt',[c.EXIT_DIALOG])
                     }
                     currentFuncs[c.MENU_LOGIN]=function(emit, dialogData){
-                        debugger;
+                        //debugger;
                         console.log('new func menu login');
                         const {doLogin}= getLogin();
                         doLogin(dialogData.userId, dialogData.password, emit, c)

@@ -57,7 +57,7 @@ const cardContentName = ref('');
 
 const handleCmd = function(args){
   console.log('handleCmd-', name, args);
-  debugger;
+  //debugger;
   if(name==args[2] || args[2]=='*') {
     if(typeof(funcs[args[0]])!='undefined'){
       console.log('Found func-', args[1]);
@@ -196,7 +196,7 @@ funcs[c.MENU_ITEM_SELECTED]=function(evt){
     cardId: props.data.id,
     cardAction: evt[1]
   }
-  debugger;
+  //debugger;
   cmdHandlers[cardContentName.value]([c.CARD_MENU_SELECTED, cardReferencedData, cardContentName.value]);
 }
 onBeforeMount(()=>{
@@ -211,7 +211,7 @@ onBeforeMount(()=>{
 })
 
 onMounted(() => {
-  debugger;
+  //debugger;
   console.log('card style is', props.data.card_parameters.style);
   emit('cevt', [c.SET_CMD_HANDLER, handleCmd, name]);
 
