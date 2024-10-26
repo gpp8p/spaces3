@@ -341,7 +341,7 @@ const defs = function(dialogDef){
                             //debugger;
                             return existingData.roundedCorners;
                         },
-                        label: "Rounded Corners ?"
+                        label: "Rnd. Corners ?"
                     },
 
 
@@ -390,16 +390,32 @@ const defs = function(dialogDef){
                         console.log('configurationCurrentValues-',configurationCurrentValues);
                         debugger;
                         if(typeof(configurationCurrentValues)!='undefined'){
-
-                            if(configurationCurrentValues.backgroundTypeColor=='checked'){
+                            if(typeof(configurationCurrentValues.backgroundTypeColor)!='undefined'){
+                                if(configurationCurrentValues.backgroundTypeColor=='checked'){
 //                                existingData.cardBackground.backgroundType='C';
-                                result.value.cardBackground = {
-                                    backgroundType:'color',
-                                    colorValue:configurationCurrentValues.backgroundColor,
-                                }
-                            }else{
+                                    result.value.cardBackground = {
+                                        backgroundType:'color',
+                                        colorValue:configurationCurrentValues.backgroundColor,
+                                    }
+                                }else{
 
+                                }
                             }
+                            if(typeof(configurationCurrentValues.shadow)!='undefined'){
+                                if(configurationCurrentValues.shadow=='checked'){
+                                    result.value.shadow = true;
+                                }else{
+                                    result.value.shadow = false;
+                                }
+                            }
+                            if(typeof(configurationCurrentValues.roundedCorners!='undefined')){
+                                if(configurationCurrentValues.roundIncluded=='checked'){
+                                    result.value.roundedCorners = true;
+                                }else{
+                                    result.value.roundedCorners = false;
+                                }
+                            }
+
 
                         }
                         ready.value=true;
