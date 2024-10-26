@@ -11,9 +11,6 @@ import {useCurrentPage} from "../stores/currentPage.js";
 //import {useLogStateStore} from "../stores/logState.js";
 
 
-
-
-
 export function getDialogDefinitions(){
 
     const getDialogAppearence = function(dialogDef){
