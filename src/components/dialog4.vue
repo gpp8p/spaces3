@@ -45,6 +45,7 @@ import vtextarea from "../components/vtextarea.vue"
 import listTable from "../components/listTable.vue";
 import htmlPasswordInput from '../components/htmlPasswordInput.vue';
 import textLiteral from "../components/textLiteral.vue";
+import borderPicker from "../components/borderPicker.vue";
 
 
 import dynamicMenu from '../components/menu3.vue';
@@ -160,7 +161,8 @@ const morphs = {
   vtextarea,
   listTable,
   htmlPasswordInput,
-  textLiteral
+  textLiteral,
+  borderPicker
 }
 
 

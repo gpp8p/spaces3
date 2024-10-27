@@ -340,6 +340,18 @@ const defs = function(dialogDef){
                         },
                         label: "Rnd. Corners ?"
                     },
+                    {
+                        name: 'borderPicker',
+                        type: 'borderPicker',
+                        ref: 'roundedCorners',
+                        startFocus: false,
+                        value: function(existingData){
+                            //debugger;
+                            return existingData.borders;
+                        },
+                        label: "Borders ?"
+
+                    }
 
 
                 ],

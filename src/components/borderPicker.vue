@@ -1,13 +1,6 @@
 <template>
-    <div class="borderPickerWrapper">
-      <label v-if="config.label" :class="config.labelStyle || 'text-xl text-blue-500'">{{ config.label }}</label>
-      <input type="checkbox" v-model = "fieldValue" :checked="fieldValue==true" @change="fieldChanged" />
-      <span v-if="checked" class="selectThick">
-        <v-select :config="borderFieldsConfig" :data = "borderFieldsData" :key="reloadBorderFields" @cevt="handleEvent($event, funcs, emit)"></v-select>
-      </span>
-      <span v-if="checked" class="pickers">
-        <input type="color"  :value = "colorValue"  @change="colorSelect"/>
-      </span>
+    <div>
+      borderPicker here
     </div>
 </template>
 
@@ -28,7 +21,7 @@ import {c} from "../components/constants.js";
 import { onMounted, onUnmounted } from 'vue'
 import {useEventHandler} from "./eventHandler.js";
 import {ref} from 'vue';
-import vSelect from "../components/vSelect";
+//import vselect from "../components/vselect.vue";
 
 
 const {handleEvent} = useEventHandler();
