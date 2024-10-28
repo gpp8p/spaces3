@@ -1,7 +1,29 @@
 <template>
-    <div>
-      borderPicker here
+  <span>
+     <div class="inputCss" v-if="!checked">
+      <label v-if="config.label" :class="config.labelStyle || 'text-xl text-blue-500'">{{ config.label }}</label>
+      <span>
+        <input type="checkbox" v-model = "fieldValue" :checked="fieldValue==true" @change="fieldChanged" />
+      </span>
     </div>
+     <div class="inputCssChecked" v-if="checked">
+      <label v-if="config.label" :class="config.labelStyle || 'text-xl text-blue-500'">{{ config.label }}</label>
+      <span>
+        <input type="checkbox" v-model = "fieldValue" :checked="fieldValue==true" @change="fieldChanged" />
+      </span>
+       <span>
+                <select v-model="borderWidth" @change="borderWidthChange">
+                  <option value="narrow" >Narrow</option>
+                  <option value="medium">Medium</option>
+                  <option value="thick">Thick</option>
+                </select>
+       </span>
+       <span>
+         <input type="color"  v-model = "colorValue"  @change="colorSelect"/>
+       </span>
+    </div>
+  </span>
+
 </template>
 
 <script setup>
@@ -62,6 +84,23 @@ const passCmdDown = function(args){
     }
   }
 }
+const fieldChanged = function(args){
+  console.log('fieldChanged', args);
+  if(checked.value==true){
+    checked.value=false;
+  }else{
+    checked.value=true;
+  }
+}
+const borderWidth = ref('narrow');
+const borderWidthChange = function(args){
+  console.log('borderWidthChange', borderWidth.value);
+
+}
+const colorValue = ref('');
+const colorSelect = function(args){
+  console.log('colorSelect', colorValue.value);
+}
 
 funcs[c.SET_CMD_HANDLER]= function(evt){
   console.log('in SET_CMD_HANDLER-', evt);
@@ -84,7 +123,16 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-
+.inputCss {
+  margin-top: 1%;
+  display: grid;
+  grid-template-columns: 20% 40%;
+}
+.inputCssChecked {
+  margin-top: 1%;
+  display: grid;
+  grid-template-columns: 20% 10% 30% 15%;
+}
 
 </style>
 
