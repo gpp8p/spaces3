@@ -292,7 +292,7 @@ const defs = function(dialogDef){
                 },
                 dialogFields :[
                     {
-                        name: 'pageBackground',
+                        name: 'cardBackground',
                         type: 'backgroundPicker',
                         ref: 'cardBackground',
                         startFocus: false,

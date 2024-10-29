@@ -91,15 +91,18 @@ const fieldChanged = function(args){
   }else{
     checked.value=true;
   }
+  emit('cevt', [c.FIELD_CHANGED, 'cardBorderSelected', checked.value]);
 }
 const borderWidth = ref('narrow');
 const borderWidthChange = function(args){
   console.log('borderWidthChange', borderWidth.value);
+  emit('cevt', [c.FIELD_CHANGED, 'cardBorderWidth', borderWidth.value]);
 
 }
-const colorValue = ref('');
+const colorValue = ref('#ffffff');
 const colorSelect = function(args){
   console.log('colorSelect', colorValue.value);
+  emit('cevt', [c.FIELD_CHANGED, 'cardBorderColor', colorValue.value]);
 }
 
 funcs[c.SET_CMD_HANDLER]= function(evt){
