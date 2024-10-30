@@ -19,6 +19,18 @@
                 </select>
        </span>
        <span>
+                <select v-model="borderType" @change="borderTypeSelect">
+                  <option value="solid" >Solid</option>
+                  <option value="dashed">Dashed</option>
+                  <option value="dotted">Dotted</option>
+                  <option value="double">Double</option>
+                  <option value="groove">Groove</option>
+                  <option value="ridge">Ridge</option>
+                  <option value="inset">Inset</option>
+                  <option value="outset">Outset</option>
+                </select>
+       </span>
+       <span>
          <input type="color"  v-model = "colorValue"  @change="colorSelect"/>
        </span>
     </div>
@@ -104,6 +116,11 @@ const colorSelect = function(args){
   console.log('colorSelect', colorValue.value);
   emit('cevt', [c.FIELD_CHANGED, 'cardBorderColor', colorValue.value]);
 }
+const borderType = ref("solid");
+const borderTypeSelect = function(args){
+  console.log('borderTypeSelect', borderType.value);
+  emit('cevt', [c.FIELD_CHANGED, 'cardBorderType', borderType.value]);
+}
 
 funcs[c.SET_CMD_HANDLER]= function(evt){
   console.log('in SET_CMD_HANDLER-', evt);
@@ -116,6 +133,14 @@ funcs[c.UNSET_CMD_HANDLER]= function(evt){
 
 onMounted(() => {
   debugger;
+  if(typeof(props.data.borderInclude)!='undefined'){
+    if(props.data.borderInclude==true){
+      checked.value=true;
+      if(typeof(props.data.borderColor)!='undefined'){
+        colorValue.value = props.data.borderColor;
+      }
+    }
+  }
   emit('cevt', [c.SET_CMD_HANDLER, handleCmd, name]);
 })
 
@@ -134,7 +159,7 @@ onUnmounted(() => {
 .inputCssChecked {
   margin-top: 1%;
   display: grid;
-  grid-template-columns: 20% 10% 30% 15%;
+  grid-template-columns: 20% 10% 15% 15% 15%;
 }
 
 </style>

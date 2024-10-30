@@ -341,13 +341,16 @@ const defs = function(dialogDef){
                         label: "Rnd. Corners ?"
                     },
                     {
-                        name: 'borderPicker',
+                        name: 'borderInclude',
                         type: 'borderPicker',
-                        ref: 'roundedCorners',
+                        ref: 'borderInclude',
                         startFocus: false,
                         value: function(existingData){
                             //debugger;
-                            return existingData.borders;
+                            if(existingData.borderInclude==true){
+
+                            }
+                            return existingData.borderInclude;
                         },
                         label: "Borders ?"
 
@@ -424,7 +427,19 @@ const defs = function(dialogDef){
                                     result.value.roundedCorners = false;
                                 }
                             }
-
+                            if(typeof(configurationCurrentValues.borderInclude!='undefined')){
+                                if(configurationCurrentValues.borderInclude=='checked'){
+                                    result.value.borderInclude = true;
+                                    if(typeof(configurationCurrentValues.border)!='undefined'){
+                                        var borderElements = configurationCurrentValues.border.split(" ");
+                                        result.value.borderColor = borderElements[2];
+                                        result.value.barderType = borderElements[1];
+                                        console.log('borderElements-',borderElements);
+                                    }
+                                }else{
+                                    result.value.barderInclude = false;
+                                }
+                            }
 
                         }
                         ready.value=true;
