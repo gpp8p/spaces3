@@ -434,6 +434,7 @@ const defs = function(dialogDef){
                                         var borderElements = configurationCurrentValues.border.split(" ");
                                         result.value.borderColor = borderElements[2];
                                         result.value.barderType = borderElements[1];
+                                        result.value.borderWidth = borderElements[0];
                                         console.log('borderElements-',borderElements);
                                     }
                                 }else{

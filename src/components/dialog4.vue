@@ -88,7 +88,7 @@ if(typeof(currentDialogDataLoader)=='function'){
       dialogFieldsConfig.value.dialogFields = dialogFields;
 //      dialogFieldsConfig.value.existingData = existingData;
       dialogFieldsData.value = existingData;
-//    dialogData = existingData;
+//      dialogData = existingData;
 //    reloadDialogFields+=1;
 
     })

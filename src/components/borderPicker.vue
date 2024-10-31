@@ -139,6 +139,12 @@ onMounted(() => {
       if(typeof(props.data.borderColor)!='undefined'){
         colorValue.value = props.data.borderColor;
       }
+      if(typeof(props.data.borderWidth)!='undefined'){
+        borderWidth.value = props.data.borderWidth;
+      }
+      if(typeof(props.data.borderType)!='undefined'){
+        borderType.value = props.data.borderType;
+      }
     }
   }
   emit('cevt', [c.SET_CMD_HANDLER, handleCmd, name]);
