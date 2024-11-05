@@ -361,7 +361,8 @@ const defs = function(dialogDef){
                 menuDefs:{
                     twStyling:'text-xs text-blue-500 w-[100%]',
                     items: [
-
+                        { type: 'menuItem', config: { label: 'Cancel', actionCode: c.MENU_EXIT_DIALOG } },
+                        { type: 'menuItem', config: { label: 'Update', actionCode: c.SAVE_DIALOG_DATA} },
                     ],
                 },
                 dialogData: function(emit, c, loginStore, ready, result, config){
@@ -419,6 +420,8 @@ const defs = function(dialogDef){
                                 }else{
                                     result.value.shadow = false;
                                 }
+                            }else{
+                                result.value.shadow = false;
                             }
                             if(typeof(configurationCurrentValues.roundedCorners!='undefined')){
                                 if(configurationCurrentValues.roundIncluded=='checked'){
@@ -426,6 +429,8 @@ const defs = function(dialogDef){
                                 }else{
                                     result.value.roundedCorners = false;
                                 }
+                            }else{
+                                result.value.roundedCorners = false;
                             }
                             if(typeof(configurationCurrentValues.borderInclude!='undefined')){
                                 if(configurationCurrentValues.borderInclude=='checked'){
@@ -433,7 +438,7 @@ const defs = function(dialogDef){
                                     if(typeof(configurationCurrentValues.border)!='undefined'){
                                         var borderElements = configurationCurrentValues.border.split(" ");
                                         result.value.borderColor = borderElements[2];
-                                        result.value.barderType = borderElements[1];
+                                        result.value.borderType = borderElements[1];
                                         result.value.borderWidth = borderElements[0];
                                         console.log('borderElements-',borderElements);
                                     }
@@ -454,7 +459,28 @@ const defs = function(dialogDef){
                     })
                 },
                 addActions:function(currentFuncs) {
+                    currentFuncs[c.MENU_EXIT_DIALOG]=function(emit, dialogData){
+                        //debugger;
+                        console.log('new func exit dialog');
+                        //const emit = defineEmits(['cevt']);
+                        emit('cevt',[c.EXIT_DIALOG])
+                    }
+                    currentFuncs[c.MENU_SAVE_DIALOG_DATA]=function(emit, dialogData){
+                        debugger;
+                        console.log('in update page settings');
+                        const store = useLogStateStore();
+                        const ready = ref(false);
+                        const result = ref({});
+                        const pageStore = useCurrentPage();
+                        const loginResult= toRaw(store.loginStatus)
+                        console.log('store.loginResult', loginResult);
+                        console.log('pageStore-', pageStore.getCurrentPageId, pageStore.getCurrentPagePerms);
+                        const {executeTrans} = getTrans();
+                        const header = loginResult.access_token;
+                        const dataReady = ref(false);
+                        const transResult = ref({});
 
+                    }
                 }
             }
             break;

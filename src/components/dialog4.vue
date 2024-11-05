@@ -88,7 +88,7 @@ if(typeof(currentDialogDataLoader)=='function'){
       dialogFieldsConfig.value.dialogFields = dialogFields;
 //      dialogFieldsConfig.value.existingData = existingData;
       dialogFieldsData.value = existingData;
-//      dialogData = existingData;
+ //     dialogData = existingData;
 //    reloadDialogFields+=1;
 
     })
@@ -214,6 +214,12 @@ funcs[c.ROW_SELECT]= function(evt){
   }
 //  funcs[c.ROW_SELECTED](emit, evt)
 }
+funcs[c.SAVE_DIALOG_DATA] = function(evt){
+  debugger;
+  var mergedData = mergeDialogFields(dialogData, toRaw(dialogFieldsData.value));
+  console.log('mergedDialogData', mergedData);
+  funcs[c.MENU_SAVE_DIALOG_DATA](emit, mergedData);
+}
 //debugger;
 addActions(funcs);
 /*
@@ -221,6 +227,22 @@ funcs[c.MENU_ITEM_SELECTED] = function(evt){
   console.log('menu item selected', evt);
 }
 */
+
+const mergeDialogFields = function(dialogData, dialogFieldsData) {
+  // Create a copy of dialogData to avoid modifying the original
+  const updatedDialog = { ...dialogData };
+
+  // Iterate through dialogFieldsData
+  for (const [key, value] of Object.entries(dialogFieldsData)) {
+    // Only set the property if it doesn't exist in dialogData
+    if (!(key in updatedDialog)) {
+      updatedDialog[key] = value;
+    }
+  }
+
+  return updatedDialog;
+}
+
 
 onMounted(() => {
   //debugger;

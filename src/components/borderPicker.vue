@@ -103,23 +103,23 @@ const fieldChanged = function(args){
   }else{
     checked.value=true;
   }
-  emit('cevt', [c.FIELD_CHANGED, 'cardBorderSelected', checked.value]);
+  emit('cevt', [c.FIELD_CHANGED, 'borderInclude', checked.value]);
 }
 const borderWidth = ref('narrow');
 const borderWidthChange = function(args){
   console.log('borderWidthChange', borderWidth.value);
-  emit('cevt', [c.FIELD_CHANGED, 'cardBorderWidth', borderWidth.value]);
+  emit('cevt', [c.FIELD_CHANGED, 'borderWidth', borderWidth.value]);
 
 }
 const colorValue = ref('#ffffff');
 const colorSelect = function(args){
   console.log('colorSelect', colorValue.value);
-  emit('cevt', [c.FIELD_CHANGED, 'cardBorderColor', colorValue.value]);
+  emit('cevt', [c.FIELD_CHANGED, 'borderColor', colorValue.value]);
 }
 const borderType = ref("solid");
 const borderTypeSelect = function(args){
   console.log('borderTypeSelect', borderType.value);
-  emit('cevt', [c.FIELD_CHANGED, 'cardBorderType', borderType.value]);
+  emit('cevt', [c.FIELD_CHANGED, 'borderType', borderType.value]);
 }
 
 funcs[c.SET_CMD_HANDLER]= function(evt){
