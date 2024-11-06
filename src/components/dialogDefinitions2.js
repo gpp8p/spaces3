@@ -480,6 +480,7 @@ const defs = function(dialogDef){
                         const dataReady = ref(false);
                         const transResult = ref({});
                         var newParameters = {};
+                        var updatePackage = [];
                         if(typeof(dialogData.shadow)!='undefined'){
                             if(dialogData.shadow==true){
                                 newParameters['boxShadow']= "box-shadow: 10px 20px 30px black;";
@@ -489,23 +490,38 @@ const defs = function(dialogDef){
                             if(dialogData.borderInclude==true){
                                 newParameters['border']="border:"+dialogData.borderWidth+" "+dialogData.borderType+" "+dialogData.borderColor+";";
                                 newParameters['borderSize']='border-width:'+dialogData.borderWidth+";";
+                                newParameters['borderColor']="border-color:"+dialogData.borderColor+";";
+                                newParameters['borderInclude']="borderInclude:checked;";
                             }
                         }
-                        if(typeof(dialogData.rundedCorners)!='undefined'){
-                            if(dialogData.roundIncluded==true){
+                        if(typeof(dialogData.roundedCorners)!='undefined'){
+                            if(dialogData.roundedCorners==true){
                                 newParameters['borderRadius']= "border-radius:8px;";
+                                newParameters['roundIncluded']="roundIncluded:checked;";
                             }
                         }
                         if(typeof(dialogData.cardBackground)!='undefined'){
                             if(dialogData.cardBackground.backgroundType=='color'){
                                 newParameters['backgroundTypeColor']="backgroundTypeColor:checked;";
-                                newParameters['backgroundColor']="backgroundColor:"+dialogData.cardBackground.colorValue+";";
+                                newParameters['backgroundColor']="background-color:"+dialogData.cardBackground.colorValue+";";
                             }
                         }
-
                         console.log('newParameters', newParameters);
-
-
+                        updatePackage[0]=dialogData.cardId;
+                        updatePackage[1]=newParameters;
+                        updatePackage[2]={};
+                        updatePackage[3]=[];
+                        console.log('updatePackage', updatePackage);
+                        var updateParameters = JSON.stringify(updatePackage);
+                        const parms = {
+                            cardParams: updateParameters
+                        }
+                        executeTrans(parms, c.EXIT_DIALOG,  c.API_PATH+'api/shan/saveCardParameters?XDEBUG_SESSION_START=19884', 'POST', emit, c, header, dataReady, transResult);
+                        whenever(dataReady, () => {
+                            //debugger;
+                            console.log('update completed-', transResult._rawValue);
+                            emit('cevt',[c.EXIT_EDIT_MODE]);
+                        })
 
                     }
                 }
