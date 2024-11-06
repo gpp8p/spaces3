@@ -467,7 +467,7 @@ const defs = function(dialogDef){
                     }
                     currentFuncs[c.MENU_SAVE_DIALOG_DATA]=function(emit, dialogData){
                         debugger;
-                        console.log('in update page settings');
+                        console.log('in update page settings', dialogData);
                         const store = useLogStateStore();
                         const ready = ref(false);
                         const result = ref({});
@@ -479,6 +479,33 @@ const defs = function(dialogDef){
                         const header = loginResult.access_token;
                         const dataReady = ref(false);
                         const transResult = ref({});
+                        var newParameters = {};
+                        if(typeof(dialogData.shadow)!='undefined'){
+                            if(dialogData.shadow==true){
+                                newParameters['boxShadow']= "box-shadow: 10px 20px 30px black;";
+                            }
+                        }
+                        if(typeof(dialogData.borderInclude)!='undefined'){
+                            if(dialogData.borderInclude==true){
+                                newParameters['border']="border:"+dialogData.borderWidth+" "+dialogData.borderType+" "+dialogData.borderColor+";";
+                                newParameters['borderSize']='border-width:'+dialogData.borderWidth+";";
+                            }
+                        }
+                        if(typeof(dialogData.rundedCorners)!='undefined'){
+                            if(dialogData.roundIncluded==true){
+                                newParameters['borderRadius']= "border-radius:8px;";
+                            }
+                        }
+                        if(typeof(dialogData.cardBackground)!='undefined'){
+                            if(dialogData.cardBackground.backgroundType=='color'){
+                                newParameters['backgroundTypeColor']="backgroundTypeColor:checked;";
+                                newParameters['backgroundColor']="backgroundColor:"+dialogData.cardBackground.colorValue+";";
+                            }
+                        }
+
+                        console.log('newParameters', newParameters);
+
+
 
                     }
                 }

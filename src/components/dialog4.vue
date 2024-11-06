@@ -217,6 +217,7 @@ funcs[c.ROW_SELECT]= function(evt){
 funcs[c.SAVE_DIALOG_DATA] = function(evt){
   debugger;
   var mergedData = mergeDialogFields(dialogData, toRaw(dialogFieldsData.value));
+  mergedData.cardId = props.config.id;
   console.log('mergedDialogData', mergedData);
   funcs[c.MENU_SAVE_DIALOG_DATA](emit, mergedData);
 }
