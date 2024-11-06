@@ -411,6 +411,11 @@ const defs = function(dialogDef){
                                         colorValue:configurationCurrentValues.backgroundColor,
                                     }
                                 }else{
+                                    result.value.cardBackground = {
+                                        backgroundType:'image',
+                                        backgroundUrl:configurationCurrentValues.backgroundImageUrl,
+                                        backgroundDisplay:configurationCurrentValues.backgroundDisplay,
+                                    }
 
                                 }
                             }
@@ -484,6 +489,7 @@ const defs = function(dialogDef){
                         if(typeof(dialogData.shadow)!='undefined'){
                             if(dialogData.shadow==true){
                                 newParameters['boxShadow']= "box-shadow: 10px 20px 30px black;";
+                                newParameters['shadow']="shadow:checked;";
                             }
                         }
                         if(typeof(dialogData.borderInclude)!='undefined'){
@@ -504,6 +510,11 @@ const defs = function(dialogDef){
                             if(dialogData.cardBackground.backgroundType=='color'){
                                 newParameters['backgroundTypeColor']="backgroundTypeColor:checked;";
                                 newParameters['backgroundColor']="background-color:"+dialogData.cardBackground.colorValue+";";
+                            }else{
+                                newParameters['backgroundTypeImage']="backgroundTypeImage:checked;";
+                                newParameters['backgroundImage']="background-image:url("+dialogData.cardBackground.backgroundUrl+");";
+                                newParameters['backgroundSize']="background-size:"+dialogData.cardBackground.backgroundDisplay;
+                                //repeat??
                             }
                         }
                         console.log('newParameters', newParameters);
@@ -516,11 +527,11 @@ const defs = function(dialogDef){
                         const parms = {
                             cardParams: updateParameters
                         }
-                        executeTrans(parms, c.EXIT_DIALOG,  c.API_PATH+'api/shan/saveCardParameters?XDEBUG_SESSION_START=19884', 'POST', emit, c, header, dataReady, transResult);
+                        executeTrans(parms, c.CHANGE_LAYOUT,  c.API_PATH+'api/shan/saveCardParameters?XDEBUG_SESSION_START=19884', 'POST', emit, c, header, dataReady, transResult);
                         whenever(dataReady, () => {
                             //debugger;
                             console.log('update completed-', transResult._rawValue);
-                            emit('cevt',[c.EXIT_EDIT_MODE]);
+                            emit('cevt',[c.CHANGE_LAYOUT, pageStore.getCurrentPageId]);
                         })
 
                     }
