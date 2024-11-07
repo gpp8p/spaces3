@@ -310,7 +310,7 @@ const defs = function(dialogDef){
                                 console.log('pageBackground is color');
                                 return {
                                     backgroundType:'color',
-                                    colorValue:existingData.cardBackground.colorValue,
+                                    colorValue:existingData.cardBackground.backgroundColor,
 
                                 }
                             }
@@ -408,7 +408,7 @@ const defs = function(dialogDef){
 //                                existingData.cardBackground.backgroundType='C';
                                     result.value.cardBackground = {
                                         backgroundType:'color',
-                                        colorValue:configurationCurrentValues.backgroundColor,
+                                        backgroundColor:configurationCurrentValues.backgroundColor,
                                     }
                                 }else{
                                     result.value.cardBackground = {
@@ -509,7 +509,7 @@ const defs = function(dialogDef){
                         if(typeof(dialogData.cardBackground)!='undefined'){
                             if(dialogData.cardBackground.backgroundType=='color'){
                                 newParameters['backgroundTypeColor']="backgroundTypeColor:checked;";
-                                newParameters['backgroundColor']="background-color:"+dialogData.cardBackground.colorValue+";";
+                                newParameters['backgroundColor']="background-color:"+dialogData.cardBackground.backgroundColor+";";
                             }else{
                                 newParameters['backgroundTypeImage']="backgroundTypeImage:checked;";
                                 newParameters['backgroundImage']="background-image:url("+dialogData.cardBackground.backgroundUrl+");";
