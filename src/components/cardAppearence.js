@@ -95,6 +95,7 @@ export function getAppearanceConfigs(){
                 }
 
             }
+            console.log('loaded result', toRaw(result.value));
             ready.value = true;
         })
     }
