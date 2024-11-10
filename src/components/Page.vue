@@ -208,12 +208,15 @@ funcs[c.MOUSE_EVT] = function(evt){
         dragEndX.value = evt[3];
         dragEndY.value = evt[4];
         try {
-          fillCellsInArea(dragEndX.value, dragEndY.value, dragStartX.value, dragStartY.value, c.SELECTED_COLOR);
           mouseStatus.value = c.MOUSE_STATUS_NOT_CLICKED;
+          fillCellsInArea(dragEndX.value, dragEndY.value, dragStartX.value, dragStartY.value, c.SELECTED_COLOR);
+          emit('cevt',[c.CARD_AREA_SELECTED,dragEndX.value, dragEndY.value, dragStartX.value, dragStartY.value ]);
+          console.log('mouseStatus reset');
           dragEndX.value = 0;
           dragEndY.value = 0;
           dragStartX.value = 0;
           dragStartY.value = 0;
+
 
 
 

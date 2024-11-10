@@ -168,6 +168,12 @@ funcs[c.SHOW_DIALOG] = function(evt){
   dialogConfig.layoutId = pageStore.getCurrentPageId;
   showDialog.value=true;
 }
+funcs[c.CARD_AREA_SELECTED] = function(evt){
+  console.log('in CARD-AREA-SELECTED-', evt);
+  dialogConfig.definition = 'createCard';
+  showDialog.value=true;
+
+}
 
 
 </script>
