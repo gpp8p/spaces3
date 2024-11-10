@@ -48,6 +48,7 @@ import textLiteral from "../components/textLiteral.vue";
 import borderPicker from "../components/borderPicker.vue";
 
 
+
 import dynamicMenu from '../components/menu3.vue';
 import Fields from '../components/dialogFields.vue';
 
@@ -75,6 +76,7 @@ const store = useLogStateStore();
 const ready = ref(false);
 const result = ref({});
 console.log('dialog4 loginInfo-', store.loginStatus);
+debugger;
 if(typeof(currentDialogDataLoader)=='function'){
   //debugger;
 
@@ -82,7 +84,7 @@ if(typeof(currentDialogDataLoader)=='function'){
   console.log('loader ready',ready);
   if(ready.value==false){
     whenever(ready, () => {
-      //debugger;
+      debugger;
       existingData = toRaw(result.value);
       console.log('existingData loaded',existingData);
       dialogFieldsConfig.value.dialogFields = dialogFields;
@@ -162,7 +164,8 @@ const morphs = {
   listTable,
   htmlPasswordInput,
   textLiteral,
-  borderPicker
+  borderPicker,
+  vselect
 }
 
 

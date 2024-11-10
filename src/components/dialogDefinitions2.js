@@ -25,6 +25,7 @@ export function getDialogDefinitions(){
         return currentDefs.dialogFields;
     }
     const getDefaultData = function(dialogDef){
+        debugger;
         var currentDefs = defs(dialogDef);
         return currentDefs.defaultData;
     }
@@ -394,6 +395,57 @@ const defs = function(dialogDef){
                 },
                 dialogFields :[
                     {
+                        name: 'cardName',
+                        type: 'inputText',
+                        ref: 'cardName',
+                        value: function(existingData){
+                            debugger;
+                            return existingData.pageName;
+                        },
+                        required: true,
+                        size: '25',
+                        maxlength: '35',
+                        startFocus: true,
+                        label: "Card Name"
+                    },
+                    {
+                        name: 'cardType',
+                        type: 'vselect',
+                        ref: 'cardType',
+                        startFocus: false,
+                        value: function(existingData){
+                            //debugger;
+                            return 'notype';
+                        },
+                        label: "Type ?",
+                        selectType: "pulldown",
+                        selectOptions:[
+                            {
+                                value: 'notype',
+                                label: 'Select Type',
+                            },
+                            {
+                                value: 'textShow',
+                                label: "Rich Text",
+                            },
+                            {
+                                value: 'Headline',
+                                label: "Headline"
+                            },
+                            {
+                                value: 'navMenu',
+                                label: "Navigation Menu"
+                            },
+                            {
+                                value: 'pdf',
+                                label: "PDF"
+                            }
+
+                        ]
+
+
+                    },
+                    {
                         name: 'cardBackground',
                         type: 'backgroundPicker',
                         ref: 'cardBackground',
@@ -467,19 +519,18 @@ const defs = function(dialogDef){
                         { type: 'menuItem', config: { label: 'Update', actionCode: c.SAVE_DIALOG_DATA} },
                     ],
                 },
-                dialogData: function(emit, c, loginStore, ready, result, config){
-                    return {
-                        borderColor: "#ff1e0f",
-                        borderInclude: true,
-                        borderType: "solid",
-                        borderWidth: "medium",
-                        cardBackground:{
-                                            backgroundType: "color",
-                                            backgroundColor: "#d1ffd3"
-                                        },
-                        roundedCorners: true,
-                        shadow: true
-                    }
+
+                defaultData:{
+                    borderColor: "#ff1e0f",
+                    borderInclude: true,
+                    borderType: "solid",
+                    borderWidth: "medium",
+                    cardBackground:{
+                        backgroundType: "color",
+                        backgroundColor: "#d1ffd3"
+                    },
+                    roundedCorners: true,
+                    shadow: true
                 },
                 addActions:function(currentFuncs) {
                     currentFuncs[c.MENU_EXIT_DIALOG]=function(emit, dialogData){

@@ -268,7 +268,7 @@ funcs[c.MOUSE_EVT] = function(evt){
 
 
 onMounted(() => {
-  debugger;
+  //debugger;
   parms.value   = {
     orgId:loginResult.orgId,
     userId:loginResult.userId,
@@ -287,7 +287,7 @@ const fillCellsInArea = function(dragX, dragY, topLeftX, topLeftY, fillColor){
   console.log('fillCellsInArea called', dragX, dragY, topLeftX, topLeftY, fillColor);
   var thisDragDirectiion = dragDirection(dragX, dragY, topLeftX, topLeftY);
   console.log('dragDirection-',thisDragDirectiion);
-  debugger;
+  //debugger;
   switch(thisDragDirectiion){
     case c.DIRECTION_DOWN_RIGHT:{
       widthNow.value = dragX-topLeftX;
@@ -330,7 +330,7 @@ const fillCellsInArea = function(dragX, dragY, topLeftX, topLeftY, fillColor){
       break;
     }
     case c.DIRECTION_STRAIGHT_UP:{
-      debugger;
+      //debugger;
       var col = dragX;
       for (var row = dragY; row< topLeftY+1; row++){
         var thisCellAddress = cellAddress(col, row);
@@ -339,7 +339,7 @@ const fillCellsInArea = function(dragX, dragY, topLeftX, topLeftY, fillColor){
       break;
     }
     case c.DIRECTION_STRAIGHT_DOWN:{
-      debugger;
+      //debugger;
       var col = dragX;
       for (var row = topLeftY; row< dragY+1; row++){
         var thisCellAddress = cellAddress(col, row);
@@ -395,7 +395,7 @@ const dragDirection = function(dragX, dragY, topLeftX, topLeftY){
 }
 
 const createBlankPage = function(height, width, backgroundColor) {
-  debugger;
+  //debugger;
 //      console.log('entering createBlankPage-', height, width, backgroundColor);
 
   var pageCells = [];

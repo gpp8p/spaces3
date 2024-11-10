@@ -1,6 +1,6 @@
 <template>
   <div class="inputCss">
-    <span>{{props.config.label}}</span>
+    <label v-if="config.label" :class="config.labelStyle || 'text-xl text-blue-500'">{{ config.label }}</label>
     <span v-if="props.config.selectType=='pulldown'">
       <select v-model="fieldValue" @change="setFieldValue" :class="props.config.selectStyle || 'mr-[10px] text-lg'">
         <option v-for="opt in props.config.selectOptions" :value="opt.value">{{opt.label}}</option>
