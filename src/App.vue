@@ -171,6 +171,13 @@ funcs[c.SHOW_DIALOG] = function(evt){
 funcs[c.CARD_AREA_SELECTED] = function(evt){
   console.log('in CARD-AREA-SELECTED-', evt);
   dialogConfig.definition = 'createCard';
+  dialogData.cardDimensions = {};
+  dialogData.cardDimensions.startX = evt[3];
+  dialogData.cardDimensions.startY = evt[4];
+  dialogData.cardDimensions.endX = evt[1];
+  dialogData.cardDimensions.endY = evt[2];
+
+
   showDialog.value=true;
 
 }

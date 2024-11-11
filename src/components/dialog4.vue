@@ -204,7 +204,7 @@ funcs[c.CHANGE_MENU_CONFIGURATION]=function(evt){
 
 funcs[c.MENU_ITEM_SELECTED]= function(evt){
   console.log('in c.-MENU_ITEM_SELECTED', evt);
-  //debugger;
+  debugger;
   funcs[evt[1]](emit, dialogData);
 }
 funcs[c.ROW_SELECT]= function(evt){
@@ -224,6 +224,13 @@ funcs[c.SAVE_DIALOG_DATA] = function(evt){
   console.log('mergedDialogData', mergedData);
   funcs[c.MENU_SAVE_DIALOG_DATA](emit, mergedData);
 }
+/*
+funcs[c.CREATE_CARD] = function(evt){
+  var mergedData = mergeDialogFields(dialogData, toRaw(dialogFieldsData.value));
+  mergedData.cardId = props.config.id;
+  console.log('mergedDialogData', mergedData);
+}
+*/
 //debugger;
 addActions(funcs);
 /*
@@ -249,13 +256,16 @@ const mergeDialogFields = function(dialogData, dialogFieldsData) {
 
 
 onMounted(() => {
-  //debugger;
+  debugger;
   emit('cevt', [c.SET_CMD_HANDLER, handleCmd, name]);
 //  cmdHandlers['mainPage'](['createNewCard', msg[1], 'mainPage']);
   console.log('dialogData', dialogData);
+  console.log('props data', props.data.cardDimensions);
   if(typeof(existingData)!='undefined'){
     dialogData = existingData;
   }
+  dialogData.cardDimensions =  props.data.cardDimensions;
+
 
   console.log('dialogData after', dialogData);
 

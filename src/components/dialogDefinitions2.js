@@ -368,7 +368,7 @@ const defs = function(dialogDef){
                     ],
                 },
                 dialogData: function(emit, c, loginStore, ready, result, config){
-                    const {loadCardAppearanceConfigs, saveCardAppearanceConfigs} = getAppearanceConfigs();
+                    const {loadCardAppearanceConfigs, saveCardAppearanceConfigs, createCard} = getAppearanceConfigs();
                     loadCardAppearanceConfigs(emit, c, loginStore, ready, result, config);
                 },
                 addActions:function(currentFuncs) {
@@ -379,7 +379,7 @@ const defs = function(dialogDef){
                         emit('cevt',[c.EXIT_DIALOG])
                     }
                     currentFuncs[c.MENU_SAVE_DIALOG_DATA]=function(emit, dialogData){
-                        const {loadCardAppearanceConfigs, saveCardAppearanceConfigs} = getAppearanceConfigs();
+                        const {loadCardAppearanceConfigs, saveCardAppearanceConfigs, createCard} = getAppearanceConfigs();
                         saveCardAppearanceConfigs(emit, dialogData);
                     }
                 }
@@ -516,7 +516,7 @@ const defs = function(dialogDef){
                     twStyling:'text-xs text-blue-500 w-[100%]',
                     items: [
                         { type: 'menuItem', config: { label: 'Cancel', actionCode: c.MENU_EXIT_DIALOG } },
-                        { type: 'menuItem', config: { label: 'Update', actionCode: c.SAVE_DIALOG_DATA} },
+                        { type: 'menuItem', config: { label: 'Create Card', actionCode: c.CREATE_NEW_CARD} },
                     ],
                 },
 
@@ -539,9 +539,10 @@ const defs = function(dialogDef){
                         //const emit = defineEmits(['cevt']);
                         emit('cevt',[c.EXIT_DIALOG])
                     }
-                    currentFuncs[c.MENU_SAVE_DIALOG_DATA]=function(emit, dialogData){
-                        const {loadCardAppearanceConfigs, saveCardAppearanceConfigs} = getAppearanceConfigs();
-                        saveCardAppearanceConfigs(emit, dialogData);
+                    currentFuncs[c.CREATE_NEW_CARD]=function(emit, dialogData){
+                        const {loadCardAppearanceConfigs, saveCardAppearanceConfigs, createCard} = getAppearanceConfigs();
+                        debugger;
+                        createCard(emit, dialogData);
                     }
                 }
             }
