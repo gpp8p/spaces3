@@ -400,7 +400,7 @@ const defs = function(dialogDef){
                         ref: 'cardName',
                         value: function(existingData){
                             debugger;
-                            return existingData.pageName;
+                            return "";
                         },
                         required: true,
                         size: '25',
@@ -495,6 +495,17 @@ const defs = function(dialogDef){
                         label: "Rnd. Corners ?"
                     },
                     {
+                        name: 'restricted',
+                        type: 'inputCheckbox',
+                        ref: 'restricted',
+                        startFocus: false,
+                        value: function(existingData){
+                            //debugger;
+                            return false;
+                        },
+                        label: "Restricted ?"
+                    },
+                    {
                         name: 'borderInclude',
                         type: 'borderPicker',
                         ref: 'borderInclude',
@@ -529,6 +540,8 @@ const defs = function(dialogDef){
                         backgroundType: "color",
                         backgroundColor: "#d1ffd3"
                     },
+                    cardType: 'notype',
+                    restricted: false,
                     roundedCorners: true,
                     shadow: true
                 },
@@ -542,6 +555,10 @@ const defs = function(dialogDef){
                     currentFuncs[c.CREATE_NEW_CARD]=function(emit, dialogData){
                         const {loadCardAppearanceConfigs, saveCardAppearanceConfigs, createCard} = getAppearanceConfigs();
                         debugger;
+                        if(dialogData.cardType=='notype'){
+                            alert('You Must Select a Type');
+                            return;
+                        }
                         createCard(emit, dialogData);
                     }
                 }

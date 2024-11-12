@@ -83,7 +83,7 @@ const reloadThisPage = function(){
   executeTrans(parms.value, c.TRANS_GET_LAYOUT,  c.API_PATH+'api/shan/getLayout?XDEBUG_SESSION_START=19884', 'GET', emit, c, header, dataReady, transResult);
   dataReady.value = false;
   whenever(dataReady, () => {
-    console.log('data is ready-', transResult);
+    console.log('data is ready-', transResult, fieldValue.value);
     debugger;
     fieldValue.value = transResult.value;
     fieldValue.value.pageName=c.PAGE_DISPLAY_NAME;

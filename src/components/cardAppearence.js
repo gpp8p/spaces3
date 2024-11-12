@@ -214,25 +214,40 @@ export function getAppearanceConfigs(){
                 //repeat??
             }
         }
+        var isRestricted = 'F';
+        if(typeof(dialogData.restricted)!='undefined'){
+            if(dialogData.restricted!=false){
+                isRestricted = 'T';
+            }
+        }
         console.log('newParameters', newParameters);
         updatePackage[0]=dialogData.cardId;
         updatePackage[1]=newParameters;
         updatePackage[2]={};
         updatePackage[3]=[];
-        console.log('updatePackage', updatePackage);
+        console.log('updatePackage', updatePackage, dialogData);
         var updateParameters = JSON.stringify(updatePackage);
         const parms = {
-            cardParams: updateParameters
+            cardParams: updateParameters,
+            layoutId:pageStore.getCurrentPageId,
+            cardTitle:dialogData.cardName,
+            restricted:isRestricted,
+            cardType:dialogData.cardType,
+            topLeftRow:dialogData.cardDimensions.startY,
+            topLeftCol:dialogData.cardDimensions.startX,
+            bottomRightRow:dialogData.cardDimensions.endY,
+            bottomRightCol:dialogData.cardDimensions.endX,
         }
-        /*
-        executeTrans(parms, c.CHANGE_LAYOUT,  c.API_PATH+'api/shan/saveCardParameters?XDEBUG_SESSION_START=19884', 'POST', emit, c, header, dataReady, transResult);
+        console.log('parms for new card',parms);
+
+        executeTrans(parms, c.CHANGE_LAYOUT,  c.API_PATH+'api/shan/saveCardAndConfiguration?XDEBUG_SESSION_START=19884', 'POST', emit, c, header, dataReady, transResult);
         whenever(dataReady, () => {
             //debugger;
             console.log('update completed-', transResult._rawValue);
             emit('cevt',[c.CHANGE_LAYOUT, pageStore.getCurrentPageId]);
         })
 
-         */
+
 
 
     }

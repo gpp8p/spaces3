@@ -77,6 +77,7 @@ const passCmdDown = function(args){
 const fieldPlaceholder = ref('');
 const fieldValue = ref('');
 
+
 if(typeof(props.config.value)=='function'){
   fieldValue.value = props.config.value(props.data);
 }else if(typeof(props.config.placeholder)!='undefined'){
