@@ -85,12 +85,27 @@ funcs[c.UNSET_CMD_HANDLER]= function(evt){
   console.log('in SET_CMD_HANDLER-', evt);
   let dlt = delete cmdHandlers[evt[2]];
 }
+funcs[c.CARD_MENU_SELECTED] = function(cmd){
+  console.log('Navigation in CARD_MENU_SELECTED-', cmd);
+  debugger;
+  switch(cmd[1].cardAction){
+    case c.CARD_MENU_EXIT:{
+      emit('cevt', [c.EXIT_EDIT_MODE]);
+    }
+    case c.CARD_MENU_CONFIGURE:{
+      emit('cevt', [c.SHOW_DIALOG, 'configureCard', props.config.id]);
+    }
+  }
+
+}
+
+
 
 onMounted(() => {
   debugger;
   emit('cevt', [c.SET_CMD_HANDLER, handleCmd, name]);
   //headlineMenu.value.twStyling = 'border-4 my-10 w-3/4 mx-auto border-blue-200';
-  console.log('element styles-', props.config.elementStyles.sub[0]);
+  //console.log('element styles-', props.config.elementStyles.sub[0]);
   //headlineMenu.value.style = props.data.elementStyles.sub[0];
   headlineMenu.value.style = "";
   headlineMenu.value.items = [];
