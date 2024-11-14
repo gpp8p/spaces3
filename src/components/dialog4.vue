@@ -46,6 +46,7 @@ import listTable from "../components/listTable.vue";
 import htmlPasswordInput from '../components/htmlPasswordInput.vue';
 import textLiteral from "../components/textLiteral.vue";
 import borderPicker from "../components/borderPicker.vue";
+import fontPicker from "../components/fontPicker.vue";
 
 
 
@@ -165,7 +166,7 @@ const morphs = {
   htmlPasswordInput,
   textLiteral,
   borderPicker,
-  vselect
+  fontPicker
 }
 
 

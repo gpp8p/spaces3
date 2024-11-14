@@ -1,5 +1,5 @@
 <template>
-  <span >
+  <span>
       <component v-for="(aComponent, i) in props.config.dialogFields"
                  :key="i"
                  :config="props.config.dialogFields[i]"
@@ -41,6 +41,7 @@ import vtextarea from "../components/vtextarea.vue"
 import listTable from "../components/listTable.vue";
 import htmlPasswordInput from '../components/htmlPasswordInput.vue';
 import borderPicker from "../components/borderPicker.vue";
+import fontPicker from "../components/fontPicker.vue";
 
 
 const {handleEvent} = useEventHandler();
@@ -65,7 +66,8 @@ const morphs = {
   vtextarea,
   listTable,
   htmlPasswordInput,
-  borderPicker
+  borderPicker,
+  fontPicker
 }
 
 const handleCmd = function(args){
@@ -118,6 +120,7 @@ onUnmounted(() => {
   display: grid;
   grid-template-columns: 20% 40%;
 }
+
 
 </style>
 

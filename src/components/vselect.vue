@@ -44,6 +44,8 @@ const cmdHandlers = {}
 const fieldValue = ref('');
 if(typeof(props.config.value)=='function'){
   fieldValue.value = props.config.value(props.data);
+}else{
+  fieldValue.value = props.data;
 }
 
 const handleCmd = function(args){

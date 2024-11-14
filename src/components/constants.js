@@ -136,6 +136,121 @@ export const c = {
     DIRECTION_UP_RIGHT:2507,
     DIRECTION_UP_LEFT:2508,
 
+    //DEFAULT_FONTS: ['Arial', 'Times New Roman', 'Helvetica','Times','Courier New','Verdana','Courier','Arial Narrow','Candara','Geneva','Calibri','Optima','Cambria','Garamond','Perpetua','Monaco','Didot','Brush Script MT','Lucida Bright','Copperplate'],
+    DEFAULT_FONTS:[
+        {
+            value: 'Arial',
+            label: 'Arial'
+        },
+        {
+            value: 'Times New Roman',
+            label: 'Times New Roman'
+        },
+        {
+            value: 'Helvetica',
+            label: 'Helvetica'
+        },
+        {
+            value: 'Times',
+            label: 'Times'
+        },
+        {
+            value: 'Courier New',
+            label: 'Courier New'
+        },
+        {
+            value: 'Verdana',
+            label: 'Verdana'
+        },
+        {
+            value: 'Courier',
+            label: 'Courier'
+        },
+        {
+            value: 'Arial Narrow',
+            label: 'Arial Narrow'
+        },
+        {
+            value: 'Candara',
+            label: 'Candara'
+        },
+        {
+            value: 'Geneva',
+            label: 'Geneva'
+        },
+        {
+            value: 'Calibri',
+            label: 'Calibri'
+        },
+        {
+            value: 'Optima',
+            label: 'Optima'
+        },
+        {
+            value: 'Garamond',
+            label: 'Garamond'
+        },
+        {
+            value: 'Perpetua',
+            label: 'Perpetua'
+        },
+        {
+            value: 'Monaco',
+            label: 'Monaco'
+        },
+        {
+            value: 'Didot',
+            label: 'Didot'
+        },
+        {
+            value: 'Brush Script MT',
+            label: 'Brush Script MT'
+        },
+        {
+            value: 'Lucida Bright',
+            label: 'Lucida Bright'
+        },
+        {
+            value: 'Copperplate',
+            label: 'Copperplate'
+        },
+
+    ],
+    FONT_SIZE_OPTIONS:[
+        {
+            value:'10pt',
+            label:'10pt'
+        },
+        {
+            value:'12pt',
+            label:'12pt'
+        } ,
+        {
+            value:'18pt',
+            label:'18pt'
+        },
+        {
+            value:'24pt',
+            label:'24pt'
+        },
+        {
+            value:'36pt',
+            label:'36pt'
+        },
+        {
+            value:'48pt',
+            label:'48pt'
+        },
+        {
+            value:'72pt',
+            label:'72pt'
+        }
+    ],
+//    FONT_SIZE_OPTIONS: ['10pt', '12pt', '18pt', '24pt', '36pt', '48pt', '72pt'],
+    FONT_WEIGHT_OPTIONS: ['normal', 'bold', 'bolder', 'lighter'],
+    FONT_STYLE_OPTIONS: ['normal', 'italic', 'oblique'],
+    FONT_ALIGNMENT_OPTIONS: ['left', 'center', 'right'],
+
 
 
 

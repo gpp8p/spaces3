@@ -519,6 +519,17 @@ const defs = function(dialogDef){
                         },
                         label: "Borders ?"
 
+                    },
+                    {
+                        name: 'primaryFont',
+                        type: 'fontPicker',
+                        ref: 'primaryFont',
+                        startFocus: false,
+                        label: 'Font',
+                        value: function(val){
+                            console.log('font val',val);
+                            return val;
+                        }
                     }
 
 
@@ -543,7 +554,12 @@ const defs = function(dialogDef){
                     cardType: 'notype',
                     restricted: false,
                     roundedCorners: true,
-                    shadow: true
+                    shadow: true,
+                    font:{
+                        fontFamily: 'Arial',
+                        fontSize: '10pt',
+                    }
+
                 },
                 addActions:function(currentFuncs) {
                     currentFuncs[c.MENU_EXIT_DIALOG]=function(emit, dialogData){
