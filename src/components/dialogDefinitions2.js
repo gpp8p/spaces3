@@ -558,6 +558,10 @@ const defs = function(dialogDef){
                     font:{
                         fontFamily: 'Arial',
                         fontSize: '10pt',
+                        fontWeight: 'bold',
+                        fontStyle: 'normal',
+                        fontAlign: 'left',
+                        fontColor: '#FFAABB'
                     }
 
                 },

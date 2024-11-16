@@ -11,32 +11,31 @@
             Font Family
           </div>
           <div><vselect :data = "props.data.font.fontFamily" :config="fontConfig"></vselect></div>
-          <div>a3</div>
+
         </div>
         <div>
           <div>Size</div>
           <div><vselect :data = "props.data.font.fontSize" :config="fontSizeConfig"></vselect></div>
-          <div>b3</div>
+
         </div>
         <div>
           <div>Weight</div>
-          <div>c2</div>
-          <div>c3</div>
+          <div><vselect :data = "props.data.font.fontWeight" :config="fontWeightConfig"></vselect></div>
         </div>
         <div>
           <div>Style</div>
-          <div>d2</div>
-          <div>d3</div>
+          <div><vselect :data = "props.data.font.fontStyle" :config="fontStyleConfig"></vselect></div>
+
         </div>
         <div>
           <div>Align</div>
-          <div>e2</div>
-          <div>e3</div>
+          <div><div><vselect :data = "props.data.font.fontAlign" :config="fontAlignConfig"></vselect></div></div>
+
         </div>
         <div>
           <div>Color</div>
-          <div>f2</div>
-          <div>f3</div>
+          <div><input type="color"  :value = "props.data.font.fontColor"  @change="colorSelect"/></div>
+
         </div>
       </div>
     </div>
@@ -89,6 +88,16 @@ fontConfig.value.selectType = "pulldown";
 const fontSizeConfig = ref({});
 fontSizeConfig.value.selectOptions = c.FONT_SIZE_OPTIONS;
 fontSizeConfig.value.selectType = "pulldown";
+const fontWeightConfig = ref({});
+fontWeightConfig.value.selectType = 'pulldown';
+fontWeightConfig.value.selectOptions = c.FONT_WEIGHT_OPTIONS;
+const fontStyleConfig = ref({});
+fontStyleConfig.value.selectType = "pulldown";
+fontStyleConfig.value.selectOptions = c.FONT_STYLE_OPTIONS;
+const fontAlignConfig = ref({});
+fontAlignConfig.value.selectType = "pulldown";
+fontAlignConfig.value.selectOptions = c.FONT_ALIGNMENT_OPTIONS;
+
 
 const fontData = ref({});
 //  fontData.value = props.data.font.fontFamily;
@@ -142,8 +151,8 @@ onUnmounted(() => {
 <style scoped>
 .fpTable {
   display:grid;
-  grid-template-columns: 30% 10% 10% 10% 10% 10%;
-  grid-template-rows: 30% 30% 30%;
+  grid-template-columns: 28% 10% 15% 15% 15% 10%;
+  grid-template-rows: 30% 30%;
   height: 20%;
   width: 100%;
 

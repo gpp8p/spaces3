@@ -247,9 +247,55 @@ export const c = {
         }
     ],
 //    FONT_SIZE_OPTIONS: ['10pt', '12pt', '18pt', '24pt', '36pt', '48pt', '72pt'],
-    FONT_WEIGHT_OPTIONS: ['normal', 'bold', 'bolder', 'lighter'],
-    FONT_STYLE_OPTIONS: ['normal', 'italic', 'oblique'],
-    FONT_ALIGNMENT_OPTIONS: ['left', 'center', 'right'],
+    FONT_WEIGHT_OPTIONS: [
+        {
+            value:'normal',
+            label:'normal'
+        },
+        {
+            value:'bold',
+            label:'bold'
+        },
+        {
+            value:'bolder',
+            label:'bolder'
+        },
+        {
+            value:'lighter',
+            label:'lighter'
+        }
+    ],
+//    FONT_WEIGHT_OPTIONS: ['normal', 'bold', 'bolder', 'lighter'],
+//    FONT_STYLE_OPTIONS: ['normal', 'italic', 'oblique'],
+    FONT_STYLE_OPTIONS:[
+        {
+            value:'normal',
+            label:'normal'
+        },
+        {
+            value:'italic',
+            label:'italic'
+        },
+        {
+            value:'oblique',
+            label:'oblique'
+        },
+    ],
+//    FONT_ALIGNMENT_OPTIONS: ['left', 'center', 'right'],
+    FONT_ALIGNMENT_OPTIONS: [
+        {
+            value: 'left',
+            label:'left'
+        },
+        {
+            value:'center',
+            label:'center'
+        },
+        {
+            value:'right',
+            label:'right'
+        },
+    ]
 
 
 
