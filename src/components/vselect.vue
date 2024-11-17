@@ -72,6 +72,7 @@ const passCmdDown = function(args){
   }
 }
 const setFieldValue= function(){
+  console.log('vselect change', props.config.name, fieldValue.value);
   emit('cevt', [c.FIELD_CHANGED,  props.config.name, fieldValue.value]);
 }
 

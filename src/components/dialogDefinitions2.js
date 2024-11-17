@@ -526,9 +526,22 @@ const defs = function(dialogDef){
                         ref: 'primaryFont',
                         startFocus: false,
                         label: 'Font',
+                        showSublabels: true,
+                        value: function (val) {
+                            console.log('font val', toRaw(val));
+                            return toRaw(val);
+                        },
+                    },
+                    {
+                        name: 'secondaryFont',
+                        type: 'fontPicker',
+                        ref: 'secondaryFont',
+                        startFocus: false,
+                        label: 'Sub-Font',
+                        showSublabels: false,
                         value: function(val){
-                            console.log('font val',val);
-                            return val;
+                            console.log('font val',toRaw(val));
+                            return toRaw(val);
                         }
                     }
 
@@ -555,7 +568,16 @@ const defs = function(dialogDef){
                     restricted: false,
                     roundedCorners: true,
                     shadow: true,
-                    font:{
+                    //primaryFont:{
+                    primaryFont:{
+                        fontFamily: 'Arial',
+                        fontSize: '10pt',
+                        fontWeight: 'bold',
+                        fontStyle: 'normal',
+                        fontAlign: 'left',
+                        fontColor: '#FFAABB'
+                    },
+                    secondaryFont:{
                         fontFamily: 'Arial',
                         fontSize: '10pt',
                         fontWeight: 'bold',
