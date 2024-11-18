@@ -51,7 +51,8 @@ export default {
         emit('error', `Invalid input format for ${props.config.name}`);
       } else {
 //        emit('input', { name: props.config.name, value: event.target.value });
-        emit('cevt', [c.FIELD_INPUT, props.config.name, event.target.value])
+        emit('cevt', [c.FIELD_INPUT, props.config.name, event.target.value]);
+        emit('cevt', [c.FIELD_CHANGED, props.config.name, event.target.value])
       }
     };
 

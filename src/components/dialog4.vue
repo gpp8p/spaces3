@@ -73,6 +73,7 @@ const currentDialogDataLoader = getDialogData(props.config.definition);
 var existingData;
 var dialogData={};
 const dialogFieldsConfig = ref({});
+dialogFieldsConfig.value.name='Fields';
 const store = useLogStateStore();
 const ready = ref(false);
 const result = ref({});
@@ -190,7 +191,7 @@ funcs[c.FIELD_CHANGED]= function(evt){
   console.log('in c.FIELD_CHANGED-', evt);
   debugger;
   dialogData[evt[1]]=evt[2];
-
+  cmdHandlers['Fields']([c.FIELD_CHANGE_ALERT, [evt[1],evt[2]], "*"]);
   if(typeof(funcs[c.FIELD_CHANGE_EVENT])!='undefined'){
     funcs[c.FIELD_CHANGE_EVENT](evt,emit, dialogData.value);
   }

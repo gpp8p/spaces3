@@ -43,6 +43,7 @@ export const c = {
     CREATE_CARD:38,
     CREATE_NEW_CARD:39,
     SET_CARD_DIMENSIONS:40,
+    FIELD_CHANGE_ALERT:41,
 
 
 

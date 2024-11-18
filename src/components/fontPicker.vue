@@ -1,5 +1,5 @@
 <template>
-  <div style="width:100%;">
+  <div style="width:100%;" v-if="showFontSelector===true">
     <div class="inputCss" v-if="props.config.showSublabels==true">
       <div>
         <label v-if="config.label" :class="config.labelStyle || 'text-xl text-blue-500'">{{ config.label }}</label>
@@ -98,6 +98,7 @@ import vselect from "../components/vselect.vue";
 import {toRaw} from 'vue';
 
 
+
 const {handleEvent} = useEventHandler();
 const emit = defineEmits(['cevt']);
 const name = props.config.name;
@@ -141,10 +142,12 @@ fontAlignConfig.value.selectType = "pulldown";
 fontAlignConfig.value.selectOptions = c.FONT_ALIGNMENT_OPTIONS;
 fontAlignConfig.value.name = 'fontAlign';
 
+const showFontSelector = ref(false);
 
 const fontData = ref({});
 //  fontData.value = props.data.font.fontFamily;
   fontData.value='Ariel';
+
 
 
 const handleCmd = function(args){
@@ -171,6 +174,7 @@ const passCmdDown = function(args){
   }
 }
 
+
 funcs[c.SET_CMD_HANDLER]= function(evt){
   console.log('in SET_CMD_HANDLER-', evt);
   cmdHandlers[evt[2]]=evt[1];
@@ -182,6 +186,22 @@ funcs[c.UNSET_CMD_HANDLER]= function(evt){
 funcs[c.FIELD_CHANGED]=function(evt){
   console.log('fopntPicker field changed', evt);
   fieldValue.value[evt[1]]=evt[2];
+}
+
+funcs[c.FIELD_CHANGE_ALERT]=function(cmd){
+  console.log('field change alert-', cmd);
+  if(cmd[1][0]==='cardType'){
+    switch(cmd[1][1]){
+      case 'Headline':{
+        showFontSelector.value=true;
+        break;
+      }
+      default:{
+        showFontSelector.value=false;
+        break;
+      }
+    }
+  }
 }
 
 onMounted(() => {
