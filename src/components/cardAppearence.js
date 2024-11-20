@@ -220,6 +220,14 @@ export function getAppearanceConfigs(){
                 isRestricted = 'T';
             }
         }
+        if(typeof(dialogData.primaryFont)!='undefined'){
+            newParameters['textAlign']="text-align:"+dialogData.primaryFont.fontAlign+";";
+            newParameters['fontColor']="color:"+dialogData.primaryFont.fontColor+";";
+            newParameters['fontWeight']="font-weignt:"+dialogData.primaryFont.fontWeight+";";
+            newParameters['fontSize']="font-size:"+dialogData.primaryFont.fontSize+";";
+            newParameters['fontFamily']="font-family:"+dialogData.primaryFont.fontFamily+";";
+            newParameters['fontStyle']="font-style:"+dialogData.primaryFont.fontStyle+";";
+        }
         console.log('newParameters', newParameters);
         updatePackage[0]=dialogData.cardId;
         updatePackage[1]=newParameters;
@@ -230,7 +238,7 @@ export function getAppearanceConfigs(){
         const parms = {
             cardParams: updateParameters,
             layoutId:pageStore.getCurrentPageId,
-            cardTitle:dialogData.cardName,
+            cardTitle:dialogData.cardTitle,
             restricted:isRestricted,
             cardType:dialogData.cardType,
             topLeftRow:dialogData.cardDimensions.startY,

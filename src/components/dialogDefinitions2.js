@@ -395,9 +395,9 @@ const defs = function(dialogDef){
                 },
                 dialogFields :[
                     {
-                        name: 'cardName',
+                        name: 'cardTitle',
                         type: 'inputText',
-                        ref: 'cardName',
+                        ref: 'cardTitle',
                         value: function(existingData){
                             debugger;
                             return "";
@@ -406,7 +406,7 @@ const defs = function(dialogDef){
                         size: '25',
                         maxlength: '35',
                         startFocus: true,
-                        label: "Card Name"
+                        label: "Card Title"
                     },
                     {
                         name: 'cardType',

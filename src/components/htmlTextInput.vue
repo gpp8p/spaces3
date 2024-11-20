@@ -44,7 +44,7 @@ export default {
     }
     const handleInput = (event) => {
 //      console.log('handleInput in htmlTextInput-', event);
-//      debugger;
+      debugger;
       if (props.config.required && !event.target.value.trim()) {
         emit('error', `${props.config.name} is required`);
       } else if (props.config.inputFormat && !new RegExp(props.config.inputFormat).test(event.target.value)) {

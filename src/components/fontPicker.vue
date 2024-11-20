@@ -121,6 +121,9 @@ if(typeof(props.config.value)=='function'){
 
  */
 }
+
+
+
 const fontConfig = ref({});
 fontConfig.value.selectOptions = c.DEFAULT_FONTS;
 fontConfig.value.selectType = "pulldown";
@@ -189,7 +192,9 @@ funcs[c.FIELD_CHANGED]=function(evt){
 }
 
 funcs[c.FIELD_CHANGE_ALERT]=function(cmd){
+  debugger;
   console.log('field change alert-', cmd);
+//  console.log('activate keyed', props.config.activate(cmd));
   if(cmd[1][0]==='cardType'){
     switch(cmd[1][1]){
       case 'Headline':{
