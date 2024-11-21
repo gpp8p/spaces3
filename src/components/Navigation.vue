@@ -1,7 +1,7 @@
 <template>
   <span v-if="hasHeadline==true" >
       <span>{{props.data.linkMenuTitle}}</span>
-      <span :style="props.config.elementStyles.sub[0]">
+      <span :style="props.config.elementStyles.sub[0]" v-if="hasLinks==true">
         <dynamicMenu :config="headlineMenu" :key="reloadMenu" @cevt="handleEvent($event, funcs, emit)" />
       </span>
   </span>
@@ -45,6 +45,7 @@ if(typeof(props.config.value)=='function'){
   fieldValue.value = props.config.value(props.data);
 }
 const hasHeadline = ref(false);
+const hasLinks = ref(false);
 const headlineMenu = ref({});
 const reloadMenu = ref(0);
 
@@ -109,8 +110,7 @@ onMounted(() => {
   //headlineMenu.value.style = props.data.elementStyles.sub[0];
   headlineMenu.value.style = "";
   headlineMenu.value.items = [];
-  //console.log('card data',trim(props.data.linkMenuTitle).length);
-
+  console.log('card data',props.data.linkMenuTitle);
   if(typeof(props.data.linkMenuTitle)=='string'){
     hasHeadline.value = true;
   }
@@ -120,6 +120,7 @@ onMounted(() => {
 
   debugger;
   for(var i=0;i<toRaw(props.data.availableLinks).length;i++){
+    hasHeadline.value = true;
     var thisItem = {
       type: 'menuItem',
       config:{

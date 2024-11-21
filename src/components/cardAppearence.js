@@ -233,6 +233,30 @@ export function getAppearanceConfigs(){
         updatePackage[1]=newParameters;
         updatePackage[2]={};
         updatePackage[3]=[];
+        console.log('secondaryFont',dialogData.secondaryFont);
+
+        if(typeof(dialogData.secondaryFont)!='undefined'){
+            var elementStyles = {
+                elementName:'sub',
+                elementStyles:{
+                    fontFamily:"font-family:"+dialogData.secondaryFont.fontFamily+";",
+                    fontSize:"font-size:"+dialogData.secondaryFont.fontSize+";",
+                    fontColor:"color:"+dialogData.secondaryFont.fontColor+";",
+                    fontWeight:"font-weight:"+dialogData.secondaryFont.fontWeight+";",
+                    fontStyle:"font-style:"+dialogData.secondaryFont.fontStyle+";",
+                },
+                elementConfiguration:{
+                    fontFamily:dialogData.secondaryFont.fontFamily,
+                    fontSize:dialogData.secondaryFont.fontSize,
+                    fontColor:dialogData.secondaryFont.fontColor,
+                    fontWeight:dialogData.secondaryFont.fontWeight,
+                    fontStyle:dialogData.secondaryFont.fontStyle,
+                }
+            }
+            updatePackage[3].push(elementStyles);
+        }
+
+        debugger;
         console.log('updatePackage', updatePackage, dialogData);
         var updateParameters = JSON.stringify(updatePackage);
         const parms = {
