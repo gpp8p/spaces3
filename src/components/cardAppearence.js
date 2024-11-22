@@ -29,6 +29,10 @@ export function getAppearanceConfigs(){
             var cParams = toRaw(transResult);
             var cardConfigParams = cParams._rawValue[0];
             console.log('card configuration data is ready-', cParams._rawValue[0]);
+            var domElementConfigs = cParams._rawValue[2];
+            console.log('dom elements',domElementConfigs);
+            var cardType = cParams._rawValue[4][0].card_component;
+            console.log('cardType',cardType);
             var configurationCurrentValues = {};
             var cardConfigurationDelimiterAt;
             var configValue;
@@ -94,6 +98,15 @@ export function getAppearanceConfigs(){
                     }
                 }
 
+            }
+            switch(cardType){
+                case'Headline':{
+                    console.log('headline sub font configs-',domElementConfigs['sub']);
+                    break;
+                }
+                default:{
+                    break;
+                }
             }
             console.log('loaded result', toRaw(result.value));
             ready.value = true;
