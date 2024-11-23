@@ -212,6 +212,11 @@ funcs[c.FIELD_CHANGE_ALERT]=function(cmd){
 onMounted(() => {
   debugger;
   emit('cevt', [c.SET_CMD_HANDLER, handleCmd, name]);
+  switch(props.data.cardType){
+    case 'Headline':{
+      showFontSelector.value=true;
+    }
+  }
 })
 
 onUnmounted(() => {

@@ -21,12 +21,15 @@ export function getAppearanceConfigs(){
         const header = loginResult.access_token;
         const dataReady = ref(false);
         const transResult = ref({});
+        var primaryFont = {};
+        var secondaryFont = {};
         console.log('in card configure dialog data - config is-', config);
         console.log('parms are-', parms);
         executeTrans(parms, c.CARD_MENUS_CONFIGURE,  c.API_PATH+'api/shan/getCardDataById?XDEBUG_SESSION_START=19884', 'GET', emit, c, header, dataReady, transResult);
         whenever(dataReady, () => {
             //debugger;
             var cParams = toRaw(transResult);
+            console.log('card cnfig transresult', cParams);
             var cardConfigParams = cParams._rawValue[0];
             console.log('card configuration data is ready-', cParams._rawValue[0]);
             var domElementConfigs = cParams._rawValue[2];
@@ -37,6 +40,7 @@ export function getAppearanceConfigs(){
             var cardConfigurationDelimiterAt;
             var configValue;
             var styling = {};
+
             for (var c = 0; c < cardConfigParams.length; c++) {
                 var thisCarConfigurationKey = cardConfigParams[c][0];
                 var thisCardConfigurationValue = cardConfigParams[c][1];
@@ -97,17 +101,48 @@ export function getAppearanceConfigs(){
                         result.value.barderInclude = false;
                     }
                 }
+                if (typeof (configurationCurrentValues.fontColor != 'undefined')) {
+                    primaryFont['fontColor'] = configurationCurrentValues.fontColor;
+                }
+                if (typeof (configurationCurrentValues.fontSize != 'undefined')) {
+                    primaryFont['fontSize'] = configurationCurrentValues.fontSize;
+                }
+                if (typeof (configurationCurrentValues.fontStyle != 'undefined')){
+                    primaryFont['fontStyle'] = configurationCurrentValues.fontStyle;
+                }
+                if (typeof (configurationCurrentValues.fontWeight != 'undefined')){
+                    primaryFont['fontWeight'] = configurationCurrentValues.fontWeight;
+                }
+                if (typeof (configurationCurrentValues.textAlign != 'undefined')){
+                    primaryFont['textAlign'] = configurationCurrentValues.textAlign;
+                }
+                if (typeof (configurationCurrentValues.fontFamily != 'undefined')){
+                    primaryFont['fontFamily'] = configurationCurrentValues.fontFamily;
+                }
+                configurationCurrentValues.primaryFont = primaryFont;
+                console.log('configurationCurrentValues-', configurationCurrentValues);
 
             }
             switch(cardType){
                 case'Headline':{
                     console.log('headline sub font configs-',domElementConfigs['sub']);
+                    for(var c = 0;c<domElementConfigs['sub'].length;c++){
+                        var elementVal = domElementConfigs['sub'][c][1];
+                        var elementKey =domElementConfigs['sub'][c][0];
+                        var colonAt = elementVal.indexOf(':');
+                        debugger;
+                        console.log('value:',elementKey, '-',elementVal.slice(colonAt+1));
+                        secondaryFont[elementKey]=elementVal.slice(colonAt+1);
+                    }
+                    result.value['primaryFont']=primaryFont;
+                    result.value['secondaryFont']=secondaryFont;
                     break;
                 }
                 default:{
                     break;
                 }
             }
+            result.value.cardType = cardType;
             console.log('loaded result', toRaw(result.value));
             ready.value = true;
         })

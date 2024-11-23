@@ -356,6 +356,30 @@ const defs = function(dialogDef){
                         },
                         label: "Borders ?"
 
+                    },
+                    {
+                        name: 'primaryFont',
+                        type: 'fontPicker',
+                        ref: 'primaryFont',
+                        startFocus: false,
+                        label: 'Font',
+                        showSublabels: true,
+                        value: function (val) {
+                            console.log('primary font val', toRaw(val));
+                            return toRaw(val);
+                        },
+                    },
+                    {
+                        name: 'secondaryFont',
+                        type: 'fontPicker',
+                        ref: 'secondaryFont',
+                        startFocus: false,
+                        label: 'Sub-Font',
+                        showSublabels: false,
+                        value: function(val){
+                            console.log('secondary font val',toRaw(val));
+                            return toRaw(val);
+                        }
                     }
 
 
