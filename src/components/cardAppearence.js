@@ -102,7 +102,7 @@ export function getAppearanceConfigs(){
                     }
                 }
                 if (typeof (configurationCurrentValues.fontColor != 'undefined')) {
-                    primaryFont['fontColor'] = configurationCurrentValues.fontColor;
+                    primaryFont['fontColor'] = configurationCurrentValues.color;
                 }
                 if (typeof (configurationCurrentValues.fontSize != 'undefined')) {
                     primaryFont['fontSize'] = configurationCurrentValues.fontSize;
@@ -133,6 +133,7 @@ export function getAppearanceConfigs(){
                         debugger;
                         console.log('value:',elementKey, '-',elementVal.slice(colonAt+1));
                         secondaryFont[elementKey]=elementVal.slice(colonAt+1);
+                        secondaryFont[elementKey] = secondaryFont[elementKey].replace(';','');
                     }
                     result.value['primaryFont']=primaryFont;
                     result.value['secondaryFont']=secondaryFont;

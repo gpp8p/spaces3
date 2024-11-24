@@ -9,31 +9,31 @@
           <div>
             Font Family
           </div>
-          <div><vselect :data = "props.data[props.config.name].fontFamily" @cevt="handleEvent($event, funcs, emit)" :config="fontConfig"></vselect></div>
+          <div><vselect :data = "primaryFontFamily" @cevt="handleEvent($event, funcs, emit)" :config="fontConfig"></vselect></div>
 
         </div>
         <div>
           <div>Size</div>
-          <div><vselect :data = "props.data[props.config.name].fontSize" @cevt="handleEvent($event, funcs, emit)" :config="fontSizeConfig"></vselect></div>
+          <div><vselect :data = "primaryFontSize" @cevt="handleEvent($event, funcs, emit)" :config="fontSizeConfig"></vselect></div>
 
         </div>
         <div>
           <div>Weight</div>
-          <div><vselect :data = "props.data[props.config.name].fontWeight" @cevt="handleEvent($event, funcs, emit)" :config="fontWeightConfig"></vselect></div>
+          <div><vselect :data = "primaryFontWeight" @cevt="handleEvent($event, funcs, emit)" :config="fontWeightConfig"></vselect></div>
         </div>
         <div>
           <div>Style</div>
-          <div><vselect :data = "props.data[props.config.name].fontStyle" @cevt="handleEvent($event, funcs, emit)" :config="fontStyleConfig"></vselect></div>
+          <div><vselect :data = "primaryFontStyle" @cevt="handleEvent($event, funcs, emit)" :config="fontStyleConfig"></vselect></div>
 
         </div>
         <div>
           <div>Align</div>
-          <div><div><vselect :data = "props.data[props.config.name].fontAlign" @cevt="handleEvent($event, funcs, emit)" :config="fontAlignConfig"></vselect></div></div>
+          <div><div><vselect :data = "primaryFontAlign" @cevt="handleEvent($event, funcs, emit)" :config="fontAlignConfig"></vselect></div></div>
 
         </div>
         <div>
           <div>Color</div>
-          <div><input type="color"  :value = "props.data[props.config.name].fontColor"  @change="colorSelect"/></div>
+          <div><input type="color"  :value = "primaryFontColor"  @change="colorSelect"/></div>
 
         </div>
 
@@ -45,25 +45,25 @@
       </div>
       <div class="fpTableNoLabels">
         <div>
-          <div><vselect :data = "props.data[props.config.name].fontFamily" @cevt="handleEvent($event, funcs, emit)" :config="fontConfig"></vselect></div>
+          <div><vselect :data = "secondaryFontFamily" @cevt="handleEvent($event, funcs, emit)" :config="fontConfig"></vselect></div>
         </div>
         <div>
-          <div><vselect :data = "props.data[props.config.name].fontSize" @cevt="handleEvent($event, funcs, emit)" :config="fontSizeConfig"></vselect></div>
+          <div><vselect :data = "secondaryFontSize" @cevt="handleEvent($event, funcs, emit)" :config="fontSizeConfig"></vselect></div>
 
         </div>
         <div>
-          <div><vselect :data = "props.data[props.config.name].fontWeight" @cevt="handleEvent($event, funcs, emit)" :config="fontWeightConfig"></vselect></div>
+          <div><vselect :data = "secondaryFontWeight" @cevt="handleEvent($event, funcs, emit)" :config="fontWeightConfig"></vselect></div>
         </div>
         <div>
-          <div><vselect :data = "props.data[props.config.name].fontStyle" @cevt="handleEvent($event, funcs, emit)" :config="fontStyleConfig"></vselect></div>
+          <div><vselect :data = "secondaryFontStyle" @cevt="handleEvent($event, funcs, emit)" :config="fontStyleConfig"></vselect></div>
 
         </div>
         <div>
-          <div><div><vselect :data = "props.data[props.config.name].fontAlign" @cevt="handleEvent($event, funcs, emit)" :config="fontAlignConfig"></vselect></div></div>
+          <div><div><vselect :data = "secondaryFontAlign" @cevt="handleEvent($event, funcs, emit)" :config="fontAlignConfig"></vselect></div></div>
 
         </div>
         <div>
-          <div><input type="color"  :value = "props.data[props.config.name].fontColor"  @change="colorSelect"/></div>
+          <div><input type="color"  :value = "secondaryFontColor"  @change="colorSelect"/></div>
 
         </div>
 
@@ -145,6 +145,20 @@ fontAlignConfig.value.selectType = "pulldown";
 fontAlignConfig.value.selectOptions = c.FONT_ALIGNMENT_OPTIONS;
 fontAlignConfig.value.name = 'fontAlign';
 
+const primaryFontFamily = ref('');
+const primaryFontColor = ref('');
+const primaryFontSize = ref('');
+const primaryFontStyle = ref('');
+const primaryFontWeight = ref('');
+const primaryFontAlign = ref('');
+const secondaryFontFamily = ref('');
+const secondaryFontColor = ref('');
+const secondaryFontSize = ref('');
+const secondaryFontStyle = ref('');
+const secondaryFontWeight = ref('');
+const secondaryFontAlign = ref('');
+
+
 const showFontSelector = ref(false);
 
 const fontData = ref({});
@@ -217,6 +231,25 @@ onMounted(() => {
       showFontSelector.value=true;
     }
   }
+  primaryFontFamily.value = props.data[props.config.name].fontFamily;
+  primaryFontColor.value = props.data[props.config.name].fontColor;
+  primaryFontSize.value = props.data[props.config.name].fontSize;
+  primaryFontStyle.value = props.data[props.config.name].fontStyle;
+  primaryFontWeight.value = props.data[props.config.name].fontWeight;
+  primaryFontAlign.value = props.data[props.config.name].textAlign;
+  secondaryFontFamily.value = props.data[props.config.name].fontFamily;
+  if(typeof(props.data[props.config.name].fontColor)!='undefined'){
+    secondaryFontColor.value = props.data[props.config.name].fontColor;
+  }else{
+    secondaryFontColor.value = '#0000FF';
+  }
+  secondaryFontSize.value = props.data[props.config.name].fontSize;
+  secondaryFontStyle.value = props.data[props.config.name].fontStyle;
+  secondaryFontWeight.value = props.data[props.config.name].fontWeight;
+  secondaryFontAlign.value = props.data[props.config.name].textAlign;
+
+  console.log('fontFamily',props.data[props.config.name].fontFamily);
+  console.log('typeof fontFamily', typeof(props.data[props.config.name].fontFamily));
 })
 
 onUnmounted(() => {
