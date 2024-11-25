@@ -195,11 +195,40 @@ export function getAppearanceConfigs(){
                 //repeat??
             }
         }
+        if(typeof(dialogData.primaryFont)!='undefined'){
+            newParameters['textAlign']="text-align:"+dialogData.primaryFont.fontAlign+";";
+            newParameters['fontColor']="color:"+dialogData.primaryFont.fontColor+";";
+            newParameters['fontWeight']="font-weignt:"+dialogData.primaryFont.fontWeight+";";
+            newParameters['fontSize']="font-size:"+dialogData.primaryFont.fontSize+";";
+            newParameters['fontFamily']="font-family:"+dialogData.primaryFont.fontFamily+";";
+            newParameters['fontStyle']="font-style:"+dialogData.primaryFont.fontStyle+";";
+        }
         console.log('newParameters', newParameters);
         updatePackage[0]=dialogData.cardId;
         updatePackage[1]=newParameters;
         updatePackage[2]={};
         updatePackage[3]=[];
+        if(typeof(dialogData.secondaryFont)!='undefined') {
+            var elementStyles = {
+                elementName: 'sub',
+                elementStyles: {
+                    fontFamily: "font-family:" + dialogData.secondaryFont.fontFamily + ";",
+                    fontSize: "font-size:" + dialogData.secondaryFont.fontSize + ";",
+                    fontColor: "color:" + dialogData.secondaryFont.fontColor + ";",
+                    fontWeight: "font-weight:" + dialogData.secondaryFont.fontWeight + ";",
+                    fontStyle: "font-style:" + dialogData.secondaryFont.fontStyle + ";",
+                },
+                elementConfiguration: {
+                    fontFamily: dialogData.secondaryFont.fontFamily,
+                    fontSize: dialogData.secondaryFont.fontSize,
+                    fontColor: dialogData.secondaryFont.fontColor,
+                    fontWeight: dialogData.secondaryFont.fontWeight,
+                    fontStyle: dialogData.secondaryFont.fontStyle,
+                }
+            }
+            updatePackage[3].push(elementStyles);
+        }
+
         console.log('updatePackage', updatePackage);
         var updateParameters = JSON.stringify(updatePackage);
         const parms = {
