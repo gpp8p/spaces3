@@ -209,6 +209,7 @@ export function getAppearanceConfigs(){
         updatePackage[2]={};
         updatePackage[3]=[];
         if(typeof(dialogData.secondaryFont)!='undefined') {
+            debugger;
             var elementStyles = {
                 elementName: 'sub',
                 elementStyles: {

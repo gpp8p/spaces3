@@ -33,7 +33,7 @@
         </div>
         <div>
           <div>Color</div>
-          <div><input type="color"  :value = "primaryFontColor"  @change="colorSelect"/></div>
+          <div><input type="color"   v-model="primaryFontColor"  @change="colorSelect(c.PRIMARY_FONT)"/></div>
 
         </div>
 
@@ -63,7 +63,7 @@
 
         </div>
         <div>
-          <div><input type="color"  :value = "secondaryFontColor"  @change="colorSelect"/></div>
+          <div><input type="color"  v-model="secondaryFontColor" @change="colorSelect"/></div>
 
         </div>
 
@@ -158,6 +158,9 @@ const secondaryFontStyle = ref('');
 const secondaryFontWeight = ref('');
 const secondaryFontAlign = ref('');
 
+const currentFontPickerValue = ref({});
+
+
 
 const showFontSelector = ref(false);
 
@@ -201,6 +204,7 @@ funcs[c.UNSET_CMD_HANDLER]= function(evt){
   let dlt = delete cmdHandlers[evt[2]];
 }
 funcs[c.FIELD_CHANGED]=function(evt){
+  debugger;
   console.log('fopntPicker field changed', evt);
   fieldValue.value[evt[1]]=evt[2];
 }
@@ -222,6 +226,26 @@ funcs[c.FIELD_CHANGE_ALERT]=function(cmd){
     }
   }
 }
+const colorSelect = function($event){
+  console.log('colorSelect-', event.target.value);
+  debugger;
+  fieldValue.value.fontColor = secondaryFontColor.value;
+  emit('cevt', [c.FIELD_CHANGED, props.config.name, fieldValue.value]);
+
+//  emit('cevt', [c.FIELD_CHANGED, 'backgroundColor', event.target.value]);
+}
+/*
+const colorSelect = function(fnt){
+  debugger;
+  if(fnt==c.PRIMARY_FONT){
+    console.log('primaryFontColor', primaryFontColor.value);
+    //emit('cevt', [c.FIELD_CHANGED, 'fontColor', colorValue.value]);
+  }else{
+    console.log('secondary font color changed', secondaryFontColor.value );
+  }
+}
+
+ */
 
 onMounted(() => {
   debugger;
@@ -231,6 +255,7 @@ onMounted(() => {
       showFontSelector.value=true;
     }
   }
+  currentFontPickerValue.value = props.data[props.config.name];
   primaryFontFamily.value = props.data[props.config.name].fontFamily;
   primaryFontColor.value = props.data[props.config.name].fontColor;
   primaryFontSize.value = props.data[props.config.name].fontSize;
@@ -242,6 +267,7 @@ onMounted(() => {
     secondaryFontColor.value = props.data[props.config.name].fontColor;
   }else{
     secondaryFontColor.value = '#0000FF';
+    fieldValue.value.fontColor = secondaryFontColor.value;
   }
   secondaryFontSize.value = props.data[props.config.name].fontSize;
   secondaryFontStyle.value = props.data[props.config.name].fontStyle;
@@ -250,6 +276,7 @@ onMounted(() => {
 
   console.log('fontFamily',props.data[props.config.name].fontFamily);
   console.log('typeof fontFamily', typeof(props.data[props.config.name].fontFamily));
+
 })
 
 onUnmounted(() => {
