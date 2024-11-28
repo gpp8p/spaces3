@@ -120,7 +120,7 @@ onMounted(() => {
 
   debugger;
   for(var i=0;i<toRaw(props.data.availableLinks).length;i++){
-    hasHeadline.value = true;
+    hasLinks.value = true;
     var thisItem = {
       type: 'menuItem',
       config:{
