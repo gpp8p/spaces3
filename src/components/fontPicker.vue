@@ -33,7 +33,7 @@
         </div>
         <div>
           <div>Color</div>
-          <div><input type="color"   v-model="primaryFontColor"  @change="colorSelect(c.PRIMARY_FONT)"/></div>
+          <div><input type="color"   v-model="primaryFontColor"  @change="primaryColorSelect"/></div>
 
         </div>
 
@@ -59,11 +59,11 @@
 
         </div>
         <div>
-          <div><div><vselect :data = "secondaryFontAlign" @cevt="handleEvent($event, funcs, emit)" :config="fontAlignConfig"></vselect></div></div>
+
 
         </div>
         <div>
-          <div><input type="color"  v-model="secondaryFontColor" @change="colorSelect"/></div>
+          <div><input type="color"  v-model="secondaryFontColor" @change="secondaryColorSelect"/></div>
 
         </div>
 
@@ -226,7 +226,15 @@ funcs[c.FIELD_CHANGE_ALERT]=function(cmd){
     }
   }
 }
-const colorSelect = function($event){
+const primaryColorSelect = function($event){
+  console.log('colorSelect-', event.target.value);
+  debugger;
+  fieldValue.value.fontColor = primaryFontColor.value;
+  emit('cevt', [c.FIELD_CHANGED, props.config.name, fieldValue.value]);
+
+//  emit('cevt', [c.FIELD_CHANGED, 'backgroundColor', event.target.value]);
+}
+const secondaryColorSelect = function($event){
   console.log('colorSelect-', event.target.value);
   debugger;
   fieldValue.value.fontColor = secondaryFontColor.value;
@@ -255,6 +263,7 @@ onMounted(() => {
       showFontSelector.value=true;
     }
   }
+  debugger;
   currentFontPickerValue.value = props.data[props.config.name];
   primaryFontFamily.value = props.data[props.config.name].fontFamily;
   primaryFontColor.value = props.data[props.config.name].fontColor;

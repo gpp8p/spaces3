@@ -102,7 +102,7 @@ export function getAppearanceConfigs(){
                     }
                 }
                 if (typeof (configurationCurrentValues.fontColor != 'undefined')) {
-                    primaryFont['fontColor'] = configurationCurrentValues.color;
+                    primaryFont['fontColor'] = configurationCurrentValues.fontColor;
                 }
                 if (typeof (configurationCurrentValues.fontSize != 'undefined')) {
                     primaryFont['fontSize'] = configurationCurrentValues.fontSize;
@@ -196,7 +196,7 @@ export function getAppearanceConfigs(){
             }
         }
         if(typeof(dialogData.primaryFont)!='undefined'){
-            newParameters['textAlign']="text-align:"+dialogData.primaryFont.fontAlign+";";
+            newParameters['textAlign']="text-align:"+dialogData.primaryFont.textAlign+";";
             newParameters['fontColor']="color:"+dialogData.primaryFont.fontColor+";";
             newParameters['fontWeight']="font-weignt:"+dialogData.primaryFont.fontWeight+";";
             newParameters['fontSize']="font-size:"+dialogData.primaryFont.fontSize+";";
@@ -300,7 +300,7 @@ export function getAppearanceConfigs(){
             }
         }
         if(typeof(dialogData.primaryFont)!='undefined'){
-            newParameters['textAlign']="text-align:"+dialogData.primaryFont.fontAlign+";";
+            newParameters['textAlign']="text-align:"+dialogData.primaryFont.textAlign+";";
             newParameters['fontColor']="color:"+dialogData.primaryFont.fontColor+";";
             newParameters['fontWeight']="font-weignt:"+dialogData.primaryFont.fontWeight+";";
             newParameters['fontSize']="font-size:"+dialogData.primaryFont.fontSize+";";
