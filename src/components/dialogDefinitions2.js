@@ -625,6 +625,10 @@ const defs = function(dialogDef){
                             alert('You Must Select a Type');
                             return;
                         }
+                        if(typeof(dialogData.cardTitle)=='undefined'){
+                            alert('You Must Enter a Card Name and tab through the field');
+                            return
+                        }
                         createCard(emit, dialogData);
                     }
                 }
