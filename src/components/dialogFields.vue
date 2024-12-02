@@ -56,6 +56,8 @@ const fieldValue = ref('');
 if(typeof(props.config.value)=='function'){
   fieldValue.value = props.config.value(props.data);
 }
+
+
 const morphs = {
   inputText,
   inputNumber,

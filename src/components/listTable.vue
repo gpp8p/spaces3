@@ -237,11 +237,12 @@ funcs[c.ROW_SELECT]=function(evt){
 onMounted(() => {
   debugger;
   emit('cevt', [c.SET_CMD_HANDLER, handleCmd, name]);
-  currentTableConfig.value.spacesCount = props.data.funcGetRecordCount(currentTableConfig, pagerProps.value.perPage, pagerProps);
+
   //currentTableConfig.value.totalPages = Math.floor(currentTableConfig.value.spacesCount/pagerProps.value.perPage);
   //pagerProps.value.totalPages =currentTableConfig.value.totalPages;
   currentRowPointer.value = 0;
   if(currentTableConfig.value.includePager){
+    currentTableConfig.value.spacesCount = props.data.funcGetRecordCount(currentTableConfig, pagerProps.value.perPage, pagerProps);
     props.data.funcReadPagedData(currentTableConfig, pagerProps.value.perPage, currentRowPointer.value, loaderFunctionsReady, tableReload, dataToShow);
     currentTableConfig.value.rowStart = 0;
     currentTableConfig.value.rowsToShow = pagerProps.value.perPage;
@@ -252,7 +253,7 @@ onMounted(() => {
     currentRowPointer.value = 0;
   }else{
     debugger;
-    props.data.funcReadAllData(tableReload, dataToShow, loaderFunctionsReady, currentTableConfig);
+    props.data.funcReadAllData(tableReload, dataToShow, loaderFunctionsReady, currentTableConfig, props.data.id);
     tableReload.value+=1;
   }
 })

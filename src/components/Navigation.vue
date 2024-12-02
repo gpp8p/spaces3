@@ -92,12 +92,15 @@ funcs[c.CARD_MENU_SELECTED] = function(cmd){
   switch(cmd[1].cardAction){
     case c.CARD_MENU_EXIT:{
       emit('cevt', [c.EXIT_EDIT_MODE]);
+      break;
     }
     case c.CARD_MENU_CONFIGURE:{
       emit('cevt', [c.SHOW_DIALOG, 'configureCard', props.config.id]);
+      break;
     }
     case c.CARD_MENU_EDIT:{
       emit('cevt', [c.SHOW_DIALOG, 'editLinks', props.config.id]);
+      break;
     }
   }
 

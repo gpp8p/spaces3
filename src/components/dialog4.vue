@@ -74,6 +74,9 @@ var existingData;
 var dialogData={};
 const dialogFieldsConfig = ref({});
 dialogFieldsConfig.value.name='Fields';
+if(typeof(props.config.id)!='undefined'){
+  dialogFieldsConfig.value.id=props.config.id;
+}
 const store = useLogStateStore();
 const ready = ref(false);
 const result = ref({});
@@ -114,7 +117,7 @@ if(typeof(currentDialogDataLoader)=='function'){
 }
 
 
-
+dialogFieldsData.value.id = props.config.id;
 //const dialogFieldsConfig = ref({});
 
 //debugger;

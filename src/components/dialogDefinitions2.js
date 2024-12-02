@@ -845,14 +845,113 @@ const defs = function(dialogDef){
                     twstyle:"fixed w-[50%] h-auto p-[2%] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-200 rounded border-2 border-blue-500 shadow-xl shadow-black",
                 },
                 dialogFields:
-                [
+                    [
+                        {
+                            // the field name
+                            name: 'editLinks',
+                            // the component type of the field
+                            type: 'listTable',
+                            // the ref inserted into the field so it can be referenced later
+                            ref: 'editLinks',
+                            // this sets rowsToShow, but I think it's overwritten later - do we really need this ???
+                            selectSize:'4',
+                            // will this get initial focus
+                            startFocus: false,
+                            // styling of the table header
+                            twhead: 'bg-blue-800 flex text-white w-full h-10',
+                            // styling of the row (tr) element in the header
+                            twheadtr: 'flex w-full mb-4',
+                            // styling for the table body
+                            twbody: 'bg-grey-light flex flex-col items-center justify-between overflow-y-scroll w-full',
+                            //row styling in the body
+                            twtr:'flex w-full mb-[1px] hover:bg-green-400 text-xs',
+                            // not in use
+                            testtwheadth:'py-2 pl-3.5 w-1/4',
+                            //cell styling in the body
+                            twtd:'flex w-full mb-4 hover:bg-green-400',
+                            // pager button styling
+                            pagerButtonCss:"mr-[3px] mt-[10px] px-3 py-1 text-xs font-medium text-center text-black bg-white rounded-lg active:bg-red-400",
+                            // active pager button styling -= not sure this does anything
+                            pagerButtonCssActive:"mr-[3px] mt-[10px] px-3 py-1 text-xs font-medium text-center text-black bg-blue-300 rounded-lg active:bg-red-400",
+                            // should the pager be included
+                            includePager:false,
+                            // the actual columns to be displayed.  Styling for those columns is included
+                            columns: [
+                                {
+                                    field: 'id',
+                                    label: 'ID',
+                                    width: '10%',
+                                    numeric: true,
+                                    visible: true,
+                                    twtd:'py-2 pl-3.5 w-1/6',
+                                    twheadth:'py-2 pl-3.5 w-1/6'
+                                },
+                                {
+                                    field: 'menu_label',
+                                    label: 'Name',
+                                    width: '30%',
+                                    visible: true,
+                                    twtd:'py-2 pl-3.5 w-1/4',
+                                    twheadth:'py-2 pl-3.5 w-1/4'
+                                },
+                                {
+                                    field: 'description',
+                                    label: 'Description',
+                                    width: '30%',
+                                    visible: true,
+                                    twtd:'py-2 pl-3.5 w-1/4',
+                                    twheadth:'py-2 pl-3.5 w-1/4'
 
-                ],
+                                },
+
+
+                                {
+                                    field: 'width',
+                                    label: 'Width',
+                                    width: '10%',
+                                    visible: true,
+                                    twtd:'py-2 pl-3.5 w-1/4',
+                                    twheadth:'py-2 pl-3.5 w-1/4'
+                                }
+                            ],
+                            // label for the table
+                            label: "Existing Links"
+                        }
+                    ],
                 dialogData: function(emit, c, loginStore, ready, result, config){
                     console.log('in editLink dialogData');
+                    result.value = {
+                        funcReadAllData: function(tableReload, dataToShow, loaderFunctionsReady, currentTableConfig, componentId){
+                            //debugger;
+                            const {executeTrans} = getTrans();
+
+                            const loginResult= toRaw(loginStore.loginStatus);
+                            const header = loginResult.access_token;
+                            const dataReady = ref(false);
+                            const transResult = ref({});
+                            const parms = {
+                                cardId:componentId,
+                            }
+                            executeTrans(parms, c.ALL_PAGES,  c.API_PATH+'api/shan/getLinks?XDEBUG_SESSION_START=19884', 'GET', emit, c, header, dataReady, transResult);
+                            whenever(dataReady, () => {
+                                //debugger;
+                                console.log('update completed-', transResult._rawValue);
+                                dataToShow.value = transResult._rawValue;
+                                currentTableConfig.value.rowsToShow = dataToShow.value.length;
+                                loaderFunctionsReady.value = true;
+                                tableReload.value+=1;
+                            })
+                        },
+                    }
+                    ready.value=true;
                 },
                 addActions:function(currentFuncs){
-
+                    currentFuncs[c.MENU_EXIT_DIALOG]=function(emit, dialogData){
+                        //debugger;
+                        console.log('new func exit dialog');
+                        //                      const emit = defineEmits(['cevt']);
+                        emit('cevt',[c.EXIT_DIALOG])
+                    }
                 },
                 menuDefs:{
                     twStyling:'text-xs text-blue-500 w-[100%]',
@@ -954,7 +1053,7 @@ const defs = function(dialogDef){
 
                     result.value = {
                             // load everything in the database into dataToShow
-                            funcReadAllData: function(tableReload, dataToShow, loaderFunctionsReady, currentTableConfig){
+                            funcReadAllData: function(tableReload, dataToShow, loaderFunctionsReady, currentTableConfig, componentId){
                                 //debugger;
                                 const {executeTrans} = getTrans();
 
