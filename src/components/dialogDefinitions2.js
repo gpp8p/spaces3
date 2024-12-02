@@ -834,6 +834,35 @@ const defs = function(dialogDef){
             }
         }
 
+        case 'editLinks':{
+            return {
+                dialogAppearence: {
+                    // styling for the prompt
+                    twPrompt: 'text-lg text-current ml-[30%] my-[5%]',
+                    // the prompt itself
+                    prompt: 'My Spaces',
+                    // overall styling for the dialog
+                    twstyle:"fixed w-[50%] h-auto p-[2%] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-200 rounded border-2 border-blue-500 shadow-xl shadow-black",
+                },
+                dialogFields:
+                [
+
+                ],
+                dialogData: function(emit, c, loginStore, ready, result, config){
+                    console.log('in editLink dialogData');
+                },
+                addActions:function(currentFuncs){
+
+                },
+                menuDefs:{
+                    twStyling:'text-xs text-blue-500 w-[100%]',
+                    items: [
+                        { type: 'menuItem', config: { label: 'Cancel', actionCode: c.MENU_EXIT_DIALOG } },
+                    ],
+                },
+            }
+        }
+
         case 'mySpaces':{
             return {
                 dialogAppearence: {
