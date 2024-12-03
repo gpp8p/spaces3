@@ -254,6 +254,7 @@ onMounted(() => {
   }else{
     debugger;
     props.data.funcReadAllData(tableReload, dataToShow, loaderFunctionsReady, currentTableConfig, props.data.id);
+    //console.log('dataToShow---',dataToShow.value);
     tableReload.value+=1;
   }
 })

@@ -854,7 +854,7 @@ const defs = function(dialogDef){
                             // the ref inserted into the field so it can be referenced later
                             ref: 'editLinks',
                             // this sets rowsToShow, but I think it's overwritten later - do we really need this ???
-                            selectSize:'4',
+                            selectSize:'6',
                             // will this get initial focus
                             startFocus: false,
                             // styling of the table header
@@ -863,7 +863,7 @@ const defs = function(dialogDef){
                             twheadtr: 'flex w-full mb-4',
                             // styling for the table body
                             //twbody: 'bg-grey-light flex flex-col items-center justify-between overflow-y-scroll w-full',
-                            twbody:'bg-grey-light flex flex-col items-center justify-between overflow-y-scroll w-full h-auto max-h-32',
+                            twbody:'bg-grey-light flex flex-col items-center justify-between overflow-y-scroll w-full h-auto ',
                             //row styling in the body
                             twtr:'flex w-full mb-[1px] hover:bg-green-400 text-xs',
                             // not in use
@@ -920,9 +920,47 @@ const defs = function(dialogDef){
                             executeTrans(parms, c.ALL_PAGES,  c.API_PATH+'api/shan/getLinks?XDEBUG_SESSION_START=19884', 'GET', emit, c, header, dataReady, transResult);
                             whenever(dataReady, () => {
                                 //debugger;
-                                console.log('update completed-', transResult._rawValue);
+                                console.log('fundReadAllData completed-', transResult._rawValue, currentTableConfig);
                                 dataToShow.value = transResult._rawValue;
                                 currentTableConfig.value.rowsToShow = dataToShow.value.length;
+                                console.log('dataToShow.length',dataToShow.value.length);
+                                debugger;
+                                if(dataToShow.value.length<parseInt(currentTableConfig.value.selectSize)){
+                                    console.log('shortTable-',dataToShow.value.length);
+                                    var rowsShort = (parseInt(currentTableConfig.value.selectSize)-dataToShow.value.length);
+                                    switch(rowsShort){
+                                        case 5:{
+                                            console.log('short 5');
+                                            currentTableConfig.value.twbody = currentTableConfig.value.twbody+'max-h-10'
+                                            break;
+                                        }
+                                        case 4:{
+                                            console.log('short 4');
+                                            currentTableConfig.value.twbody = currentTableConfig.value.twbody+'max-h-14'
+                                            break;
+                                        }
+                                        case 3:{
+                                            console.log('short 3');
+                                            currentTableConfig.value.twbody = currentTableConfig.value.twbody+'max-h-20'
+                                            break;
+                                        }
+                                        case 2:{
+                                            console.log('short 2');
+                                            currentTableConfig.value.twbody = currentTableConfig.value.twbody+'max-h-24'
+                                            break;
+                                        }
+                                        case 1:{
+                                            console.log('short 1');
+                                            currentTableConfig.value.twbody = currentTableConfig.value.twbody+'max-h-44'
+                                            break;
+                                        }
+                                        default:{
+                                            console.log('short default');
+                                            currentTableConfig.value.twbody = currentTableConfig.value.twbody+'max-h-44'
+                                            break;
+                                        }
+                                    }
+                                }
                                 loaderFunctionsReady.value = true;
                                 tableReload.value+=1;
                             })
