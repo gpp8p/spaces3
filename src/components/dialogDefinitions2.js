@@ -862,7 +862,8 @@ const defs = function(dialogDef){
                             // styling of the row (tr) element in the header
                             twheadtr: 'flex w-full mb-4',
                             // styling for the table body
-                            twbody: 'bg-grey-light flex flex-col items-center justify-between overflow-y-scroll w-full',
+                            //twbody: 'bg-grey-light flex flex-col items-center justify-between overflow-y-scroll w-full',
+                            twbody:'bg-grey-light flex flex-col items-center justify-between overflow-y-scroll w-full h-auto max-h-32',
                             //row styling in the body
                             twtr:'flex w-full mb-[1px] hover:bg-green-400 text-xs',
                             // not in use
@@ -887,14 +888,6 @@ const defs = function(dialogDef){
                                     twheadth:'py-2 pl-3.5 w-1/6'
                                 },
                                 {
-                                    field: 'menu_label',
-                                    label: 'Name',
-                                    width: '30%',
-                                    visible: true,
-                                    twtd:'py-2 pl-3.5 w-1/4',
-                                    twheadth:'py-2 pl-3.5 w-1/4'
-                                },
-                                {
                                     field: 'description',
                                     label: 'Description',
                                     width: '30%',
@@ -905,14 +898,6 @@ const defs = function(dialogDef){
                                 },
 
 
-                                {
-                                    field: 'width',
-                                    label: 'Width',
-                                    width: '10%',
-                                    visible: true,
-                                    twtd:'py-2 pl-3.5 w-1/4',
-                                    twheadth:'py-2 pl-3.5 w-1/4'
-                                }
                             ],
                             // label for the table
                             label: "Existing Links"
