@@ -46,6 +46,8 @@ export const c = {
     FIELD_CHANGE_ALERT:41,
     PRIMARY_FONT:42,
     SECONDARY_FONT:43,
+    MENU_GOTO_LINK_EDIT:44,
+    MENU_ADD_LINK:45,
 
 
 

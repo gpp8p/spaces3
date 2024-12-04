@@ -229,6 +229,9 @@ funcs[c.SAVE_DIALOG_DATA] = function(evt){
   console.log('mergedDialogData', mergedData);
   funcs[c.MENU_SAVE_DIALOG_DATA](emit, mergedData);
 }
+funcs[c.MENU_ADD_LINK] = function(evt){
+  console.log('MENU_ADD_LINK clicked', evt);
+}
 /*
 funcs[c.CREATE_CARD] = function(evt){
   var mergedData = mergeDialogFields(dialogData, toRaw(dialogFieldsData.value));
