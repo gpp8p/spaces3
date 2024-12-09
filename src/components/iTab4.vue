@@ -124,6 +124,7 @@ funcs[c.UNSET_CMD_HANDLER]= function(evt){
 }
 
 const rowSelected = function(rowIndex){
+  console.log('iTab4 ROW_SELECT-',rowIndex);
   emit('cevt', [c.ROW_SELECT, rowIndex]);
 }
 

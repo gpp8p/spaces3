@@ -48,6 +48,7 @@ export const c = {
     SECONDARY_FONT:43,
     MENU_GOTO_LINK_EDIT:44,
     MENU_ADD_LINK:45,
+    ROW_SELECTED_ACTION:46,
 
 
 

@@ -851,7 +851,7 @@ const defs = function(dialogDef){
                             // the field name
                             name: 'addPageLink',
                             // the component type of the field
-                            type: 'addPageLink',
+                            type: 'listTable',
                             // the ref inserted into the field so it can be referenced later
                             ref: 'mySpaces',
                             // this sets rowsToShow, but I think it's overwritten later - do we really need this ???
@@ -1029,12 +1029,17 @@ const defs = function(dialogDef){
                         //const emit = defineEmits(['cevt']);
                         emit('cevt',[c.EXIT_DIALOG])
                     }
+/*
                     currentFuncs[c.ROW_SELECTED]=function(emit, evt){
-
+                        console.log('add link ROW_SELECTED',evt );
                     }
-                    currentFuncs[c.RESOLVE_DATA]=function(dialogFields, evt){
-                        //debugger;
-                        return dialogFields[0].dataToShow[evt[1]].id;
+
+ */
+                    currentFuncs[c.RESOLVE_DATA]=function(dialogFields, evt, emit){
+                        debugger;
+                        var resolvedData = dialogFields[0].dataToShow[evt[1]].id;
+                        console.log('add link to list', resolvedData);
+                        //emit('cevt', [c.CHANGE_LAYOUT, resolvedData]);
                         //                      return dataToShow.value[evt[1]];
                     }
                 },
@@ -1391,16 +1396,36 @@ const defs = function(dialogDef){
                         //const emit = defineEmits(['cevt']);
                         emit('cevt',[c.EXIT_DIALOG])
                     }
+/*
                     currentFuncs[c.ROW_SELECTED]=function(emit, evt){
                         //debugger;
                         console.log('new func row selected mySpaces', evt);
                         emit('cevt',[c.CHANGE_LAYOUT, evt]);
                     }
-                    currentFuncs[c.RESOLVE_DATA]=function(dialogFields, evt){
-                        //debugger;
-                        return dialogFields[0].dataToShow[evt[1]].id;
+
+ */
+                    /*
+                    currentFuncs[c.ROW_SELECT] = function(evt, emit){
+                        console.log('ROW_SELECT in mySpaces', evt);
+                        debugger;
+                        if(typeof(currentFuncs[c.RESOLVE_DATA])!='undefined'){
+                            var resolvedData = funcs[c.RESOLVE_DATA](dialogFields,evt);
+                            emit('cevt', [c.CHANGE_LAYOUT, resolvedData]);
+                        }else{
+                            emit('cevt', evt);
+                        }
+//  f
+                    }
+*/
+                    currentFuncs[c.RESOLVE_DATA]=function(dialogFields, evt, emit){
+                        debugger;
+                        var resolvedData = dialogFields[0].dataToShow[evt[1]].id;
+                        emit('cevt', [c.CHANGE_LAYOUT, resolvedData]);
   //                      return dataToShow.value[evt[1]];
                     }
+
+
+
                 },
                 // the menu displayed at the bottom of the dialog
                 menuDefs:{

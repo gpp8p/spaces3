@@ -66,10 +66,10 @@ console.log('dialogFields-',dialogFields);
 const dialogAppearence = getDialogAppearence(props.config.definition);
 var menuDefinitions = getMenuDefinitions(props.config.definition);
 var testVar = 'test var one';
-const addActions = getActions(props.config.definition);
+var addActions = getActions(props.config.definition);
 const emit = defineEmits(['cevt']);
 const dialogFieldsData = ref({});
-const currentDialogDataLoader = getDialogData(props.config.definition);
+var currentDialogDataLoader = getDialogData(props.config.definition);
 var existingData;
 var dialogData={};
 const dialogFieldsConfig = ref({});
@@ -212,16 +212,19 @@ funcs[c.MENU_ITEM_SELECTED]= function(evt){
   debugger;
   funcs[evt[1]](emit, dialogData);
 }
+
 funcs[c.ROW_SELECT]= function(evt){
-  //debugger;
+  debugger;
   if(typeof(funcs[c.RESOLVE_DATA])!='undefined'){
-    var resolvedData = funcs[c.RESOLVE_DATA](dialogFields,evt);
-    emit('cevt', [c.CHANGE_LAYOUT, resolvedData]);
+    console.log('dialogFieldsConfig.value', toRaw(dialogFieldsConfig.value).dialogFields);
+    var resolvedData = funcs[c.RESOLVE_DATA](toRaw(dialogFieldsConfig.value).dialogFields,evt, emit);
+//    emit('cevt', [c.CHANGE_LAYOUT, resolvedData]);
   }else{
     emit('cevt', evt);
   }
-//  funcs[c.ROW_SELECTED](emit, evt)
 }
+
+
 funcs[c.SAVE_DIALOG_DATA] = function(evt){
   debugger;
   var mergedData = mergeDialogFields(dialogData, toRaw(dialogFieldsData.value));
@@ -231,6 +234,50 @@ funcs[c.SAVE_DIALOG_DATA] = function(evt){
 }
 funcs[c.MENU_ADD_LINK] = function(evt){
   console.log('MENU_ADD_LINK clicked', evt);
+  ready.value=false;
+  debugger;
+  currentDialogDataLoader = getDialogData('addPageLinks');
+  currentDialogDataLoader(emit, c, store, ready, result, props.config);
+  const addLinkDialogFields = getDialogFields('addPageLinks');
+  console.log('dialogFields-', addLinkDialogFields);
+  debugger;
+  console.log('loader ready b',ready);
+  if(ready.value==false){
+    whenever(ready, () => {
+      debugger;
+      existingData = toRaw(result.value);
+      console.log('existingData loaded b',existingData, dialogFields);
+      dialogFieldsConfig.value.dialogFields = {
+        dialogFields: addLinkDialogFields,
+        name: 'Fields'
+      };
+
+      //dialogFieldsConfig.value.dialogFields = dialogFields;
+//      dialogFieldsConfig.value.existingData = existingData;
+      dialogFieldsData.value = existingData;
+      //     dialogData = existingData;
+//    reloadDialogFields+=1;
+
+    })
+  }else{
+    debugger;
+    existingData = toRaw(result.value);
+    console.log('existingData loaded',existingData);
+    //dialogFieldsConfig.value.dialogFields = addLingDialogFields;
+//    dialogFieldsConfig.value.dialogFields = dialogFields;
+//    dialogFieldsConfig.value.existingData = existingData;
+    dialogFieldsConfig.value = {
+      dialogFields: addLinkDialogFields,
+      name: 'Fields'
+    };
+    dialogFieldsData.value = existingData;
+    addActions = getActions('addPageLinks');
+    addActions(funcs);
+
+  }
+  reloadDialogFields.value +=1;
+
+
 }
 /*
 funcs[c.CREATE_CARD] = function(evt){
