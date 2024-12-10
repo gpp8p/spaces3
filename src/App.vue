@@ -168,6 +168,14 @@ funcs[c.SHOW_DIALOG] = function(evt){
   dialogConfig.layoutId = pageStore.getCurrentPageId;
   showDialog.value=true;
 }
+funcs[c.FIELD_CHANGED]= function(evt){
+  console.log('in app FIELD-CHANGED-', evt);
+  cmdHandlers['dialog']([c.UPDATE_DIALOG_DATA,evt, "dialog"]);
+}
+funcs[c.LINK_TO_ADD_SELECTED]=function(evt){
+  console.log('in app LINK_TO_ADD_SELECTED-', evt);
+  cmdHandlers['dialog']([c.ADD_SELECTED_LINK,evt, "dialog"]);
+}
 funcs[c.CARD_AREA_SELECTED] = function(evt){
   console.log('in CARD-AREA-SELECTED-', evt);
   dialogConfig.definition = 'createCard';

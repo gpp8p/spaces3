@@ -940,7 +940,7 @@ const defs = function(dialogDef){
                             executeTrans(parms, c.ALL_PAGES,  c.API_PATH+'api/shan/getMySpaces?XDEBUG_SESSION_START=19884', 'GET', emit, c, header, dataReady, transResult);
                             whenever(dataReady, () => {
                                 //debugger;
-                                console.log('update completed-', transResult._rawValue);
+                                console.log('readAllData  completed-', transResult._rawValue);
                                 dataToShow.value = transResult._rawValue;
                                 currentTableConfig.value.rowsToShow = dataToShow.value.length;
                                 loaderFunctionsReady.value = true;
@@ -1037,9 +1037,9 @@ const defs = function(dialogDef){
  */
                     currentFuncs[c.RESOLVE_DATA]=function(dialogFields, evt, emit){
                         debugger;
-                        var resolvedData = dialogFields[0].dataToShow[evt[1]].id;
+                        var resolvedData = dialogFields[0].dataToShow[evt[1]];
                         console.log('add link to list', resolvedData);
-                        //emit('cevt', [c.CHANGE_LAYOUT, resolvedData]);
+                        emit('cevt', [c.LINK_TO_ADD_SELECTED, resolvedData]);
                         //                      return dataToShow.value[evt[1]];
                     }
                 },
@@ -1139,11 +1139,12 @@ const defs = function(dialogDef){
                             }
                             executeTrans(parms, c.ALL_PAGES,  c.API_PATH+'api/shan/getLinks?XDEBUG_SESSION_START=19884', 'GET', emit, c, header, dataReady, transResult);
                             whenever(dataReady, () => {
-                                //debugger;
+                                debugger;
                                 console.log('fundReadAllData completed-', transResult._rawValue, currentTableConfig);
                                 dataToShow.value = transResult._rawValue;
                                 currentTableConfig.value.rowsToShow = dataToShow.value.length;
-                                console.log('dataToShow.length',dataToShow.value.length);
+                                console.log('dataToShow.length',dataToShow.value.length, toRaw(dataToShow.value));
+                                emit('cevt', [c.FIELD_CHANGED, 'currentLinks', toRaw(dataToShow.value)]);
                                 debugger;
                                 if(dataToShow.value.length<parseInt(currentTableConfig.value.selectSize)){
                                     console.log('shortTable-',dataToShow.value.length);

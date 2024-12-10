@@ -221,6 +221,7 @@ funcs[c.PAGE_CHANGED]=function(evt){
 funcs[c.LOADERS_AVAILABLE]=function(evt){
   console.log('in LOADERS_AVAILABLE in listTable-', evt);
 }
+
 /*
 funcs[c.ROW_SELECT]=function(evt){
   console.log('in listTable ROW_SELECT-', evt);
@@ -254,7 +255,9 @@ onMounted(() => {
   }else{
     debugger;
     props.data.funcReadAllData(tableReload, dataToShow, loaderFunctionsReady, currentTableConfig, props.data.id);
-    //console.log('dataToShow---',dataToShow.value);
+    console.log('dataToShow---',dataToShow.value);
+
+    //emit('cevt', [c.FIELD_CHANGED, 'currentLinks', toRaw(dataToShow.value)]);
     tableReload.value+=1;
   }
 })

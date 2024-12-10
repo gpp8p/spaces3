@@ -156,6 +156,53 @@ const passCmdDown = function(args){
   }
 }
 
+const changeDialog = function(dialogDefinition){
+  ready.value=false;
+  debugger;
+  currentDialogDataLoader = getDialogData(dialogDefinition);
+  currentDialogDataLoader(emit, c, store, ready, result, props.config);
+  const addLinkDialogFields = getDialogFields(dialogDefinition);
+  console.log('dialogFields-', addLinkDialogFields);
+  debugger;
+  console.log('loader ready b',ready);
+  if(ready.value==false){
+    whenever(ready, () => {
+      debugger;
+      existingData = toRaw(result.value);
+      console.log('existingData loaded b',existingData, dialogFields);
+      dialogFieldsConfig.value.dialogFields = {
+        dialogFields: addLinkDialogFields,
+        name: 'Fields'
+      };
+
+      //dialogFieldsConfig.value.dialogFields = dialogFields;
+//      dialogFieldsConfig.value.existingData = existingData;
+      dialogFieldsData.value = existingData;
+      //     dialogData = existingData;
+//    reloadDialogFields+=1;
+
+    })
+  }else{
+    debugger;
+    existingData = toRaw(result.value);
+    console.log('existingData loaded',existingData);
+    //dialogFieldsConfig.value.dialogFields = addLingDialogFields;
+//    dialogFieldsConfig.value.dialogFields = dialogFields;
+//    dialogFieldsConfig.value.existingData = existingData;
+    dialogFieldsConfig.value = {
+      dialogFields: addLinkDialogFields,
+      name: 'Fields'
+    };
+    dialogFieldsData.value = existingData;
+    addActions = getActions('addPageLinks');
+    addActions(funcs);
+
+  }
+  reloadDialogFields.value +=1;
+
+
+}
+
 
 
 const morphs = {
@@ -194,7 +241,9 @@ funcs[c.FIELD_CHANGED]= function(evt){
   console.log('in c.FIELD_CHANGED-', evt);
   debugger;
   dialogData[evt[1]]=evt[2];
-  cmdHandlers['Fields']([c.FIELD_CHANGE_ALERT, [evt[1],evt[2]], "*"]);
+  if(typeof(cmdHandlers['Fields'])!='undefined'){
+    cmdHandlers['Fields']([c.FIELD_CHANGE_ALERT, [evt[1],evt[2]], "*"]);
+  }
   if(typeof(funcs[c.FIELD_CHANGE_EVENT])!='undefined'){
     funcs[c.FIELD_CHANGE_EVENT](evt,emit, dialogData.value);
   }
@@ -205,7 +254,10 @@ funcs[c.CHANGE_MENU_CONFIGURATION]=function(evt){
   menuDefinitions = getDialogParams(evt[1], "menu");
   reloadMenu.value += 1;
 }
-
+funcs[c.UPDATE_DIALOG_DATA]=function(cmd){
+  console.log('in UPDATE_DIALOG_DATA', cmd);
+  dialogData[cmd[1][1]]=cmd[1][2];
+}
 
 funcs[c.MENU_ITEM_SELECTED]= function(evt){
   console.log('in c.-MENU_ITEM_SELECTED', evt);
@@ -223,6 +275,9 @@ funcs[c.ROW_SELECT]= function(evt){
     emit('cevt', evt);
   }
 }
+funcs[c.ADD_SELECTED_LINK]=function(cmd){
+  console.log('in ADD_SELECTED_LINK-', cmd);
+}
 
 
 funcs[c.SAVE_DIALOG_DATA] = function(evt){
@@ -234,6 +289,8 @@ funcs[c.SAVE_DIALOG_DATA] = function(evt){
 }
 funcs[c.MENU_ADD_LINK] = function(evt){
   console.log('MENU_ADD_LINK clicked', evt);
+  changeDialog('addPageLinks');
+/*
   ready.value=false;
   debugger;
   currentDialogDataLoader = getDialogData('addPageLinks');
@@ -276,7 +333,7 @@ funcs[c.MENU_ADD_LINK] = function(evt){
 
   }
   reloadDialogFields.value +=1;
-
+*/
 
 }
 /*
