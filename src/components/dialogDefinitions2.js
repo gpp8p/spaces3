@@ -1015,6 +1015,10 @@ const defs = function(dialogDef){
                             })
 
                         },
+                        funcAddRecord:  function(tableReload, dataToShow, recordToAdd, loaderFunctionsReady, currentTableConfig, componentId){
+
+
+                        }
 
 
                     }
@@ -1127,7 +1131,7 @@ const defs = function(dialogDef){
                     console.log('in editLink dialogData');
                     result.value = {
                         funcReadAllData: function(tableReload, dataToShow, loaderFunctionsReady, currentTableConfig, componentId){
-                            //debugger;
+                            debugger;
                             const {executeTrans} = getTrans();
 
                             const loginResult= toRaw(loginStore.loginStatus);

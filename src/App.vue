@@ -169,7 +169,7 @@ funcs[c.SHOW_DIALOG] = function(evt){
   showDialog.value=true;
 }
 funcs[c.FIELD_CHANGED]= function(evt){
-  console.log('in app FIELD-CHANGED-', evt);
+  console.log('in app FIELD_CHANGED-', evt);
   cmdHandlers['dialog']([c.UPDATE_DIALOG_DATA,evt, "dialog"]);
 }
 funcs[c.LINK_TO_ADD_SELECTED]=function(evt){

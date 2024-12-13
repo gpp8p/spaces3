@@ -157,6 +157,7 @@ const passCmdDown = function(args){
 }
 
 const changeDialog = function(dialogDefinition){
+  console.log('changeDialogCalled');
   ready.value=false;
   debugger;
   currentDialogDataLoader = getDialogData(dialogDefinition);
@@ -198,6 +199,7 @@ const changeDialog = function(dialogDefinition){
     addActions(funcs);
 
   }
+  dialogFieldsData.value.id = props.config.id;
   reloadDialogFields.value +=1;
 
 
@@ -276,7 +278,15 @@ funcs[c.ROW_SELECT]= function(evt){
   }
 }
 funcs[c.ADD_SELECTED_LINK]=function(cmd){
-  console.log('in ADD_SELECTED_LINK-', cmd);
+  debugger;
+
+
+  console.log('in ADD_SELECTED_LINK-', cmd[1][1]);
+  console.log('card_instance_id-', props.data.id);
+  console.log('login status',store.getLoginStatus);
+  debugger;
+
+  //changeDialog('editLinks');
 }
 
 
