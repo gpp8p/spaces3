@@ -282,8 +282,11 @@ funcs[c.ADD_SELECTED_LINK]=function(cmd){
 
 
   console.log('in ADD_SELECTED_LINK-', cmd[1][1]);
-  console.log('card_instance_id-', props.data.id);
-  console.log('login status',store.getLoginStatus);
+  console.log('card_instance_id-', dialogData.id);
+  console.log('selected layout', cmd[1][1].id);
+  console.log('description', cmd[1][1].description);
+  console.log('menu label', cmd[1][1].menu_label);
+
   debugger;
 
   //changeDialog('editLinks');

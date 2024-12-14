@@ -10,7 +10,7 @@ import {useCurrentPage} from "../stores/currentPage.js";
 const emit = defineEmits(['cevt']);
 
 export function getLinkFunctions(){
-    const addNewLink = function (cardInstanceId, description, menu_label){
+    const addNewLink = function (selectedLayout,cardInstanceId,  layoutId, description, menuLabel){
         const {executeTrans} = getTrans();
         const loginStore = useLogStateStore();
         const loginResult= toRaw(loginStore.loginStatus);
@@ -18,8 +18,11 @@ export function getLinkFunctions(){
         const dataReady = ref(false);
         const transResult = ref({});
         const parms = {
-            cardId:cardInstanceId,
-            org_id: loginResult.orgId
+            card_instance_id: cardInstanceId,
+            org_id: loginResult.org_id,
+            layout_id: layoutId,
+            description: description,
+            layout_link_to: selectedLayout
         }
         executeTrans(parms, c.ALL_PAGES,  c.API_PATH+'api/shan/addNewLink?XDEBUG_SESSION_START=19884', 'GET', emit, c, header, dataReady, transResult);
         whenever(dataReady, () => {
