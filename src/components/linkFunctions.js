@@ -9,9 +9,13 @@ import {useLogStateStore} from "../stores/logState.js";
 import {useCurrentPage} from "../stores/currentPage.js";
 const emit = defineEmits(['cevt']);
 
+//const pageStore = useCurrentPage();
+
 export function getLinkFunctions(){
-    const addNewLink = function (selectedLayout,cardInstanceId,  layoutId, description, menuLabel){
+    const addNewLink = function (selectedLayout,cardInstanceId,  description){
+        debugger;
         const {executeTrans} = getTrans();
+        const pageStore = useCurrentPage();
         const loginStore = useLogStateStore();
         const loginResult= toRaw(loginStore.loginStatus);
         const header = loginResult.access_token;
@@ -19,19 +23,19 @@ export function getLinkFunctions(){
         const transResult = ref({});
         const parms = {
             card_instance_id: cardInstanceId,
-            org_id: loginResult.org_id,
-            layout_id: layoutId,
+            org_id: loginResult.orgId,
+            layout_id: pageStore.getCurrentPageId,
             description: description,
-            layout_link_to: selectedLayout
+            layout_link_to: selectedLayout,
+            is_external:0,
+            type:'U',
+            addInsert:'add',
+            insertPoint:0,
+            linkUrl:'http://localhost:8080'
         }
-        executeTrans(parms, c.ALL_PAGES,  c.API_PATH+'api/shan/addNewLink?XDEBUG_SESSION_START=19884', 'GET', emit, c, header, dataReady, transResult);
+        executeTrans(parms, c.ALL_PAGES,  c.API_PATH+'api/shan/addNewLink?XDEBUG_SESSION_START=19884', 'POST', emit, c, header, dataReady, transResult);
         whenever(dataReady, () => {
-            debugger;
-//          try a call to getLinks here or just notify that insert has been successful ???
-
-
-
-            emit('cevt', [c.FIELD_CHANGED, 'currentLinks', toRaw(dataToShow.value)]);
+            emit('cevt', [c.SET_DIALOG, 'editLinks']);
             debugger;
 
         })

@@ -58,10 +58,15 @@ import {useLogStateStore} from "../stores/logState.js";
 import {getDialogDefinitions} from "../components/dialogDefinitions2.js";
 
 
+
+
 const {getDialogAppearence, getDialogFields, getDefaultData, getDialogData, getMenuDefinitions, getActions, getDialogParams} = getDialogDefinitions();
 const dialogFields = getDialogFields(props.config.definition);
 //const dialogFields = getDialogFields('loginDialog');
 console.log('dialogFields-',dialogFields);
+
+import {getLinkFunctions} from "../components/linkFunctions.js";
+const {addNewLink, getLinks, deleteLink} = getLinkFunctions();
 
 const dialogAppearence = getDialogAppearence(props.config.definition);
 var menuDefinitions = getMenuDefinitions(props.config.definition);
@@ -286,12 +291,16 @@ funcs[c.ADD_SELECTED_LINK]=function(cmd){
   console.log('selected layout', cmd[1][1].id);
   console.log('description', cmd[1][1].description);
   console.log('menu label', cmd[1][1].menu_label);
-
-  debugger;
+  addNewLink(cmd[1][1].id,dialogData.id, cmd[1][1].description);
+  changeDialog('editLinks');
+  //debugger;
 
   //changeDialog('editLinks');
 }
-
+funcs[c.SET_DIALOG] = function(cmd){
+  console.log('in SET_DIALOG-', cmd);
+  // changeDialog(cmd[1]);
+}
 
 funcs[c.SAVE_DIALOG_DATA] = function(evt){
   debugger;
