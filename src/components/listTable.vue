@@ -41,6 +41,8 @@ import Pager from "../components/Pager.vue";
 import { watch } from 'vue'
 import {getLoaders} from '../components/ltLoader.js';
 import { toRaw} from 'vue'
+import {getAppearanceConfigs}  from "../components/cardAppearence.js";
+const {loadCardAppearanceConfigs, saveCardAppearanceConfigs, createCard, twListTableHeight} = getAppearanceConfigs();
 
 const {handleEvent} = useEventHandler();
 const emit = defineEmits(['cevt']);
@@ -254,8 +256,17 @@ onMounted(() => {
     currentRowPointer.value = 0;
   }else{
     debugger;
-    props.data.funcReadAllData(tableReload, dataToShow, loaderFunctionsReady, currentTableConfig, props.data.id);
-    console.log('dataToShow---',dataToShow.value);
+    if(typeof(props.data.dataToShow)!='undefined'){
+      var dta =toRaw(props.data.dataToShow);
+      dataToShow.value=dta;
+      currentTableConfig.value.rowsToShow = toRaw(dataToShow.value).length;
+      loaderFunctionsReady.value=true;
+    }else{
+      console.log('mounting listTable=',props.data);
+      props.data.funcReadAllData(tableReload, dataToShow, loaderFunctionsReady, currentTableConfig, props.data.id);
+      console.log('dataToShow---',dataToShow.value);
+    }
+
 
     //emit('cevt', [c.FIELD_CHANGED, 'currentLinks', toRaw(dataToShow.value)]);
     tableReload.value+=1;

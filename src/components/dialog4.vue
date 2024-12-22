@@ -190,8 +190,11 @@ const changeDialog = function(dialogDefinition){
     })
   }else{
     debugger;
+    console.log('dialogFieldsData typoeof',typeof(dialogFieldsData.value));
     existingData = toRaw(result.value);
-    console.log('existingData loaded',existingData);
+    console.log('existingData loaded--',existingData);
+    console.log('dialogFieldsData loaded--',toRaw(dialogFieldsData.value.dataToShow));
+    //console.log('typeof dialogFieldsData.value.dataToShow',typeof(toRaw(dialogFieldsData.value.dataToShow)));
     //dialogFieldsConfig.value.dialogFields = addLingDialogFields;
 //    dialogFieldsConfig.value.dialogFields = dialogFields;
 //    dialogFieldsConfig.value.existingData = existingData;
@@ -199,7 +202,17 @@ const changeDialog = function(dialogDefinition){
       dialogFields: addLinkDialogFields,
       name: 'Fields'
     };
-    dialogFieldsData.value = existingData;
+    console.log('existing data at dialogData 204', existingData);
+//    dialogFieldsData.value = existingData;
+    console.log('typeof dialogFieldsData.value.dataToShow',typeof(toRaw(dialogFieldsData.value.dataToShow)));
+    var ds = toRaw(dialogFieldsData.value.dataToShow);
+    console.log('ds is', ds, typeof(ds));
+    if(typeof(ds)!='undefined'){
+      dialogFieldsData.value.dataToShow = toRaw(dialogFieldsData.value.dataToShow);
+    }else{
+      dialogFieldsData.value = existingData;
+    }
+
     addActions = getActions('addPageLinks');
     addActions(funcs);
 
@@ -291,11 +304,27 @@ funcs[c.ADD_SELECTED_LINK]=function(cmd){
   console.log('selected layout', cmd[1][1].id);
   console.log('description', cmd[1][1].description);
   console.log('menu label', cmd[1][1].menu_label);
-  addNewLink(cmd[1][1].id,dialogData.id, cmd[1][1].description);
-  changeDialog('editLinks');
+  const loginStore = useLogStateStore();
+  const loginResult= toRaw(loginStore.loginStatus);
+
+  var newLink = {
+    description:cmd[1][1].description,
+    orgId:loginResult.orgId,
+    isExternal:0,
+    layout_link_to:cmd[1][1].id,
+    link_url:'https://localhost:8080',
+    show_order:dialogData.currentLinks.length + 1,
+    type:'U',
+    id:0
+  }
+  dialogData.currentLinks.push(newLink);
+  dialogFieldsData.value.dataToShow=dialogData.currentLinks;
+  //dialogData.currentLinks
+  //addNewLink(cmd[1][1].id,dialogData.id, cmd[1][1].description);
+  //changeDialog('editLinks');
   //debugger;
 
-  //changeDialog('editLinks');
+  changeDialog('editLinks');
 }
 funcs[c.SET_DIALOG] = function(cmd){
   console.log('in SET_DIALOG-', cmd);

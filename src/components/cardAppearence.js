@@ -362,7 +362,31 @@ export function getAppearanceConfigs(){
 
 
     }
+    const twListTableHeight= function(currentTwBody, currentSelectSize, currentDataToShow ){
+        if(currentDataToShow.length<parseInt(currentSelectSize)){
+            //console.log('shortTable-',dataToShow.value.length);
+            var rowsShort = (parseInt(currentSelectSize)-currentDataToShow.length);
+            switch(rowsShort){
+                case 5:{
+                    return currentTwBody+'max-h-10'
+                }
+                case 4: {
+                    return currentTwBody+'max-h-14'
+                }
+                case 3:{
+                    return currentTwBody+'max-h-20'
+                }
+                case 2:{
+                    return currentTwBody+'max-h-24'
+                }
+                case 1:{
+                    return currentTwBody+'max-h-44'
+                }
+            }
+        }
+
+    }
 
 
-    return {loadCardAppearanceConfigs, saveCardAppearanceConfigs, createCard}
+    return {loadCardAppearanceConfigs, saveCardAppearanceConfigs, createCard, twListTableHeight}
 }

@@ -58,6 +58,7 @@ console.log("twhead-", props.config.twhead);
 //if(typeof(props.config.value)=='function'){
 //  fieldValue.value = props.config.value(props.data);
 //}
+debugger;
 fieldValue.value = props.data;
 console.log('columns--', props.config.columns);
 console.log('props.data', props.data);
@@ -74,25 +75,32 @@ for(var r = props.config.rowStart; r<(props.config.rowStart+props.config.rowsToS
     console.log('cols--', props.config.columns[cols].field);
     console.log('fieldValue--', fieldValue.value);
     console.log('fieldValue.value[r]', fieldValue.value[r], r, props.config.rowStart, props.config.rowStart+props.config.rowsToShow);
-    console.log('field content-',fieldValue.value[r][props.config.columns[cols].field]);
+    var thisFieldValue = fieldValue.value[r];
+    var thisFieldIndex = props.config.columns[cols].field;
+    debugger;
+    console.log('fieldContent 2', thisFieldValue[thisFieldIndex]);
+    //console.log('field content-',fieldValue.value[r][props.config.columns[cols].field]);
 //    debugger;
+
     var filteredCell= {
-      value:fieldValue.value[r][props.config.columns[cols].field],
+      //value:fieldValue.value[r][props.config.columns[cols].field],
+      value: thisFieldValue[thisFieldIndex],
       css: props.config.columns[cols].twtd,
     }
     if(props.config.columns[cols].visible){
 //      filteredRow.push(fieldValue.value[r][props.config.columns[cols].field]);
+      //debugger;
       filteredRow.push(filteredCell);
     }
   }
   console.log('filteredRow', filteredRow);
   filteredData.value.push(filteredRow);
 }
-console.log('filteredData-', filteredData);
+console.log('filteredData 2-', filteredData);
 
 const handleCmd = function(args){
   console.log('handleCmd-', name, args);
-  debugger;
+  //debugger;
   if(name==args[2] || args[2]=='*') {
     if(typeof(funcs[args[0]])!='undefined'){
       console.log('Found func-', args[1]);
@@ -129,7 +137,7 @@ const rowSelected = function(rowIndex){
 }
 
 onMounted(() => {
-  debugger;
+  //debugger;
   emit('cevt', [c.SET_CMD_HANDLER, handleCmd, name]);
 //  console.log("columns-", props.config[props.config.name].columns);
 })
