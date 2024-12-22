@@ -260,6 +260,7 @@ onMounted(() => {
       var dta =toRaw(props.data.dataToShow);
       dataToShow.value=dta;
       currentTableConfig.value.rowsToShow = toRaw(dataToShow.value).length;
+      props.config.twbody = twListTableHeight(props.config.twbody_base, props.config.selectSize, currentTableConfig.value.rowsToShow )
       loaderFunctionsReady.value=true;
     }else{
       console.log('mounting listTable=',props.data);
