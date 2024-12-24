@@ -1046,6 +1046,8 @@ const defs = function(dialogDef){
                         emit('cevt', [c.LINK_TO_ADD_SELECTED, resolvedData]);
                         //                      return dataToShow.value[evt[1]];
                     }
+
+
                 },
                 // the menu displayed at the bottom of the dialog
                 menuDefs:{
@@ -1202,6 +1204,7 @@ const defs = function(dialogDef){
                     items: [
                         { type: 'menuItem', config: { label: 'Cancel', actionCode: c.MENU_EXIT_DIALOG } },
                         { type: 'menuItem', config: { label: 'Add Link', actionCode: c.MENU_ADD_LINK } },
+                        { type: 'menuItem', config: { label: 'Save', actionCode: c.SAVE_DIALOG_DATA} },
                     ],
                 },
             }

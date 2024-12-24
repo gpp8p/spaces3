@@ -34,7 +34,7 @@ import {useEventHandler} from "./eventHandler.js";
 
 import {ref} from 'vue';
 import {toRaw} from 'vue'
-
+/*
 import inputText from "../components/inputText.vue";
 import inputNumber from "../components/inputNumber.vue"
 import inputCheckbox from "../components/inputCheckbox.vue"
@@ -47,7 +47,7 @@ import htmlPasswordInput from '../components/htmlPasswordInput.vue';
 import textLiteral from "../components/textLiteral.vue";
 import borderPicker from "../components/borderPicker.vue";
 import fontPicker from "../components/fontPicker.vue";
-
+*/
 
 
 import dynamicMenu from '../components/menu3.vue';
@@ -223,8 +223,8 @@ const changeDialog = function(dialogDefinition){
 
 }
 
-
-
+// don't really need this because all the specific field components are handled in DialogFields
+/*
 const morphs = {
   inputText,
   inputNumber,
@@ -239,7 +239,7 @@ const morphs = {
   borderPicker,
   fontPicker
 }
-
+*/
 
 
 
@@ -295,6 +295,7 @@ funcs[c.ROW_SELECT]= function(evt){
     emit('cevt', evt);
   }
 }
+
 funcs[c.ADD_SELECTED_LINK]=function(cmd){
   debugger;
 
@@ -341,66 +342,9 @@ funcs[c.SAVE_DIALOG_DATA] = function(evt){
 funcs[c.MENU_ADD_LINK] = function(evt){
   console.log('MENU_ADD_LINK clicked', evt);
   changeDialog('addPageLinks');
-/*
-  ready.value=false;
-  debugger;
-  currentDialogDataLoader = getDialogData('addPageLinks');
-  currentDialogDataLoader(emit, c, store, ready, result, props.config);
-  const addLinkDialogFields = getDialogFields('addPageLinks');
-  console.log('dialogFields-', addLinkDialogFields);
-  debugger;
-  console.log('loader ready b',ready);
-  if(ready.value==false){
-    whenever(ready, () => {
-      debugger;
-      existingData = toRaw(result.value);
-      console.log('existingData loaded b',existingData, dialogFields);
-      dialogFieldsConfig.value.dialogFields = {
-        dialogFields: addLinkDialogFields,
-        name: 'Fields'
-      };
-
-      //dialogFieldsConfig.value.dialogFields = dialogFields;
-//      dialogFieldsConfig.value.existingData = existingData;
-      dialogFieldsData.value = existingData;
-      //     dialogData = existingData;
-//    reloadDialogFields+=1;
-
-    })
-  }else{
-    debugger;
-    existingData = toRaw(result.value);
-    console.log('existingData loaded',existingData);
-    //dialogFieldsConfig.value.dialogFields = addLingDialogFields;
-//    dialogFieldsConfig.value.dialogFields = dialogFields;
-//    dialogFieldsConfig.value.existingData = existingData;
-    dialogFieldsConfig.value = {
-      dialogFields: addLinkDialogFields,
-      name: 'Fields'
-    };
-    dialogFieldsData.value = existingData;
-    addActions = getActions('addPageLinks');
-    addActions(funcs);
-
-  }
-  reloadDialogFields.value +=1;
-*/
-
 }
-/*
-funcs[c.CREATE_CARD] = function(evt){
-  var mergedData = mergeDialogFields(dialogData, toRaw(dialogFieldsData.value));
-  mergedData.cardId = props.config.id;
-  console.log('mergedDialogData', mergedData);
-}
-*/
-//debugger;
 addActions(funcs);
-/*
-funcs[c.MENU_ITEM_SELECTED] = function(evt){
-  console.log('menu item selected', evt);
-}
-*/
+
 
 const mergeDialogFields = function(dialogData, dialogFieldsData) {
   // Create a copy of dialogData to avoid modifying the original
