@@ -163,9 +163,22 @@ funcs[c.EXIT_EDIT_MODE] = function(evt){
 }
 funcs[c.SHOW_DIALOG] = function(evt){
   console.log('in SHOW_DIALOG-', evt);
-  dialogConfig.definition = evt[1];
-  dialogConfig.id = evt[2];
+  if(typeof(evt[1])!="undefined"){
+    dialogConfig.definition = evt[1];
+  }
+  if(typeof(evt[2])!="undefined"){
+    dialogConfig.id = evt[2];
+  }
   dialogConfig.layoutId = pageStore.getCurrentPageId;
+  if(typeof(evt[3])!="undefined"){
+    dialogConfig.cardName = evt[3];
+  }
+  if(typeof(evt[4])!="undefined"){
+    dialogConfig.title = evt[4];
+  }
+  if(typeof(evt[5])!="undefined"){
+    dialogConfig.orient = evt[5];
+  }
   showDialog.value=true;
 }
 funcs[c.FIELD_CHANGED]= function(evt){

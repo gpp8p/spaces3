@@ -1198,6 +1198,35 @@ const defs = function(dialogDef){
                         //                      const emit = defineEmits(['cevt']);
                         emit('cevt',[c.EXIT_DIALOG])
                     }
+                    currentFuncs[c.MENU_SAVE_DIALOG_DATA]=function(emit, dialogData, dialogConfig){
+                        console.log('in MENU_SAVE_DIALOG_DATA', dialogData, dialogConfig);
+                        debugger;
+                        const store = useLogStateStore();
+                        const pageStore = useCurrentPage();
+                        const ready = ref(false);
+                        const result = ref({});
+                        const loginResult= toRaw(store.loginStatus)
+                        console.log('store.loginResult', loginResult);
+                        console.log('page configs in save links-', pageStore.getCurrentPageId, pageStore.getCurrentPagePerms);
+                        const {executeTrans} = getTrans();
+                        const header = loginResult.access_token;
+                        const dataReady = ref(false);
+                        const transResult = ref({});
+                        var jsonLinks = JSON.stringify(dialogData.currentLinks);
+
+                        const params = {
+                            allLinks: jsonLinks,
+                            card_instance_id: dialogConfig.id,
+                            org_id: loginResult.orgId,
+                            layout_id: dialogConfig.layoutId,
+                            orient: dialogConfig.orient,
+                            cardTitle: dialogConfig.cardTitle,
+
+                        }
+                        console.log('params in save links-', params);
+
+
+                    }
                 },
                 menuDefs:{
                     twStyling:'text-xs text-blue-500 w-[100%]',

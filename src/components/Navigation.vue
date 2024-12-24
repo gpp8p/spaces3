@@ -99,7 +99,7 @@ funcs[c.CARD_MENU_SELECTED] = function(cmd){
       break;
     }
     case c.CARD_MENU_EDIT:{
-      emit('cevt', [c.SHOW_DIALOG, 'editLinks', props.config.id]);
+      emit('cevt', [c.SHOW_DIALOG, 'editLinks', props.config.id, props.config.content.card_name, props.config.content.linkMenuTitle, props.config.content.orient]);
       break;
     }
   }
