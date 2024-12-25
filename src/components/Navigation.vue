@@ -99,7 +99,14 @@ funcs[c.CARD_MENU_SELECTED] = function(cmd){
       break;
     }
     case c.CARD_MENU_EDIT:{
-      emit('cevt', [c.SHOW_DIALOG, 'editLinks', props.config.id, props.config.content.card_name, props.config.content.linkMenuTitle, props.config.content.orient]);
+      var configPackage = {
+        definition: 'editLinks',
+        cardId: props.config.id,
+        cardName:props.config.content.card_name,
+        cardTitle:props.config.content.linkMenuTitle,
+        orient:props.config.content.orient
+      }
+      emit('cevt', [c.SHOW_DIALOG, 'editLinks',  configPackage]);
       break;
     }
   }

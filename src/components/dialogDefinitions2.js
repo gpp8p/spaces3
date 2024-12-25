@@ -1223,6 +1223,15 @@ const defs = function(dialogDef){
                             cardTitle: dialogConfig.cardTitle,
 
                         }
+
+                        executeTrans(parms, c.CHANGE_LAYOUT,  c.API_PATH+'api/shan/updateCardLinks?XDEBUG_SESSION_START=19884', 'POST', emit, c, header, dataReady, transResult);
+                        whenever(dataReady, () => {
+                            //debugger;
+                            console.log('update completed-', transResult._rawValue);
+
+                        })
+
+
                         console.log('params in save links-', params);
 
 

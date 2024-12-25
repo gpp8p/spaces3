@@ -166,19 +166,20 @@ funcs[c.SHOW_DIALOG] = function(evt){
   if(typeof(evt[1])!="undefined"){
     dialogConfig.definition = evt[1];
   }
-  if(typeof(evt[2])!="undefined"){
-    dialogConfig.id = evt[2];
+  if(typeof(evt[2].cardId)!="undefined"){
+    dialogConfig.id = evt[2].cardId;
   }
   dialogConfig.layoutId = pageStore.getCurrentPageId;
-  if(typeof(evt[3])!="undefined"){
-    dialogConfig.cardName = evt[3];
+  if(typeof(evt[2].cardName)!="undefined"){
+    dialogConfig.cardName = evt[2].cardName;
   }
-  if(typeof(evt[4])!="undefined"){
-    dialogConfig.title = evt[4];
+  if(typeof(evt[2].cardName)!="undefined"){
+    dialogConfig.cardTitle = evt[2].cardTitle;
   }
-  if(typeof(evt[5])!="undefined"){
-    dialogConfig.orient = evt[5];
+  if(typeof(evt[2].orient)!="undefined"){
+    dialogConfig.orient = evt[2].orient;
   }
+  console.log('in SHOW_DIALOG dialogConfig', dialogConfig);
   showDialog.value=true;
 }
 funcs[c.FIELD_CHANGED]= function(evt){
