@@ -1214,7 +1214,7 @@ const defs = function(dialogDef){
                         const transResult = ref({});
                         var jsonLinks = JSON.stringify(dialogData.currentLinks);
 
-                        const params = {
+                        const parms = {
                             allLinks: jsonLinks,
                             card_instance_id: dialogConfig.id,
                             org_id: loginResult.orgId,
@@ -1223,7 +1223,7 @@ const defs = function(dialogDef){
                             cardTitle: dialogConfig.cardTitle,
 
                         }
-
+                        debugger;
                         executeTrans(parms, c.CHANGE_LAYOUT,  c.API_PATH+'api/shan/updateCardLinks?XDEBUG_SESSION_START=19884', 'POST', emit, c, header, dataReady, transResult);
                         whenever(dataReady, () => {
                             //debugger;
