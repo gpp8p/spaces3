@@ -82,6 +82,9 @@ dialogFieldsConfig.value.name='Fields';
 if(typeof(props.config.id)!='undefined'){
   dialogFieldsConfig.value.id=props.config.id;
 }
+if(typeof(props.config.orient)!='undefined'){
+  dialogFieldsData.value.orient=props.config.orient
+}
 const store = useLogStateStore();
 const ready = ref(false);
 const result = ref({});
@@ -123,6 +126,9 @@ if(typeof(currentDialogDataLoader)=='function'){
 
 
 dialogFieldsData.value.id = props.config.id;
+if(typeof(props.config.orient)!='undefined'){
+  dialogFieldsData.value.orient=props.config.orient
+}
 //const dialogFieldsConfig = ref({});
 
 //debugger;

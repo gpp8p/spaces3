@@ -99,12 +99,25 @@ funcs[c.CARD_MENU_SELECTED] = function(cmd){
       break;
     }
     case c.CARD_MENU_EDIT:{
+      var cardOrient;
+      if(cmd[1].type=='Headline'){
+        cardOrient = 'horozontal';
+      }
+      if(cmd[1].type=='NavigationMenu'){
+        cardOrient = 'vertical';
+      }
+      var title;
+      if(typeof(props.config.content.linkMenuTitle)=='undefined'){
+        title=props.config.content.card_name;
+      }else{
+        title=props.config.content.linkMenuTitle;
+      }
       var configPackage = {
         definition: 'editLinks',
         cardId: props.config.id,
         cardName:props.config.content.card_name,
-        cardTitle:props.config.content.linkMenuTitle,
-        orient:props.config.content.orient
+        cardTitle:title,
+        orient:cardOrient
       }
       emit('cevt', [c.SHOW_DIALOG, 'editLinks',  configPackage]);
       break;
