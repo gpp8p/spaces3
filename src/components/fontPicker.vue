@@ -207,6 +207,7 @@ funcs[c.FIELD_CHANGED]=function(evt){
   debugger;
   console.log('fopntPicker field changed', evt);
   fieldValue.value[evt[1]]=evt[2];
+  emit('cevt', [c.FIELD_CHANGED, props.config.name, fieldValue.value]);
 }
 
 funcs[c.FIELD_CHANGE_ALERT]=function(cmd){

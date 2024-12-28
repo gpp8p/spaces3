@@ -168,6 +168,8 @@ funcs[c.SHOW_DIALOG] = function(evt){
   }
   if(typeof(evt[2].cardId)!="undefined"){
     dialogConfig.id = evt[2].cardId;
+  }else{
+    dialogConfig.id = evt[2];
   }
   dialogConfig.layoutId = pageStore.getCurrentPageId;
   if(typeof(evt[2].cardName)!="undefined"){
