@@ -1039,7 +1039,7 @@ const defs = function(dialogDef){
                     }
 
  */
-                    currentFuncs[c.RESOLVE_DATA]=function(dialogFields, evt, emit){
+                    currentFuncs[c.RESOLVE_DATA]=function(dialogFields, evt, emit, dialogData){
                         debugger;
                         var resolvedData = dialogFields[0].dataToShow[evt[1]];
                         console.log('add link to list', resolvedData);
@@ -1235,6 +1235,11 @@ const defs = function(dialogDef){
                         console.log('params in save links-', params);
 
 
+                    }
+                    currentFuncs[c.RESOLVE_DATA]=function(dialogFields, evt, emit, dialogData){
+                        debugger;
+                        //var resolvedData = dialogFields[0].dataToShow[evt[1]];
+                        console.log('editLinks item clicked', dialogData.currentLinks[evt[1]]);
                     }
                 },
                 menuDefs:{
@@ -1464,7 +1469,7 @@ const defs = function(dialogDef){
 //  f
                     }
 */
-                    currentFuncs[c.RESOLVE_DATA]=function(dialogFields, evt, emit){
+                    currentFuncs[c.RESOLVE_DATA]=function(dialogFields, evt, emit, dialogData){
                         debugger;
                         var resolvedData = dialogFields[0].dataToShow[evt[1]].id;
                         emit('cevt', [c.CHANGE_LAYOUT, resolvedData]);

@@ -295,7 +295,7 @@ funcs[c.ROW_SELECT]= function(evt){
   debugger;
   if(typeof(funcs[c.RESOLVE_DATA])!='undefined'){
     console.log('dialogFieldsConfig.value', toRaw(dialogFieldsConfig.value).dialogFields);
-    var resolvedData = funcs[c.RESOLVE_DATA](toRaw(dialogFieldsConfig.value).dialogFields,evt, emit);
+    var resolvedData = funcs[c.RESOLVE_DATA](toRaw(dialogFieldsConfig.value).dialogFields,evt, emit, dialogData);
 //    emit('cevt', [c.CHANGE_LAYOUT, resolvedData]);
   }else{
     emit('cevt', evt);
@@ -320,6 +320,7 @@ funcs[c.ADD_SELECTED_LINK]=function(cmd){
     isExternal:0,
     layout_link_to:cmd[1][1].id,
     link_url:'https://localhost:8080',
+    menu_label: cmd[1][1].menu_label,
     show_order:dialogData.currentLinks.length + 1,
     type:'U',
     id:0
