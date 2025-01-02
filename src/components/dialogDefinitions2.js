@@ -1115,6 +1115,15 @@ const defs = function(dialogDef){
                                     twheadth:'py-2 pl-3.5 w-1/6'
                                 },
                                 {
+                                    field: 'menu_label',
+                                    label: 'Name',
+                                    width: '25%',
+                                    numeric: false,
+                                    visible: true,
+                                    twtd:'py-2 pl-3.5 w-1/6',
+                                    twheadth:'py-2 pl-3.5 w-1/6'
+                                },
+                                {
                                     field: 'description',
                                     label: 'Description',
                                     width: '30%',
@@ -1144,7 +1153,7 @@ const defs = function(dialogDef){
                             const parms = {
                                 cardId:componentId,
                             }
-                            executeTrans(parms, c.ALL_PAGES,  c.API_PATH+'api/shan/getLinks?XDEBUG_SESSION_START=19884', 'GET', emit, c, header, dataReady, transResult);
+                            executeTrans(parms, c.ALL_PAGES,  c.API_PATH+'api/shan/getLinkInfo?XDEBUG_SESSION_START=19884', 'GET', emit, c, header, dataReady, transResult);
                             whenever(dataReady, () => {
                                 debugger;
                                 console.log('fundReadAllData completed-', transResult._rawValue, currentTableConfig);
@@ -1240,6 +1249,8 @@ const defs = function(dialogDef){
                         debugger;
                         //var resolvedData = dialogFields[0].dataToShow[evt[1]];
                         console.log('editLinks item clicked', dialogData.currentLinks[evt[1]]);
+                        emit('cevt',[c.EDIT_SELECTED_LINK, dialogData.currentLinks[evt[1]]]);
+
                     }
                 },
                 menuDefs:{

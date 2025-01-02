@@ -301,6 +301,9 @@ funcs[c.ROW_SELECT]= function(evt){
     emit('cevt', evt);
   }
 }
+funcs[c.EDIT_SELECTED_LINK]= function(cmd){
+  console.log('in EDIT_SELECTED_LINK-', cmd);
+}
 
 funcs[c.ADD_SELECTED_LINK]=function(cmd){
   debugger;
