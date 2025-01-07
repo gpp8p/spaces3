@@ -834,6 +834,8 @@ const defs = function(dialogDef){
             }
         }
 
+
+
         case 'addPageLinks':{
             return {
                 dialogAppearence: {
@@ -1039,7 +1041,7 @@ const defs = function(dialogDef){
                     }
 
  */
-                    currentFuncs[c.RESOLVE_DATA]=function(dialogFields, evt, emit, dialogData){
+                    currentFuncs[c.RESOLVE_DATA]=function(dialogFields, evt, emit, dialogData, dialogFieldsData){
                         debugger;
                         var resolvedData = dialogFields[0].dataToShow[evt[1]];
                         console.log('add link to list', resolvedData);
@@ -1059,7 +1061,66 @@ const defs = function(dialogDef){
             }
         }
 
+        case 'editThisLink':{
+            return {
+                dialogAppearence: {
+                    twPrompt: 'text-lg text-current ml-[30%] my-[5%]',
+                    prompt: 'Test Dialog',
+                    twstyle:"fixed w-[50%] h-auto p-[2%] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-200 rounded border-2 border-blue-500 shadow-xl shadow-black",
+                },
+                dialogFields :[
+                    {
+                        name: 'menu_label',
+                        type: 'inputText',
+                        ref: 'menu_label',
+                        value: function(existingData){
+                            //debugger;
+                            return existingData.menu_label;
+                        },
+                        required: true,
+                        size: '32',
+                        maxlength: '32',
+                        startFocus: true,
+                        label: "Label"
+                    },
+                    {
+                        name: 'description',
+                        type: 'inputText',
+                        ref: 'description',
+                        value: function(existingData){
+                            //debugger;
+                            return existingData.description;
+                        },
+                        required: true,
+                        size: '50',
+                        maxlength: '255',
+                        startFocus: false,
+                        label: "Descripti0on"
+                    },
 
+                ],
+                menuDefs:{
+                    twStyling:'text-xs text-blue-500 w-[100%]',
+                    items: [
+                        { type: 'menuItem', config: { label: 'Cancel', actionCode: c.MENU_EXIT_DIALOG } },
+                        { type: 'menuItem', config: { label: 'Save', actionCode: c.MENU_SAVE_DIALOG_DATA} },
+                    ],
+                },
+
+                defaultData:{
+
+                },
+                addActions:function(currentFuncs) {
+                    currentFuncs[c.MENU_EXIT_DIALOG]=function(emit, dialogData){
+                        //debugger;
+                        console.log('new func exit dialog');
+                        //const emit = defineEmits(['cevt']);
+                        emit('cevt',[c.EXIT_DIALOG])
+                    }
+                }
+            }
+            break;
+        }
         case 'editLinks':{
             return {
                 dialogAppearence: {
@@ -1245,11 +1306,15 @@ const defs = function(dialogDef){
 
 
                     }
-                    currentFuncs[c.RESOLVE_DATA]=function(dialogFields, evt, emit, dialogData){
+                    currentFuncs[c.RESOLVE_DATA]=function(dialogFields, evt, emit, dialogData, dialogFieldsData){
                         debugger;
                         //var resolvedData = dialogFields[0].dataToShow[evt[1]];
                         console.log('editLinks item clicked', dialogData.currentLinks[evt[1]]);
-                        emit('cevt',[c.EDIT_SELECTED_LINK, dialogData.currentLinks[evt[1]]]);
+                        //emit('cevt',[c.EDIT_SELECTED_LINK, dialogData.currentLinks[evt[1]]]);
+                        dialogData.selectedLinkIndex = evt[1];
+                        dialogFieldsData.value.selectedLink = dialogData.currentLinks[evt[1]];
+                        emit('cevt',[c.SET_DIALOG, dialogData.currentLinks[evt[1]], 'editThisLink']);
+
 
                     }
                 },
@@ -1480,7 +1545,7 @@ const defs = function(dialogDef){
 //  f
                     }
 */
-                    currentFuncs[c.RESOLVE_DATA]=function(dialogFields, evt, emit, dialogData){
+                    currentFuncs[c.RESOLVE_DATA]=function(dialogFields, evt, emit, dialogData, dialogFieldsData){
                         debugger;
                         var resolvedData = dialogFields[0].dataToShow[evt[1]].id;
                         emit('cevt', [c.CHANGE_LAYOUT, resolvedData]);

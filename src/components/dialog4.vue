@@ -295,7 +295,7 @@ funcs[c.ROW_SELECT]= function(evt){
   debugger;
   if(typeof(funcs[c.RESOLVE_DATA])!='undefined'){
     console.log('dialogFieldsConfig.value', toRaw(dialogFieldsConfig.value).dialogFields);
-    var resolvedData = funcs[c.RESOLVE_DATA](toRaw(dialogFieldsConfig.value).dialogFields,evt, emit, dialogData);
+    var resolvedData = funcs[c.RESOLVE_DATA](toRaw(dialogFieldsConfig.value).dialogFields,evt, emit, dialogData, dialogFieldsData);
 //    emit('cevt', [c.CHANGE_LAYOUT, resolvedData]);
   }else{
     emit('cevt', evt);
@@ -338,7 +338,9 @@ funcs[c.ADD_SELECTED_LINK]=function(cmd){
   changeDialog('editLinks');
 }
 funcs[c.SET_DIALOG] = function(cmd){
-  console.log('in SET_DIALOG-', cmd);
+  console.log('in dialog4 SET_DIALOG-', cmd);
+  debugger;
+  changeDialog(cmd[3]);
   // changeDialog(cmd[1]);
 }
 
