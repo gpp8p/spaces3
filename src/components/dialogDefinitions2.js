@@ -201,7 +201,7 @@ const defs = function(dialogDef){
                     pageName: "New Page (default)",
                     pageDescription: "New Page Description",
                 },
-                dialogData: function(emit, c, loginStore, ready, result, config) {
+                dialogData: function(emit, c, loginStore, ready, result, config, dialogData) {
  //                   import { createPinia } from 'pinia'
  //                   const pinia = createPinia();
                     debugger;
@@ -391,7 +391,7 @@ const defs = function(dialogDef){
                         { type: 'menuItem', config: { label: 'Update', actionCode: c.SAVE_DIALOG_DATA} },
                     ],
                 },
-                dialogData: function(emit, c, loginStore, ready, result, config){
+                dialogData: function(emit, c, loginStore, ready, result, config, dialogData){
                     const {loadCardAppearanceConfigs, saveCardAppearanceConfigs, createCard, twListTableHeight} = getAppearanceConfigs();
                     loadCardAppearanceConfigs(emit, c, loginStore, ready, result, config);
                 },
@@ -755,7 +755,7 @@ const defs = function(dialogDef){
                     pageName: "New Page (default)",
                     pageDescription: "New Page Description",
                 },
-                dialogData: function(emit, c, loginStore, ready, result, config) {
+                dialogData: function(emit, c, loginStore, ready, result, config, dialogData) {
                     //debugger;
                     result.value = {
                         pageName: '',
@@ -922,7 +922,7 @@ const defs = function(dialogDef){
                         }
                     ],
                 // functions related to loading the data to populate the table
-                dialogData: function(emit, c, loginStore, ready, result, config) {
+                dialogData: function(emit, c, loginStore, ready, result, config, dialogData) {
                     //debugger;
 
                     result.value = {
@@ -1095,16 +1095,26 @@ const defs = function(dialogDef){
                         size: '50',
                         maxlength: '255',
                         startFocus: false,
-                        label: "Descripti0on"
+                        label: "Description"
                     },
 
                 ],
                 menuDefs:{
-                    twStyling:'text-xs text-blue-500 w-[100%]',
+                    twStyling:'text-xs text-blue-500 w-[100%] mt-[10px]',
                     items: [
                         { type: 'menuItem', config: { label: 'Cancel', actionCode: c.MENU_EXIT_DIALOG } },
-                        { type: 'menuItem', config: { label: 'Save', actionCode: c.MENU_SAVE_DIALOG_DATA} },
+                        { type: 'menuItem', config: { label: 'Update', actionCode: c.UPDATE_SELECTED_LINK} },
+                        { type: 'menuItem', config: { label: 'Change Link', actionCode: c.CHANGE_LINK} },
                     ],
+                },
+                dialogData: function(emit, c, loginStore, ready, result, config, dialogData) {
+                    result.value= {
+                        description: dialogData.selectedLink.description,
+                        menu_label: dialogData.selectedLink.menu_label
+                    }
+                    console.log('dialogData is-', dialogData);
+                    ready.value=true;
+
                 },
 
                 defaultData:{
@@ -1116,6 +1126,43 @@ const defs = function(dialogDef){
                         console.log('new func exit dialog');
                         //const emit = defineEmits(['cevt']);
                         emit('cevt',[c.EXIT_DIALOG])
+                    }
+                    currentFuncs[c.UPDATE_SELECTED_LINK]=function(emit, dialogData, dialogConfig){
+                        debugger;
+                        console.log('in UPDATE_SELECTED_LINK', dialogData);
+                        dialogData.currentLinks[dialogData.selectedLinkIndex].description = dialogData.description;
+                        dialogData.currentLinks[dialogData.selectedLinkIndex].menu_label=dialogData.menu_label;
+                        debugger;
+                        const store = useLogStateStore();
+                        const pageStore = useCurrentPage();
+                        const ready = ref(false);
+                        const result = ref({});
+                        const loginResult= toRaw(store.loginStatus)
+                        console.log('store.loginResult', loginResult);
+                        console.log('page configs in save links-', pageStore.getCurrentPageId, pageStore.getCurrentPagePerms);
+                        const {executeTrans} = getTrans();
+                        const header = loginResult.access_token;
+                        const dataReady = ref(false);
+                        const transResult = ref({});
+                        var jsonLinks = JSON.stringify(dialogData.currentLinks);
+
+                        const parms = {
+                            allLinks: jsonLinks,
+                            card_instance_id: dialogConfig.id,
+                            org_id: loginResult.orgId,
+                            layout_id: dialogConfig.layoutId,
+                            orient: dialogConfig.orient,
+                            cardTitle: dialogConfig.cardTitle,
+
+                        }
+                        debugger;
+                        executeTrans(parms, c.CHANGE_LAYOUT,  c.API_PATH+'api/shan/updateCardLinks?XDEBUG_SESSION_START=19884', 'POST', emit, c, header, dataReady, transResult);
+                        whenever(dataReady, () => {
+                            debugger;
+                            console.log('update completed-', transResult._rawValue);
+                            emit('cevt',[c.SET_DIALOG, dialogData.currentLinks, 'editLinks']);
+
+                        })
                     }
                 }
             }
@@ -1200,7 +1247,7 @@ const defs = function(dialogDef){
                             label: "Existing Links"
                         }
                     ],
-                dialogData: function(emit, c, loginStore, ready, result, config){
+                dialogData: function(emit, c, loginStore, ready, result, config, dialogData){
                     console.log('in editLink dialogData');
                     result.value = {
                         funcReadAllData: function(tableReload, dataToShow, loaderFunctionsReady, currentTableConfig, componentId){
@@ -1415,7 +1462,7 @@ const defs = function(dialogDef){
                      }
                 ],
                 // functions related to loading the data to populate the table
-                dialogData: function(emit, c, loginStore, ready, result, config) {
+                dialogData: function(emit, c, loginStore, ready, result, config, dialogData) {
                     //debugger;
 
                     result.value = {

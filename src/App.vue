@@ -212,6 +212,10 @@ funcs[c.SET_DIALOG] = function(evt){
 funcs[c.EDIT_SELECTED_LINK] = function(evt){
   cmdHandlers['dialog']([c.EDIT_SELECTED_LINK, evt[1], "dialog"]);
 }
+funcs[c.UPDATE_SELECTED_LINK] = function(evt){
+  debugger;
+  cmdHandlers['dialog']([c.UPDATE_SELECTED_LINK, evt, "dialog"]);
+}
 
 
 </script>

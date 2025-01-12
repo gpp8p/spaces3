@@ -93,7 +93,7 @@ debugger;
 if(typeof(currentDialogDataLoader)=='function'){
   //debugger;
 
-  currentDialogDataLoader(emit, c, store, ready, result, props.config);
+  currentDialogDataLoader(emit, c, store, ready, result, props.config, dialogData);
   console.log('loader ready',ready);
   if(ready.value==false){
     whenever(ready, () => {
@@ -168,13 +168,13 @@ const passCmdDown = function(args){
 }
 
 const changeDialog = function(dialogDefinition){
-  console.log('changeDialogCalled');
+  console.log('changeDialogCalled', dialogDefinition);
   ready.value=false;
   debugger;
   currentDialogDataLoader = getDialogData(dialogDefinition);
-  currentDialogDataLoader(emit, c, store, ready, result, props.config);
-  const addLinkDialogFields = getDialogFields(dialogDefinition);
-  console.log('dialogFields-', addLinkDialogFields);
+  currentDialogDataLoader(emit, c, store, ready, result, props.config, dialogData);
+  const newDialogFields = getDialogFields(dialogDefinition);
+  console.log('dialogFields-', newDialogFields);
   debugger;
   console.log('loader ready b',ready);
   if(ready.value==false){
@@ -183,7 +183,7 @@ const changeDialog = function(dialogDefinition){
       existingData = toRaw(result.value);
       console.log('existingData loaded b',existingData, dialogFields);
       dialogFieldsConfig.value.dialogFields = {
-        dialogFields: addLinkDialogFields,
+        dialogFields: newDialogFields,
         name: 'Fields'
       };
 
@@ -205,7 +205,7 @@ const changeDialog = function(dialogDefinition){
 //    dialogFieldsConfig.value.dialogFields = dialogFields;
 //    dialogFieldsConfig.value.existingData = existingData;
     dialogFieldsConfig.value = {
-      dialogFields: addLinkDialogFields,
+      dialogFields: newDialogFields,
       name: 'Fields'
     };
     console.log('existing data at dialogData 204', existingData);
@@ -219,10 +219,11 @@ const changeDialog = function(dialogDefinition){
       dialogFieldsData.value = existingData;
     }
 
-    addActions = getActions('addPageLinks');
+    addActions = getActions(dialogDefinition);
     addActions(funcs);
 
   }
+  menuDefinitions = getMenuDefinitions(dialogDefinition);
   dialogFieldsData.value.id = props.config.id;
   reloadDialogFields.value +=1;
 
@@ -288,7 +289,7 @@ funcs[c.UPDATE_DIALOG_DATA]=function(cmd){
 funcs[c.MENU_ITEM_SELECTED]= function(evt){
   console.log('in c.-MENU_ITEM_SELECTED', evt);
   debugger;
-  funcs[evt[1]](emit, dialogData);
+  funcs[evt[1]](emit, dialogData, props.config);
 }
 
 funcs[c.ROW_SELECT]= function(evt){

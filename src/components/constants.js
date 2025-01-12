@@ -55,6 +55,8 @@ export const c = {
     SET_DIALOG:50,
     //CHANGE_DIALOG:51,
     EDIT_SELECTED_LINK:52,
+    UPDATE_SELECTED_LINK: 53,
+    CHANGE_LINK:54,
 
 
 
