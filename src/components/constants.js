@@ -57,6 +57,7 @@ export const c = {
     EDIT_SELECTED_LINK:52,
     UPDATE_SELECTED_LINK: 53,
     CHANGE_LINK:54,
+    EXIT_EDIT_LINK:55,
 
 
 

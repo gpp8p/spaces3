@@ -1345,6 +1345,7 @@ const defs = function(dialogDef){
                         whenever(dataReady, () => {
                             //debugger;
                             console.log('update completed-', transResult._rawValue);
+                            emit('cevt',[c.CHANGE_LAYOUT, pageStore.getCurrentPageId]);
 
                         })
 
@@ -1352,6 +1353,11 @@ const defs = function(dialogDef){
                         console.log('params in save links-', params);
 
 
+                    }
+                    currentFuncs[c.EXIT_EDIT_LINK]=function(emit, dialogData, dialogConfig){
+                        const store = useLogStateStore();
+                        const pageStore = useCurrentPage();
+                        emit('cevt', [c.CHANGE_LAYOUT, pageStore.getCurrentPageId]);
                     }
                     currentFuncs[c.RESOLVE_DATA]=function(dialogFields, evt, emit, dialogData, dialogFieldsData){
                         debugger;
@@ -1371,6 +1377,9 @@ const defs = function(dialogDef){
                         { type: 'menuItem', config: { label: 'Cancel', actionCode: c.MENU_EXIT_DIALOG } },
                         { type: 'menuItem', config: { label: 'Add Link', actionCode: c.MENU_ADD_LINK } },
                         { type: 'menuItem', config: { label: 'Save', actionCode: c.SAVE_DIALOG_DATA} },
+                        { type: 'menuItem', config: { label: 'Done', actionCode: c.EXIT_EDIT_LINK} },
+
+
                     ],
                 },
             }

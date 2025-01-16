@@ -11,6 +11,7 @@
                :maxlength="props.config.maxlength"
                :readonly="noChange"
                @keydown.tab="checkInputOnTab"
+               @keyup="keyDownUpdate"
                ref="thisInput"
         />
       </span>
@@ -127,6 +128,11 @@ const focusChanged = function(){
   console.log('focus changed');
 }
 
+const keyDownUpdate = function(event){
+  //console.log('keyDownUpdate-', event, fieldValue.value);
+  emit('cevt', [c.FIELD_CHANGED,  props.config.name, fieldValue.value]);
+}
+
 const handleInput = (event) =>{
   debugger;
   if(fieldValue.value.length==0){
@@ -156,6 +162,9 @@ funcs[c.CMD_SET_VALUE]= function(evt){
 onMounted(() => {
   debugger;
   emit('cevt', [c.SET_CMD_HANDLER, handleCmd, name]);
+  if(typeof(fieldValue.value !='undefined') && fieldValue.value.trim()!= ''){
+    emit('cevt', [c.FIELD_CHANGED,  props.config.name, fieldValue.value]);
+  }
 //  startField.value.focus();
   /*
     var input = inputs['f2']?.value;
