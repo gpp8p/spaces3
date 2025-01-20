@@ -296,7 +296,7 @@ funcs[c.ROW_SELECT]= function(evt){
   debugger;
   if(typeof(funcs[c.RESOLVE_DATA])!='undefined'){
     console.log('dialogFieldsConfig.value', toRaw(dialogFieldsConfig.value).dialogFields);
-    var resolvedData = funcs[c.RESOLVE_DATA](toRaw(dialogFieldsConfig.value).dialogFields,evt, emit, dialogData, dialogFieldsData);
+    var resolvedData = funcs[c.RESOLVE_DATA](toRaw(dialogFieldsConfig.value).dialogFields,evt, emit, dialogData, dialogFieldsData, props.config);
 //    emit('cevt', [c.CHANGE_LAYOUT, resolvedData]);
   }else{
     emit('cevt', evt);

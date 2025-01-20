@@ -834,6 +834,261 @@ const defs = function(dialogDef){
             }
         }
 
+        case 'changeLink':{
+            return {
+                dialogAppearence: {
+                    // styling for the prompt
+                    twPrompt: 'text-lg text-current ml-[30%] my-[5%]',
+                    // the prompt itself
+                    prompt: 'Add Link',
+                    // overall styling for the dialog
+                    twstyle:"fixed w-[50%] h-auto p-[2%] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-200 rounded border-2 border-blue-500 shadow-xl shadow-black",
+                },
+                // an array of objects represewnting the fields in the dialog
+                dialogFields:
+                    [
+                        {
+                            // the field name
+                            name: 'addPageLink',
+                            // the component type of the field
+                            type: 'listTable',
+                            // the ref inserted into the field so it can be referenced later
+                            ref: 'mySpaces',
+                            // this sets rowsToShow, but I think it's overwritten later - do we really need this ???
+                            selectSize:'6',
+                            // will this get initial focus
+                            startFocus: false,
+                            // styling of the table header
+                            twhead: 'bg-blue-800 flex text-white w-full h-10',
+                            // styling of the row (tr) element in the header
+                            twheadtr: 'flex w-full mb-4',
+                            // styling for the table body
+                            twbody: 'bg-grey-light flex flex-col items-center justify-between overflow-y-scroll w-full',
+                            //row styling in the body
+                            twtr:'flex w-full mb-[1px] hover:bg-green-400 text-xs',
+                            // not in use
+                            testtwheadth:'py-2 pl-3.5 w-1/4',
+                            //cell styling in the body
+                            twtd:'flex w-full mb-4 hover:bg-green-400',
+                            // pager button styling
+                            pagerButtonCss:"mr-[3px] mt-[10px] px-3 py-1 text-xs font-medium text-center text-black bg-white rounded-lg active:bg-red-400",
+                            // active pager button styling -= not sure this does anything
+                            pagerButtonCssActive:"mr-[3px] mt-[10px] px-3 py-1 text-xs font-medium text-center text-black bg-blue-300 rounded-lg active:bg-red-400",
+                            // should the pager be included
+                            includePager:true,
+                            // the actual columns to be displayed.  Styling for those columns is included
+                            columns: [
+                                {
+                                    field: 'id',
+                                    label: 'ID',
+                                    width: '10%',
+                                    numeric: true,
+                                    visible: true,
+                                    twtd:'py-2 pl-3.5 w-1/6',
+                                    twheadth:'py-2 pl-3.5 w-1/6'
+                                },
+                                {
+                                    field: 'menu_label',
+                                    label: 'Name',
+                                    width: '30%',
+                                    visible: true,
+                                    twtd:'py-2 pl-3.5 w-1/4',
+                                    twheadth:'py-2 pl-3.5 w-1/4'
+                                },
+                                {
+                                    field: 'description',
+                                    label: 'Description',
+                                    width: '30%',
+                                    visible: true,
+                                    twtd:'py-2 pl-3.5 w-1/4',
+                                    twheadth:'py-2 pl-3.5 w-1/4'
+
+                                },
+
+
+                                {
+                                    field: 'width',
+                                    label: 'Width',
+                                    width: '10%',
+                                    visible: true,
+                                    twtd:'py-2 pl-3.5 w-1/4',
+                                    twheadth:'py-2 pl-3.5 w-1/4'
+                                }
+                            ],
+                            // label for the table
+                            label: "My Spaces"
+                        }
+                    ],
+                // functions related to loading the data to populate the table
+                dialogData: function(emit, c, loginStore, ready, result, config, dialogData) {
+                    //debugger;
+
+                    result.value = {
+                        // load everything in the database into dataToShow
+                        funcReadAllData: function(tableReload, dataToShow, loaderFunctionsReady, currentTableConfig, componentId){
+                            //debugger;
+                            const {executeTrans} = getTrans();
+
+                            const loginResult= toRaw(loginStore.loginStatus);
+                            const header = loginResult.access_token;
+                            const dataReady = ref(false);
+                            const transResult = ref({});
+                            const parms = {
+                                orgId:loginResult.orgId,
+                                userId:loginResult.userName,
+                            }
+                            executeTrans(parms, c.ALL_PAGES,  c.API_PATH+'api/shan/getMySpaces?XDEBUG_SESSION_START=19884', 'GET', emit, c, header, dataReady, transResult);
+                            whenever(dataReady, () => {
+                                //debugger;
+                                console.log('readAllData  completed-', transResult._rawValue);
+                                dataToShow.value = transResult._rawValue;
+                                currentTableConfig.value.rowsToShow = dataToShow.value.length;
+                                loaderFunctionsReady.value = true;
+                                tableReload.value+=1;
+                            })
+                        },
+                        // read a portion of the data into dataToShow.  Defined by offset (where to start) and
+                        // limit (how much to read)  Completion of this function triggers a refresh of the table
+                        funcReadPagedData: function(tableConfig, limit, offset, loaderFunctionsReady, tableReload, dataToShow){
+                            //debugger;
+                            const loginResult= toRaw(loginStore.loginStatus);
+                            const {executeTrans} = getTrans();
+                            const parms = {
+                                orgId:loginResult.orgId,
+                                userId:loginResult.userName,
+                                limit: limit,
+                                offset: offset,
+                            }
+                            const header = loginResult.access_token;
+                            const dataReady = ref(false);
+                            const transResult = ref({});
+                            executeTrans(parms, c.FIRST_PAGE,  c.API_PATH+'api/shan/getMySpacesPaged?XDEBUG_SESSION_START=19884', 'GET', emit, c, header, dataReady, transResult);
+                            whenever(dataReady, () => {
+                                //debugger;
+                                console.log('readPagedData-', transResult._rawValue);
+                                tableConfig.value.dataToShow = transResult._rawValue;
+                                dataToShow.value = transResult._rawValue;
+                                loaderFunctionsReady.value = true;
+                                tableReload.value+=1;
+                            })
+                        },
+                        funcGetCapabilities: function(){console.log('getCapabilities')},
+                        funcReadNext: function(){console.log('readNext')},
+                        funcReadPrev: function(){console.log('readPrev')},
+                        funcReadFirst: function(){
+                            //debugger;
+                            const loginResult= toRaw(loginStore.loginStatus);
+                            const {executeTrans} = getTrans();
+                            const parms = {
+                                orgId:loginResult.orgId,
+                                userId:loginResult.userName,
+                            }
+                            const header = loginResult.access_token;
+                            const dataReady = ref(false);
+                            const transResult = ref({});
+                            executeTrans(parms, c.FIRST_PAGE,  c.API_PATH+'api/shan/getMySpacesPaged?XDEBUG_SESSION_START=19884', 'GET', emit, c, header, dataReady, transResult);
+                            whenever(dataReady, () => {
+                                //debugger;
+                                console.log('update completed-', transResult._rawValue);
+                            })
+                        },
+                        funcReadLast: function(){console.log('readLast')},
+                        funcReadThisRecord: function(){console.log('readThis Record')},
+                        funcGetRecordCount: function(tableConfig, perPage, pagerProps){
+                            //debugger;
+                            const loginResult= toRaw(loginStore.loginStatus);
+                            const {executeTrans} = getTrans();
+                            const parms = {
+                                orgId:loginResult.orgId,
+                                userId:loginResult.userName,
+                            }
+                            const header = loginResult.access_token;
+                            const dataReady = ref(false);
+                            const transResult = ref({});
+                            executeTrans(parms, c.PAGE_COUNT,  c.API_PATH+'api/shan/countMySpaces?XDEBUG_SESSION_START=19884', 'GET', emit, c, header, dataReady, transResult);
+                            whenever(dataReady, () => {
+                                //debugger;
+                                console.log('record count-', transResult._rawValue, );
+                                tableConfig.value.spacesCount = transResult._rawValue;
+                                tableConfig.value.totalPages = transResult._rawValue/perPage;
+                                pagerProps.value.totalPages = tableConfig.value.totalPages;
+                            })
+
+                        },
+                        funcAddRecord:  function(tableReload, dataToShow, recordToAdd, loaderFunctionsReady, currentTableConfig, componentId){
+
+
+                        }
+
+
+                    }
+                    ready.value = true;
+                    console.log('msypaces dialog data', result.value, ready.value);
+                },
+                // actions added to the dialog triggered by events
+                addActions:function(currentFuncs){
+                    currentFuncs[c.MENU_EXIT_DIALOG]=function(emit, dialogData){
+                        //debugger;
+                        console.log('new func exit dialog');
+                        //const emit = defineEmits(['cevt']);
+                        emit('cevt',[c.EXIT_DIALOG])
+                    }
+
+
+                    currentFuncs[c.RESOLVE_DATA]=function(dialogFields, evt, emit, dialogData, dialogFieldsData, dialogConfig){
+                        debugger;
+                        var resolvedData = dialogFields[0].dataToShow[evt[1]];
+                        console.log('change to this link', resolvedData);
+                        dialogData.currentLinks[dialogData.selectedLinkIndex].description = resolvedData.description;
+                        dialogData.currentLinks[dialogData.selectedLinkIndex].menu_label = resolvedData.menu_label;
+                        dialogData.currentLinks[dialogData.selectedLinkIndex].layout_link_to = resolvedData.id;
+                        const store = useLogStateStore();
+                        const pageStore = useCurrentPage();
+                        const ready = ref(false);
+                        const result = ref({});
+                        const loginResult= toRaw(store.loginStatus)
+                        console.log('store.loginResult', loginResult);
+                        console.log('page configs in save links-', pageStore.getCurrentPageId, pageStore.getCurrentPagePerms);
+                        const {executeTrans} = getTrans();
+                        const header = loginResult.access_token;
+                        const dataReady = ref(false);
+                        const transResult = ref({});
+                        var jsonLinks = JSON.stringify(dialogData.currentLinks);
+
+                        const parms = {
+                            allLinks: jsonLinks,
+                            card_instance_id: dialogConfig.id,
+                            org_id: loginResult.orgId,
+                            layout_id: dialogConfig.layoutId,
+                            orient: dialogConfig.orient,
+                            cardTitle: dialogConfig.cardTitle,
+
+                        }
+                        debugger;
+                        executeTrans(parms, c.CHANGE_LAYOUT,  c.API_PATH+'api/shan/updateCardLinks?XDEBUG_SESSION_START=19884', 'POST', emit, c, header, dataReady, transResult);
+                        whenever(dataReady, () => {
+                            debugger;
+                            console.log('update completed-', transResult._rawValue);
+                            const store = useLogStateStore();
+                            const pageStore = useCurrentPage();
+                            emit('cevt', [c.CHANGE_LAYOUT, pageStore.getCurrentPageId]);
+                        })
+
+
+                    }
+
+
+                },
+                // the menu displayed at the bottom of the dialog
+                menuDefs:{
+                    twStyling:'text-xs text-blue-500 w-[100%]',
+                    items: [
+                        { type: 'menuItem', config: { label: 'Cancel', actionCode: c.MENU_EXIT_DIALOG } },
+                    ],
+                },
+            }
+        }
+
 
 
         case 'addPageLinks':{
@@ -1126,6 +1381,9 @@ const defs = function(dialogDef){
                         console.log('new func exit dialog');
                         //const emit = defineEmits(['cevt']);
                         emit('cevt',[c.EXIT_DIALOG])
+                    }
+                    currentFuncs[c.CHANGE_LINK]=function(emit, dialogData){
+                        emit('cevt',[c.SET_DIALOG, dialogData.currentLinks, 'changeLink']);
                     }
                     currentFuncs[c.UPDATE_SELECTED_LINK]=function(emit, dialogData, dialogConfig){
                         debugger;
