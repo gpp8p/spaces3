@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="reorder==true">
     <table class="text-left w-full ">
       <thead :class="props.config.twhead">
         <tr :class="props.config.twheadtr">
@@ -8,17 +8,42 @@
           >
             <th   v-if="thisColumn.visible">{{thisColumn.label}}</th>
           </span>
+          <span v-if="reorder==true"></span>
         </tr>
       </thead>
       <tbody :class="props.config.twbody" style="height: 30vh;">
-         <tr :class="props.config.twtr" v-for="(row, rowIndex) in filteredData" :key="rowIndex" @click="rowSelected(rowIndex)">
+      <tr v-if="reorder==true" :class="props.config.twtr" v-for="(row, rowIndex) in filteredData" :key="rowIndex" >
            <span :class="cell.css" v-for="(cell, cellIndex) in row" :key="cellIndex">
             <td >
               {{ cell.value }}
             </td>
            </span>
+           <span v-if="reorder==true"><span class="reorderbutton" @click="buttonSelectedUp(row)" >⬆️</span><span class="reorderbutton" @click="buttonSelectedDown(row)">⬇️</span></span>
 
           </tr>
+      </tbody>
+    </table>
+  </div>
+  <div v-if="reorder==false">
+    <table class="text-left w-full ">
+      <thead :class="props.config.twhead">
+      <tr :class="props.config.twheadtr">
+          <span :class="thisColumn.twheadth" v-for="(thisColumn, index) in props.config.columns"
+                :key="index"
+          >
+            <th   v-if="thisColumn.visible">{{thisColumn.label}}</th>
+          </span>
+        <span v-if="reorder==true">R</span>
+      </tr>
+      </thead>
+      <tbody :class="props.config.twbody" style="height: 30vh;">
+      <tr :class="props.config.twtr" v-for="(row, rowIndex) in filteredData" :key="rowIndex" @click="rowSelected(rowIndex)">
+           <span :class="cell.css" v-for="(cell, cellIndex) in row" :key="cellIndex">
+            <td >
+              {{ cell.value }}
+            </td>
+           </span>
+      </tr>
       </tbody>
     </table>
   </div>
@@ -45,6 +70,7 @@ import {c} from "../components/constants.js";
 import { onMounted, onUnmounted } from 'vue'
 import {useEventHandler} from "./eventHandler.js";
 import {ref} from 'vue';
+import { toRaw} from 'vue'
 
 
 const {handleEvent} = useEventHandler();
@@ -60,6 +86,7 @@ console.log("twhead-", props.config.twhead);
 //}
 debugger;
 fieldValue.value = props.data;
+const reorder = ref(true);
 console.log('columns--', props.config.columns);
 console.log('props.data', props.data);
 console.log('fieldValue.value', fieldValue.value);
@@ -68,9 +95,12 @@ console.log('fieldValue--', fieldValue.value.length);
 debugger;
 console.log('props.config.rowStart', props.config.rowStart);
 console.log('props.config.rowsToShow', props.config.rowsToShow);
+var rowOrder=0;
 for(var r = props.config.rowStart; r<(props.config.rowStart+props.config.rowsToShow); r++){
+
 //  console.log('this field-',fieldValue.value[r]);
   var filteredRow = [];
+
   for(var cols = 0; cols< props.config.columns.length; cols++){
     console.log('cols--', props.config.columns[cols].field);
     console.log('fieldValue--', fieldValue.value);
@@ -93,6 +123,8 @@ for(var r = props.config.rowStart; r<(props.config.rowStart+props.config.rowsToS
       filteredRow.push(filteredCell);
     }
   }
+  filteredRow[0].order=rowOrder;
+  rowOrder++;
   console.log('filteredRow', filteredRow);
   filteredData.value.push(filteredRow);
 }
@@ -134,6 +166,14 @@ funcs[c.UNSET_CMD_HANDLER]= function(evt){
 const rowSelected = function(rowIndex){
   console.log('iTab4 ROW_SELECT-',rowIndex);
   emit('cevt', [c.ROW_SELECT, rowIndex]);
+}
+const buttonSelectedUp = function(row){
+  //debugger;
+  console.log('Up button clicked-',toRaw(row[0].order));
+}
+const buttonSelectedDown = function(row){
+  //debugger;
+  console.log('Down button clicked-',toRaw(row[0].order));
 }
 
 onMounted(() => {
@@ -179,8 +219,23 @@ onUnmounted(() => {
 .styled-table tbody tr {
   border-bottom: 1px solid #dddddd;
 }
-
-
+.reorderbutton{
+  margin-top: 10px;
+  margin-right: 10px;
+}
+.button {
+  background-color: #FFFFFF; /* Green */
+  color: black;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 10px;
+  outline: 2px solid black;
+  border-radius: 3px;
+  margin-top: 3px;
+  margin-right: 2px;
+  padding: 3px;
+}
 
 .styled-table tbody tr:last-of-type {
   border-bottom: 2px solid #009879;
