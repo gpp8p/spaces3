@@ -1435,6 +1435,7 @@ const defs = function(dialogDef){
                     prompt: 'My Spaces',
                     // overall styling for the dialog
                     twstyle:"fixed w-[50%] h-auto p-[2%] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-200 rounded border-2 border-blue-500 shadow-xl shadow-black",
+                    headerMsg: "click on arrow buttons to move rows up or down",
                 },
                 dialogFields:
                     [
@@ -1635,6 +1636,7 @@ const defs = function(dialogDef){
                         { type: 'menuItem', config: { label: 'Cancel', actionCode: c.MENU_EXIT_DIALOG } },
                         { type: 'menuItem', config: { label: 'Add Link', actionCode: c.MENU_ADD_LINK } },
                         { type: 'menuItem', config: { label: 'Save', actionCode: c.SAVE_DIALOG_DATA} },
+                        { type: 'menuItem', config: { label: 'Reorder', actionCode: c.SET_REORDER} },
                         { type: 'menuItem', config: { label: 'Done', actionCode: c.EXIT_EDIT_LINK} },
 
 

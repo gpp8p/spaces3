@@ -1,6 +1,7 @@
 
 <template>
   <span :class = dialogAppearence.twstyle>
+    <span v-if="hasHeaderMsg==true">{{dialogAppearence.headerMsg}}</span>
     <span >
       <Fields :config="dialogFieldsConfig" :data = "dialogFieldsData" :key="reloadDialogFields" @cevt="handleEvent($event, funcs, emit)"></Fields>
     </span>
@@ -69,6 +70,10 @@ import {getLinkFunctions} from "../components/linkFunctions.js";
 const {addNewLink, getLinks, deleteLink} = getLinkFunctions();
 
 const dialogAppearence = getDialogAppearence(props.config.definition);
+const hasHeaderMsg = ref(false);
+if(typeof(dialogAppearence.headerMsg)!='undefined'){
+  hasHeaderMsg.value=true;
+}
 var menuDefinitions = getMenuDefinitions(props.config.definition);
 var testVar = 'test var one';
 var addActions = getActions(props.config.definition);
@@ -285,7 +290,10 @@ funcs[c.UPDATE_DIALOG_DATA]=function(cmd){
   console.log('in UPDATE_DIALOG_DATA', cmd);
   dialogData[cmd[1][1]]=cmd[1][2];
 }
-
+funcs[c.SET_REORDER]= function(evt){
+  console.log('in SET_REORDER-', evt);
+  cmdHandlers['Fields']([c.SET_REORDER, true, "editLinks"]);
+}
 funcs[c.MENU_ITEM_SELECTED]= function(evt){
   console.log('in c.-MENU_ITEM_SELECTED', evt);
   debugger;

@@ -58,6 +58,7 @@ export const c = {
     UPDATE_SELECTED_LINK: 53,
     CHANGE_LINK:54,
     EXIT_EDIT_LINK:55,
+    SET_REORDER:56,
 
 
 

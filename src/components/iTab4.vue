@@ -86,7 +86,7 @@ console.log("twhead-", props.config.twhead);
 //}
 debugger;
 fieldValue.value = props.data;
-const reorder = ref(true);
+const reorder = ref(false);
 console.log('columns--', props.config.columns);
 console.log('props.data', props.data);
 console.log('fieldValue.value', fieldValue.value);
@@ -153,7 +153,10 @@ const passCmdDown = function(args){
     }
   }
 }
-
+funcs[c.SET_REORDER]=function(cmd){
+  console.log('in iTab4 SET_REORDER', cmd);
+  reorder.value = true;
+}
 funcs[c.SET_CMD_HANDLER]= function(evt){
   console.log('in SET_CMD_HANDLER-', evt);
   cmdHandlers[evt[2]]=evt[1];
