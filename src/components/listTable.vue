@@ -233,6 +233,7 @@ funcs[c.MOVE_ROW_UP] = function(evt){
     dataToShow.value[evt[1]-1] = thisRow;
     dataToShow.value[evt[1]] = rowAbove;
     tableReload.value+=1;
+    emit('cevt',[c.SET_REORDER_OFF]);
   }
 }
 funcs[c.MOVE_ROW_DOWN] = function(evt){
@@ -245,6 +246,7 @@ funcs[c.MOVE_ROW_DOWN] = function(evt){
     dataToShow.value[evt[1]+1] = thisRow;
     dataToShow.value[evt[1]] = rowAbove;
     tableReload.value+=1;
+    emit('cevt',[c.SET_REORDER_OFF]);
   }else{
     alert('At Bottom Row Already');
   }

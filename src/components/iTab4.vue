@@ -157,6 +157,10 @@ funcs[c.SET_REORDER]=function(cmd){
   console.log('in iTab4 SET_REORDER', cmd);
   reorder.value = true;
 }
+funcs[c.SET_REORDER_OFF]=function(cmd){
+  console.log('in iTab4 SET_REORDER', cmd);
+  reorder.value = false;
+}
 funcs[c.SET_CMD_HANDLER]= function(evt){
   console.log('in SET_CMD_HANDLER-', evt);
   cmdHandlers[evt[2]]=evt[1];

@@ -296,6 +296,10 @@ funcs[c.SET_REORDER]= function(evt){
   reorderSet.value=true;
   cmdHandlers['Fields']([c.SET_REORDER, true, "editLinks"]);
 }
+funcs[c.SET_REORDER_OFF] = function(evt){
+  reorderSet.value=false;
+  cmdHandlers['Fields']([c.SET_REORDER_OFF, false, "editLinks"]);
+}
 funcs[c.MENU_ITEM_SELECTED]= function(evt){
   console.log('in c.-MENU_ITEM_SELECTED', evt);
   debugger;
