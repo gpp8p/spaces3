@@ -59,6 +59,8 @@ export const c = {
     CHANGE_LINK:54,
     EXIT_EDIT_LINK:55,
     SET_REORDER:56,
+    MOVE_ROW_UP:57,
+    MOVE_ROW_DOWN:58,
 
 
 

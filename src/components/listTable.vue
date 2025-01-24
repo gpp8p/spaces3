@@ -223,6 +223,32 @@ funcs[c.PAGE_CHANGED]=function(evt){
 funcs[c.LOADERS_AVAILABLE]=function(evt){
   console.log('in LOADERS_AVAILABLE in listTable-', evt);
 }
+funcs[c.MOVE_ROW_UP] = function(evt){
+  console.log('in MOVE_ROW_UP-', evt);
+  if(evt[1]==0){
+    alert('At Top Row Already')
+  }else{
+    var rowAbove = dataToShow.value[evt[1]-1];
+    var thisRow = dataToShow.value[evt[1]];
+    dataToShow.value[evt[1]-1] = thisRow;
+    dataToShow.value[evt[1]] = rowAbove;
+    tableReload.value+=1;
+  }
+}
+funcs[c.MOVE_ROW_DOWN] = function(evt){
+  console.log('in MOVE_ROW_DOWN-', evt);
+  debugger;
+  var linkTableLength = dataToShow.value.length-1;
+  if(evt[1]<linkTableLength){
+    var rowAbove = dataToShow.value[evt[1]+1];
+    var thisRow = dataToShow.value[evt[1]];
+    dataToShow.value[evt[1]+1] = thisRow;
+    dataToShow.value[evt[1]] = rowAbove;
+    tableReload.value+=1;
+  }else{
+    alert('At Bottom Row Already');
+  }
+}
 
 /*
 funcs[c.ROW_SELECT]=function(evt){

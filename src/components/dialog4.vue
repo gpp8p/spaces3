@@ -1,7 +1,7 @@
 
 <template>
   <span :class = dialogAppearence.twstyle>
-    <span v-if="hasHeaderMsg==true">{{dialogAppearence.headerMsg}}</span>
+    <span :class="dialogAppearence.twHeaderMsgStyle" v-if="hasHeaderMsg==true && reorderSet==true">{{dialogAppearence.headerMsg}}</span>
     <span >
       <Fields :config="dialogFieldsConfig" :data = "dialogFieldsData" :key="reloadDialogFields" @cevt="handleEvent($event, funcs, emit)"></Fields>
     </span>
@@ -70,6 +70,7 @@ import {getLinkFunctions} from "../components/linkFunctions.js";
 const {addNewLink, getLinks, deleteLink} = getLinkFunctions();
 
 const dialogAppearence = getDialogAppearence(props.config.definition);
+const reorderSet = ref(false);
 const hasHeaderMsg = ref(false);
 if(typeof(dialogAppearence.headerMsg)!='undefined'){
   hasHeaderMsg.value=true;
@@ -292,6 +293,7 @@ funcs[c.UPDATE_DIALOG_DATA]=function(cmd){
 }
 funcs[c.SET_REORDER]= function(evt){
   console.log('in SET_REORDER-', evt);
+  reorderSet.value=true;
   cmdHandlers['Fields']([c.SET_REORDER, true, "editLinks"]);
 }
 funcs[c.MENU_ITEM_SELECTED]= function(evt){

@@ -173,10 +173,13 @@ const rowSelected = function(rowIndex){
 const buttonSelectedUp = function(row){
   //debugger;
   console.log('Up button clicked-',toRaw(row[0].order));
+  emit('cevt', [c.MOVE_ROW_UP,toRaw(row[0].order) ]);
 }
 const buttonSelectedDown = function(row){
   //debugger;
   console.log('Down button clicked-',toRaw(row[0].order));
+  emit('cevt', [c.MOVE_ROW_DOWN,toRaw(row[0].order) ]);
+
 }
 
 onMounted(() => {
