@@ -62,6 +62,7 @@ export const c = {
     MOVE_ROW_UP:57,
     MOVE_ROW_DOWN:58,
     SET_REORDER_OFF:59,
+    CREATE_PAGE:60,
 
 
 

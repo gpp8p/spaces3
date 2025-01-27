@@ -223,6 +223,7 @@ const changeDialog = function(dialogDefinition){
       dialogFieldsData.value.dataToShow = toRaw(dialogFieldsData.value.dataToShow);
     }else{
       dialogFieldsData.value = existingData;
+      dialogData.existingData = existingData;
     }
 
     addActions = getActions(dialogDefinition);
@@ -304,6 +305,11 @@ funcs[c.MENU_ITEM_SELECTED]= function(evt){
   console.log('in c.-MENU_ITEM_SELECTED', evt);
   debugger;
   funcs[evt[1]](emit, dialogData, props.config);
+}
+funcs[c.CREATE_PAGE] = function(evt){
+  console.log('in CREATE_PAGE-', evt);
+  changeDialog('pageCreateAndAdd');
+
 }
 
 funcs[c.ROW_SELECT]= function(evt){

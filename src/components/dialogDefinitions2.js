@@ -635,6 +635,228 @@ const defs = function(dialogDef){
             }
             break;
         }
+        case 'pageCreateAndAdd':{
+            return {
+                dialogAppearence: {
+                    twPrompt: 'text-lg text-current ml-[30%] my-[5%]',
+                    prompt: 'Test Dialog',
+                    twstyle:"fixed w-[50%] h-auto p-[2%] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-200 rounded border-2 border-blue-500 shadow-xl shadow-black",
+                },
+                dialogFields :
+                    [
+
+                        {
+                            name: 'pageName',
+                            type: 'inputText',
+                            ref: 'pageName',
+                            value: function(existingData){
+                                //debugger;
+                                return existingData.pageName;
+                            },
+                            required: true,
+                            size: '25',
+                            maxlength: '35',
+                            startFocus: true,
+                            label: "Page Name"
+                        },
+                        {
+                            name: 'pageDescription',
+                            type: 'vtextarea',
+                            ref: 'pageDescription',
+                            placeholder: 'Please Enter..',
+                            rows: '4',
+                            columns: '40',
+                            maxlength: '18',
+                            startFocus: false,
+                            value: function(existingData){
+                                //debugger;
+                                return existingData.pageDescription;
+                            },
+                            label: "Description"
+
+                        },
+                        {
+                            name: 'pageRows',
+                            type: 'inputNumber',
+                            ref: 'pageRows',
+                            value: function(existingData){
+                                //debugger;
+                                return existingData.pageRows;
+                            },
+                            required: true,
+                            size: '8',
+                            maxlength: '8',
+                            startFocus: false,
+                            label: "Rows"
+                        },
+                        {
+                            name: 'pageColumns',
+                            type: 'inputNumber',
+                            ref: 'pageColumns',
+                            value: function(existingData){
+                                //debugger;
+                                return existingData.pageColumns;
+                            },
+                            required: true,
+                            size: '8',
+                            maxlength: '8',
+                            startFocus: false,
+                            label: "Columns"
+                        },
+                        {
+                            name: 'pageBackground',
+                            type: 'backgroundPicker',
+                            ref: 'pageBackground',
+                            startFocus: false,
+                            radioLabelStyle: "mr-[10px] text-lg",
+                            value: function(existingData){
+                                //debugger;
+                                if(existingData.pageBackground.backgroundType=='I'){
+                                    console.log('pageBackground is image');
+                                    return {
+                                        backgroundType:'image',
+                                        backgroundUrl:existingData.pageBackground.backgroundUrl,
+                                        backgroundDisplay:existingData.pageBackground.backgroundDisplay
+                                    }
+                                }else{
+                                    console.log('pageBackground is color');
+                                    return {
+                                        backgroundType:'color',
+                                        colorValue:existingData.pageBackground.colorValue,
+
+                                    }
+                                }
+                                return existingData.pageBackground;
+                            },
+                            label: "Background"
+                        },
+                        {
+                            name: 'template',
+                            type: 'inputCheckbox',
+                            ref: 'template',
+                            startFocus: false,
+                            value: function(existingData){
+                                //debugger;
+                                return existingData.template;
+                            },
+                            label: "Template ?"
+                        },
+
+
+                    ],
+                menuDefs:{
+                    twStyling:'text-xs text-blue-500 w-[100%]',
+                    items: [
+                        { type: 'menuItem', config: { label: 'Cancel', actionCode: c.MENU_EXIT_DIALOG } },
+                        { type: 'menuItem', config: { label: 'Save And Add Link', actionCode: c.MENU_SAVE_DIALOG_DATA} },
+                    ],
+                },
+                defaultData:{
+                    pageName: "New Page (default)",
+                    pageDescription: "New Page Description",
+                },
+                dialogData: function(emit, c, loginStore, ready, result, config, dialogData) {
+                    //debugger;
+                    result.value = {
+                        pageName: '',
+                        pageDescription: '',
+                        pageRows: 15,
+                        pageColumns:15,
+                        pageBackground: {
+                            backgroundType: 'C',
+                            backgroundColor: ' #f5df2a',
+                            backgroundDisplay: '',
+                            backgroundImageUrl: ''
+                        },
+                        template:'N'
+
+                    }
+                    ready.value=true;
+                },
+
+
+
+                addActions:function(currentFuncs){
+                    currentFuncs[c.MENU_SAVE_DIALOG_DATA]=function(emit, dialogData){
+                        debugger;
+                        console.log('in create new page');
+                        const store = useLogStateStore();
+                        const pageStore = useCurrentPage();
+                        const ready = ref(false);
+                        const result = ref({});
+                        const loginResult= toRaw(store.loginStatus)
+                        console.log('store.loginResult', loginResult);
+                        console.log('pageStore-', pageStore.getCurrentPageId, pageStore.getCurrentPagePerms);
+                        const {executeTrans} = getTrans();
+                        const header = loginResult.access_token;
+                        const dataReady = ref(false);
+                        const transResult = ref({});
+                        var bType ='';
+                        var bcolor ='';
+                        var bimage = '';
+                        var bdisplay = ''
+                        var templ = 'N';
+                        if(typeof(dialogData.pageBackground)!='undefined'){
+                            if(dialogData.pageBackground.backgroundType=='color'){
+                                bType = 'C';
+                            }else{
+                                bType = 'I';
+                            }
+                            bcolor = dialogData.pageBackground.backgroundColor;
+                        }else{
+                            if(dialogData.existingData.pageBackground.backgroundType=='C'){
+                                bType = 'C';
+                            }else{
+                                bType = 'I';
+                            }
+                            bcolor = dialogData.existingData.pageBackground.backgroundColor
+                        }
+                        if(typeof(dialogData.pageBackground)!='undefined'){
+                            bimage = dialogData.pageBackground.backgroundImage;
+                        }
+                        if(typeof(dialogData.pageBackground)!='undefined'){
+                            bdisplay = dialogData.pageBackground.backgroundDisplay;
+                        }
+                        if(typeof(dialogData.template)!='undefined'){
+                            templ = dialogData.template;
+                        }
+                        const parms = {
+                            name: dialogData.pageName,
+                            description: dialogData.pageDescription,
+                            height:dialogData.pageRows,
+                            width: dialogData.pageColumns,
+                            pageRows: dialogData.pageRows,
+                            pageColumns: dialogData.pageColumns,
+                            backgroundColor: bcolor,
+                            backgroundType: bType,
+                            backgroundImage: bimage,
+                            backgroundDisplay: bdisplay,
+                            template: templ,
+                            userId: loginResult.userId,
+                            orgId: loginResult.orgId,
+                            layoutId: pageStore.getCurrentPageId,
+                            permType: loginResult.loginPerms,
+                        }
+                        executeTrans(parms, c.UPDATE_PAGE_SETTINGS,  c.API_PATH+'api/shan/createLayoutNoBlanks?XDEBUG_SESSION_START=19884', 'POST', emit, c, header, dataReady, transResult);
+                        whenever(dataReady, () => {
+                            debugger;
+                            console.log('update completed-', transResult._rawValue);
+//                            pageStore.setCurrentPageId(transResult._rawValue);
+//                            emit('cevt',[c.CHANGE_LAYOUT, transResult._rawValue]);
+
+                        })
+
+
+                    }
+                    currentFuncs[c.MENU_EXIT_DIALOG]=function(emit, dialogData){
+                        //debugger;
+                        console.log('new func exit dialog');
+                        //                      const emit = defineEmits(['cevt']);
+                        emit('cevt',[c.EXIT_DIALOG])
+                    }
+                }
+            }
+        }
         case 'pageCreate':{
             return {
                 dialogAppearence: {
@@ -1311,6 +1533,7 @@ const defs = function(dialogDef){
                     twStyling:'text-xs text-blue-500 w-[100%]',
                     items: [
                         { type: 'menuItem', config: { label: 'Cancel', actionCode: c.MENU_EXIT_DIALOG } },
+                        { type: 'menuItem', config: { label: 'Create Page', actionCode: c.CREATE_PAGE } },
                     ],
                 },
             }
