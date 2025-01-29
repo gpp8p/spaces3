@@ -841,6 +841,21 @@ const defs = function(dialogDef){
                         whenever(dataReady, () => {
                             debugger;
                             console.log('update completed-', transResult._rawValue);
+                            var linksLength = dialogData.currentLinks.length,
+                            newRecord = {
+                                description: dialogData.pageDescription,
+                                isExternal: 0,
+                                layout_link_to: transResult._rawValue,
+                                link_url: 'https://localhost:8080',
+                                menu_label: dialogData.pageName,
+                                show_order: linksLength+1,
+                                type: 'U'
+
+                            }
+                            emit('cevt', [c.LINK_TO_ADD_SELECTED, newRecord]);
+//                            dialogData.currentLinks.push(newRecord);
+//                            emit('cevt',[c.SET_DIALOG, dialogData.currentLinks, 'editLinks']);
+
 //                            pageStore.setCurrentPageId(transResult._rawValue);
 //                            emit('cevt',[c.CHANGE_LAYOUT, transResult._rawValue]);
 
