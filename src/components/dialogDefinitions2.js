@@ -840,7 +840,7 @@ const defs = function(dialogDef){
                         executeTrans(parms, c.UPDATE_PAGE_SETTINGS,  c.API_PATH+'api/shan/createLayoutNoBlanks?XDEBUG_SESSION_START=19884', 'POST', emit, c, header, dataReady, transResult);
                         whenever(dataReady, () => {
                             debugger;
-                            console.log('update completed-', transResult._rawValue);
+                            console.log('new page created-', transResult._rawValue);
                             var linksLength = dialogData.currentLinks.length,
                             newRecord = {
                                 description: dialogData.pageDescription,

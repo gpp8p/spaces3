@@ -330,7 +330,7 @@ funcs[c.ADD_SELECTED_LINK]=function(cmd){
   debugger;
 
 
-  console.log('in ADD_SELECTED_LINK-', cmd[1][1]);
+  console.log('in ADD_SELECTED_LINK-', cmd);
   console.log('card_instance_id-', dialogData.id);
   console.log('selected layout', cmd[1][1].id);
   console.log('description', cmd[1][1].description);
@@ -338,17 +338,33 @@ funcs[c.ADD_SELECTED_LINK]=function(cmd){
   const loginStore = useLogStateStore();
   const loginResult= toRaw(loginStore.loginStatus);
 
+
+  var linkTo;
+  console.log('new layout id-',typeof(cmd[1][1].id), cmd[1][1].id,cmd[1][1].layout_link_to);
+  var newLinkId;
+  if(typeof(cmd[1][1].id)=='undefined'){
+    console.log('adding layout_linkto', cmd[1][1].layout_link_to);
+    linkTo = cmd[1][1].layout_link_to;
+    newLinkId = cmd[1][1].layout_link_to;
+  }else{
+    console.log('adding id', cmd[1][1].id);
+    linkTo = cmd[1][1].id;
+    newLinkId = cmd[1][1].id;
+  }
+
+
   var newLink = {
     description:cmd[1][1].description,
     orgId:loginResult.orgId,
     isExternal:0,
-    layout_link_to:cmd[1][1].id,
+    layout_link_to:linkTo,
     link_url:'https://localhost:8080',
     menu_label: cmd[1][1].menu_label,
     show_order:dialogData.currentLinks.length + 1,
     type:'U',
-    id:0
+    id:newLinkId
   }
+  console.log('new link added to list', newLink);
   dialogData.currentLinks.push(newLink);
   dialogFieldsData.value.dataToShow=dialogData.currentLinks;
   //dialogData.currentLinks
