@@ -198,7 +198,13 @@ export function getAppearanceConfigs(){
         if(typeof(dialogData.primaryFont)!='undefined'){
             debugger;
             var primaryTextAlignment = toRaw(dialogData.primaryFont.textAlign);
-            newParameters['textAlign']="text-align:"+dialogData.primaryFont.textAlign+";";
+            //newParameters['textAlign']="text-align:"+dialogData.primaryFont.textAlign+";";
+            if(typeof(dialogData.primaryFont.fontAlign)!='undefined'){
+                newParameters['textAlign']="text-align:"+dialogData.primaryFont.fontAlign+";";
+            }else{
+                newParameters['textAlign']="text-align:"+dialogData.primaryFont.textAlign+";";
+            }
+            //newParameters['textAlign']="text-align:"+dialogData.primaryFont.fontAlign+";";
             newParameters['fontColor']="color:"+dialogData.primaryFont.fontColor+";";
             newParameters['fontWeight']="font-weignt:"+dialogData.primaryFont.fontWeight+";";
             newParameters['fontSize']="font-size:"+dialogData.primaryFont.fontSize+";";
