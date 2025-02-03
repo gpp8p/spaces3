@@ -63,6 +63,7 @@ export const c = {
     MOVE_ROW_DOWN:58,
     SET_REORDER_OFF:59,
     CREATE_PAGE:60,
+    CHANGE_TO_EXTERNAL_LINK:61,
 
 
 
