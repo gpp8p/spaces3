@@ -1330,7 +1330,123 @@ const defs = function(dialogDef){
                 },
             }
         }
+        case 'changeExternalLink':{
+            return {
+                dialogAppearence: {
+                    twPrompt: 'text-lg text-current ml-[30%] my-[5%]',
+                    prompt: 'Test Dialog',
+                    twstyle:"fixed w-[50%] h-auto p-[2%] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-200 rounded border-2 border-blue-500 shadow-xl shadow-black",
+                },
+                dialogFields :[
 
+                    {
+                        name: 'description',
+                        type: 'inputText',
+                        ref: 'description',
+                        value: function(existingData){
+                            //debugger;
+                            return existingData.description;
+                        },
+                        required: true,
+                        size: '50',
+                        maxlength: '255',
+                        startFocus: true,
+                        label: "Label"
+                    },
+                    {
+                        name: 'linkUrl',
+                        type: 'inputText',
+                        ref: 'linkUrl',
+                        value: function(existingData){
+                            //debugger;
+                            return existingData.link_url;
+                        },
+                        required: true,
+                        size: '50',
+                        maxlength: '255',
+                        startFocus: false,
+                        label: "Url"
+                    },
+
+                ],
+                menuDefs:{
+                    twStyling:'text-xs text-blue-500 w-[100%] mt-[10px]',
+                    items: [
+                        { type: 'menuItem', config: { label: 'Cancel', actionCode: c.MENU_EXIT_DIALOG } },
+                        { type: 'menuItem', config: { label: 'Update', actionCode: c.UPDATE_SELECTED_LINK} },
+                    ],
+                },
+                dialogData: function(emit, c, loginStore, ready, result, config, dialogData) {
+                    result.value= {
+                        description: dialogData.selectedLink.description,
+                        menu_label: dialogData.selectedLink.menu_label,
+                        link_url: dialogData.selectedLink.link_url
+                    }
+                    console.log('dialogData is-', dialogData);
+                    ready.value=true;
+
+                },
+
+                defaultData:{
+
+                },
+                addActions:function(currentFuncs) {
+                    currentFuncs[c.MENU_EXIT_DIALOG]=function(emit, dialogData){
+                        //debugger;
+                        console.log('new func exit dialog');
+                        //const emit = defineEmits(['cevt']);
+                        emit('cevt',[c.EXIT_DIALOG])
+                    }
+                    currentFuncs[c.CHANGE_LINK]=function(emit, dialogData){
+                        debugger;
+                        if(dialogData.selectedLink.isExternal==0){
+                            emit('cevt',[c.SET_DIALOG, dialogData.currentLinks, 'changeLink']);
+                        }else{
+                            emit('cevt',[c.SET_DIALOG, dialogData.currentLinks, 'changeExternalLink']);
+                        }
+
+                    }
+                    currentFuncs[c.UPDATE_SELECTED_LINK]=function(emit, dialogData, dialogConfig){
+                        debugger;
+                        console.log('in UPDATE_SELECTED_LINK', dialogData);
+                        dialogData.currentLinks[dialogData.selectedLinkIndex].description = dialogData.description;
+                        dialogData.currentLinks[dialogData.selectedLinkIndex].menu_label=dialogData.menu_label;
+                        debugger;
+                        const store = useLogStateStore();
+                        const pageStore = useCurrentPage();
+                        const ready = ref(false);
+                        const result = ref({});
+                        const loginResult= toRaw(store.loginStatus)
+                        console.log('store.loginResult', loginResult);
+                        console.log('page configs in save links-', pageStore.getCurrentPageId, pageStore.getCurrentPagePerms);
+                        const {executeTrans} = getTrans();
+                        const header = loginResult.access_token;
+                        const dataReady = ref(false);
+                        const transResult = ref({});
+                        var jsonLinks = JSON.stringify(dialogData.currentLinks);
+
+                        const parms = {
+                            allLinks: jsonLinks,
+                            card_instance_id: dialogConfig.id,
+                            org_id: loginResult.orgId,
+                            layout_id: dialogConfig.layoutId,
+                            orient: dialogConfig.orient,
+                            cardTitle: dialogConfig.cardTitle,
+
+                        }
+                        debugger;
+                        executeTrans(parms, c.CHANGE_LAYOUT,  c.API_PATH+'api/shan/updateCardLinks?XDEBUG_SESSION_START=19884', 'POST', emit, c, header, dataReady, transResult);
+                        whenever(dataReady, () => {
+                            debugger;
+                            console.log('update completed-', transResult._rawValue);
+                            emit('cevt',[c.SET_DIALOG, dialogData.currentLinks, 'editLinks']);
+
+                        })
+                    }
+                }
+            }
+            break;
+        }
 
         case 'changeExternal':{
             return {
@@ -1738,7 +1854,8 @@ const defs = function(dialogDef){
                 dialogData: function(emit, c, loginStore, ready, result, config, dialogData) {
                     result.value= {
                         description: dialogData.selectedLink.description,
-                        menu_label: dialogData.selectedLink.menu_label
+                        menu_label: dialogData.selectedLink.menu_label,
+                        link_url: dialogData.selectedLink.link_url
                     }
                     console.log('dialogData is-', dialogData);
                     ready.value=true;
