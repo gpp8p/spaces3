@@ -18,7 +18,7 @@ export function getTrans(){
 
 
         whenever(isFinished, () => {
- //           debugger;
+            debugger;
             console.log('returned dbTrans point1-', transId, data._rawValue);
             const loginResults = ref(data._rawValue);
             axios.defaults.headers.common['Authorization'] = `Bearer ${loginResults.access_token}`;

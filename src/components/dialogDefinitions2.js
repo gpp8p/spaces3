@@ -1462,6 +1462,145 @@ const defs = function(dialogDef){
                         ref: 'description',
                         value: function(existingData){
                             //debugger;
+                            return "";
+                        },
+                        required: true,
+                        size: '45',
+                        maxlength: '255',
+                        startFocus: false,
+                        label: "Description"
+                    },
+                    {
+                        name: 'linkUrl',
+                        type: 'inputText',
+                        ref: 'linkUrl',
+                        value: function(existingData){
+                            return "";
+                        },
+                        required: true,
+                        size: '40',
+                        maxlength: '255',
+                        startFocus: false,
+                        label: 'Link URL'
+                    }
+
+
+                ],
+                menuDefs:{
+                    twStyling:'text-xs text-blue-500 w-[100%] mt-[10px]',
+                    items: [
+                        { type: 'menuItem', config: { label: 'Cancel', actionCode: c.MENU_EXIT_DIALOG } },
+                        { type: 'menuItem', config: { label: 'Add Link', actionCode: c.SAVE_NEW_EXTERNAL_LINK} },
+                    ],
+                },
+                dialogData: function(emit, c, loginStore, ready, result, config, dialogData) {
+                    result.value= {
+                        description: 'put description here',
+
+                    }
+                    console.log('dialogData is-', dialogData);
+                    ready.value=true;
+
+                },
+                defaultData:{
+
+                },
+                addActions:function(currentFuncs) {
+                    currentFuncs[c.MENU_EXIT_DIALOG]=function(emit, dialogData){
+                        //debugger;
+                        console.log('new func exit dialog');
+                        //const emit = defineEmits(['cevt']);
+                        emit('cevt',[c.EXIT_DIALOG])
+                    }
+                    currentFuncs[c.ADD_NEW_EXTERNAL_LINK_TO_LIST] =function(emit, dialogData, dialogConfig) {
+                        debugger;
+                        var newLinkRecord = {
+                            desription: dialogData.description,
+                            id:0,
+                            isExternal:1,
+                            layout_link_to:0,
+                            link_url:dialogData.linkUrl,
+                            menu_label: dialogData.description,
+                            show_order:dialogData.currentLinks.length + 1,
+                            type:'U',
+                        }
+                        dialogData.currentLinks.push(newLinkRecord)
+                        emit('cevt',[c.SET_DIALOG, dialogData.currentLinks, 'editLinks']);
+
+                    }
+                    currentFuncs[c.SAVE_NEW_EXTERNAL_LINK]=function(emit, dialogData, dialogConfig){
+
+                        const store = useLogStateStore();
+                        const pageStore = useCurrentPage();
+                        const ready = ref(false);
+                        const result = ref({});
+                        const loginResult= toRaw(store.loginStatus)
+                        console.log('store.loginResult', loginResult);
+                        console.log('page configs in save links-', pageStore.getCurrentPageId, pageStore.getCurrentPagePerms);
+                        const {executeTrans} = getTrans();
+                        const header = loginResult.access_token;
+                        const dataReady = ref(false);
+                        const transResult = ref({});
+
+                        var parms = {
+                            description:dialogData.description,
+                            card_instance_id: dialogConfig.id,
+                            org_id: loginResult.orgId,
+                            layout_id: dialogConfig.layoutId,
+                            is_external:1,
+                            layout_link_to:0,
+                            linkUrl:dialogData.linkUrl,
+                            menu_label: dialogData.description,
+                            show_order:dialogData.currentLinks.length + 1,
+                            type:'U',
+                            addInsert:'add',
+                            insertPoint:0
+                        }
+                        debugger;
+                        executeTrans(parms, c.CHANGE_LAYOUT,  c.API_PATH+'api/shan/addNewLink?XDEBUG_SESSION_START=19884', 'POST', emit, c, header, dataReady, transResult);
+                        whenever(dataReady, () => {
+                            debugger;
+                            console.log('update completed-', transResult._rawValue);
+                            emit('cevt',[c.SET_DIALOG, dialogData.currentLinks, 'editLinks']);
+
+                        })
+                        /*
+                        whenever(dataReady, () => {
+                            debugger;
+                            console.log('addLink completed-', transResult._rawValue);
+                            var newLinkRecord = {
+                                desription: dialogData.description,
+                                id:transResult._rawValue,
+                                isExternal:1,
+                                layout_link_to:0,
+                                link_url:dialogData.linkUrl,
+                                menu_label: dialogData.description,
+                                show_order:dialogData.currentLinks.length + 1,
+                                type:'U',
+                            }
+                            dialogData.currentLinks.push(newLinkRecord)
+                            emit('cevt',[c.SET_DIALOG, dialogData.currentLinks, 'editLinks']);
+
+                        }
+                         */
+                    }
+                }
+            }
+        }
+        case 'createExterna_oldl':{
+            return {
+                dialogAppearence: {
+                    twPrompt: 'text-lg text-current ml-[30%] my-[5%]',
+                    prompt: 'Test Dialog',
+                    twstyle:"fixed w-[50%] h-auto p-[2%] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-200 rounded border-2 border-blue-500 shadow-xl shadow-black",
+                },
+                dialogFields :[
+                    {
+                        name: 'description',
+                        type: 'inputText',
+                        ref: 'description',
+                        value: function(existingData){
+                            //debugger;
                             return existingData.description;
                         },
                         required: true,
@@ -1490,7 +1629,7 @@ const defs = function(dialogDef){
                     twStyling:'text-xs text-blue-500 w-[100%] mt-[10px]',
                     items: [
                         { type: 'menuItem', config: { label: 'Cancel', actionCode: c.MENU_EXIT_DIALOG } },
-                        { type: 'menuItem', config: { label: 'Add Link', actionCode: c.SAVE_NEW_EXTERNAL_LINK} },
+                        { type: 'menuItem', config: { label: 'Add Link', actionCode: c.ADD_NEW_EXTERNAL_LINK_TO_LIST} },
                     ],
                 },
                 dialogData: function(emit, c, loginStore, ready, result, config, dialogData) {
@@ -1512,10 +1651,26 @@ const defs = function(dialogDef){
                 },
                 addActions:function(currentFuncs) {
                     currentFuncs[c.MENU_EXIT_DIALOG]=function(emit, dialogData){
-                        //debugger;
+                        debugger;
                         console.log('new func exit dialog');
                         //const emit = defineEmits(['cevt']);
                         emit('cevt',[c.EXIT_DIALOG])
+                    }
+                    currentFuncs[c.ADD_NEW_EXTERNAL_LINK_TO_LIST] =function(emit, dialogData, dialogConfig) {
+                        debugger;
+                        var newLinkRecord = {
+                            desription: dialogData.description,
+                            id:0,
+                            isExternal:1,
+                            layout_link_to:0,
+                            link_url:dialogData.linkUrl,
+                            menu_label: dialogData.description,
+                            show_order:dialogData.currentLinks.length + 1,
+                            type:'U',
+                        }
+                        dialogData.currentLinks.push(newLinkRecord)
+                        emit('cevt',[c.SET_DIALOG, dialogData.currentLinks, 'editLinks']);
+
                     }
                     currentFuncs[c.SAVE_NEW_EXTERNAL_LINK]=function(emit, dialogData, dialogConfig){
 
@@ -1549,6 +1704,13 @@ const defs = function(dialogDef){
                         executeTrans(parms, c.CHANGE_LAYOUT,  c.API_PATH+'api/shan/addNewLink?XDEBUG_SESSION_START=19884', 'POST', emit, c, header, dataReady, transResult);
                         whenever(dataReady, () => {
                             debugger;
+                            console.log('update completed-', transResult._rawValue);
+                            emit('cevt',[c.SET_DIALOG, dialogData.currentLinks, 'editLinks']);
+
+                        })
+                        /*
+                        whenever(dataReady, () => {
+                            debugger;
                             console.log('addLink completed-', transResult._rawValue);
                             var newLinkRecord = {
                                 desription: dialogData.description,
@@ -1563,7 +1725,8 @@ const defs = function(dialogDef){
                             dialogData.currentLinks.push(newLinkRecord)
                             emit('cevt',[c.SET_DIALOG, dialogData.currentLinks, 'editLinks']);
 
-                        })
+                        }
+                         */
                     }
                 }
             }
