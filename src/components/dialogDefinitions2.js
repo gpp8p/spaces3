@@ -1457,20 +1457,6 @@ const defs = function(dialogDef){
                 },
                 dialogFields :[
                     {
-                        name: 'menu_label',
-                        type: 'inputText',
-                        ref: 'menu_label',
-                        value: function(existingData){
-                            //debugger;
-                            return existingData.menu_label;
-                        },
-                        required: true,
-                        size: '32',
-                        maxlength: '32',
-                        startFocus: true,
-                        label: "Label"
-                    },
-                    {
                         name: 'description',
                         type: 'inputText',
                         ref: 'description',
@@ -1479,10 +1465,10 @@ const defs = function(dialogDef){
                             return existingData.description;
                         },
                         required: true,
-                        size: '50',
+                        size: '35',
                         maxlength: '255',
-                        startFocus: false,
-                        label: "Description"
+                        startFocus: true,
+                        label: "Label"
                     },
                     {
                         name: 'linkUrl',
@@ -1490,10 +1476,10 @@ const defs = function(dialogDef){
                         ref: 'linkUrl',
                         value: function(existingData){
                             //debugger;
-                            return existingData.description;
+                            return existingData.link_url;
                         },
                         required: true,
-                        size: '50',
+                        size: '45',
                         maxlength: '255',
                         startFocus: false,
                         label: "Url"
@@ -1504,7 +1490,7 @@ const defs = function(dialogDef){
                     twStyling:'text-xs text-blue-500 w-[100%] mt-[10px]',
                     items: [
                         { type: 'menuItem', config: { label: 'Cancel', actionCode: c.MENU_EXIT_DIALOG } },
-                        { type: 'menuItem', config: { label: 'Update', actionCode: c.SAVE_NEW_EXTERNAL_LINK} },
+                        { type: 'menuItem', config: { label: 'Add Link', actionCode: c.SAVE_NEW_EXTERNAL_LINK} },
                     ],
                 },
                 dialogData: function(emit, c, loginStore, ready, result, config, dialogData) {
@@ -1532,11 +1518,7 @@ const defs = function(dialogDef){
                         emit('cevt',[c.EXIT_DIALOG])
                     }
                     currentFuncs[c.SAVE_NEW_EXTERNAL_LINK]=function(emit, dialogData, dialogConfig){
-                        debugger;
-                        console.log('in UPDATE_SELECTED_LINK', dialogData);
-                        dialogData.currentLinks[dialogData.selectedLinkIndex].description = dialogData.description;
-                        dialogData.currentLinks[dialogData.selectedLinkIndex].menu_label=dialogData.menu_label;
-                        debugger;
+
                         const store = useLogStateStore();
                         const pageStore = useCurrentPage();
                         const ready = ref(false);
@@ -1548,22 +1530,37 @@ const defs = function(dialogDef){
                         const header = loginResult.access_token;
                         const dataReady = ref(false);
                         const transResult = ref({});
-                        var jsonLinks = JSON.stringify(dialogData.currentLinks);
 
-                        const parms = {
-                            allLinks: jsonLinks,
+                        var parms = {
+                            description:dialogData.description,
                             card_instance_id: dialogConfig.id,
                             org_id: loginResult.orgId,
                             layout_id: dialogConfig.layoutId,
-                            orient: dialogConfig.orient,
-                            cardTitle: dialogConfig.cardTitle,
-
+                            is_external:1,
+                            layout_link_to:0,
+                            linkUrl:dialogData.linkUrl,
+                            menu_label: dialogData.description,
+                            show_order:dialogData.currentLinks.length + 1,
+                            type:'U',
+                            addInsert:'add',
+                            insertPoint:0
                         }
-                        debugger;
-                        executeTrans(parms, c.CHANGE_LAYOUT,  c.API_PATH+'api/shan/updateCardLinks?XDEBUG_SESSION_START=19884', 'POST', emit, c, header, dataReady, transResult);
+                         debugger;
+                        executeTrans(parms, c.CHANGE_LAYOUT,  c.API_PATH+'api/shan/addNewLink?XDEBUG_SESSION_START=19884', 'POST', emit, c, header, dataReady, transResult);
                         whenever(dataReady, () => {
                             debugger;
-                            console.log('update completed-', transResult._rawValue);
+                            console.log('addLink completed-', transResult._rawValue);
+                            var newLinkRecord = {
+                                desription: dialogData.description,
+                                id:transResult._rawValue,
+                                isExternal:1,
+                                layout_link_to:0,
+                                link_url:dialogData.linkUrl,
+                                menu_label: dialogData.description,
+                                show_order:dialogData.currentLinks.length + 1,
+                                type:'U',
+                            }
+                            dialogData.currentLinks.push(newLinkRecord)
                             emit('cevt',[c.SET_DIALOG, dialogData.currentLinks, 'editLinks']);
 
                         })
