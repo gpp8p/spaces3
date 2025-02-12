@@ -45,12 +45,12 @@ const handleClick = function(){
 }
 */
 const handleClick = () => {
-  //debugger;
+  debugger;
   if(typeof(toRaw(props.config.link))=='undefined'){
     //emit('cevt', [props.config.actionCode]);
     emit('cevt', [c.MENU_ITEM_SELECTED, props.config.actionCode]);
   }else{
-    emit('cevt', [props.config.actionCode, props.config.link, props.config.external]);
+    emit('cevt', [props.config.actionCode, props.config.link, props.config.external, props.config.link_url]);
   }
   //     emit('cevt', props.config.actionCode);
 };

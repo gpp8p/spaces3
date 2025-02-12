@@ -75,7 +75,12 @@ const passCmdDown = function(args){
 funcs[c.MENU_ITEM_SELECTED]= function(evt){
   console.log('in headline  c.-MENU_ITEM_SELECTED', evt);
   debugger;
-  emit('cevt', [c.CHANGE_LAYOUT, evt[1]]);
+  if(evt[2]==0){
+    emit('cevt', [c.CHANGE_LAYOUT, evt[1]]);
+  }else{
+    window.open(evt[3], '_blank').focus();
+  }
+
 
 }
 funcs[c.SET_CMD_HANDLER]= function(evt){
@@ -155,6 +160,7 @@ onMounted(() => {
         actionCode: c.MENU_ITEM_SELECTED,
         external: toRaw(props.data.availableLinks)[i].isExternal,
         showOrder: toRaw(props.data.availableLinks)[i].showOrder,
+        link_url: toRaw(props.data.availableLinks[i].link_url)
       }
     }
     headlineMenu.value.items.push(thisItem);
