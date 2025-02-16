@@ -12,7 +12,49 @@ const emit = defineEmits(['cevt']);
 //const pageStore = useCurrentPage();
 
 export function getLinkFunctions(){
-    const addNewLink = function (selectedLayout,cardInstanceId,  description){
+
+    const addNewLink = function(dialogData, dialogConfig, emit){
+        debugger;
+        const store = useLogStateStore();
+        const pageStore = useCurrentPage();
+        const ready = ref(false);
+        const result = ref({});
+        const loginResult= toRaw(store.loginStatus)
+        console.log('store.loginResult', loginResult);
+        console.log('page configs in save links-', pageStore.getCurrentPageId, pageStore.getCurrentPagePerms);
+        const {executeTrans} = getTrans();
+        const header = loginResult.access_token;
+        const dataReady = ref(false);
+        const transResult = ref({});
+
+        var parms = {
+            description:dialogData.description,
+            card_instance_id: dialogConfig.id,
+            org_id: loginResult.orgId,
+            layout_id: dialogConfig.layoutId,
+            is_external:dialogData.isExternal,
+            layout_link_to:dialogData.layout_link_to,
+            linkUrl:dialogData.linkUrl,
+            menu_label: dialogData.description,
+            show_order:dialogData.currentLinks.length + 1,
+            type:'U',
+            addInsert:'add',
+            insertPoint:0
+        }
+        debugger;
+        executeTrans(parms, c.CHANGE_LAYOUT,  c.API_PATH+'api/shan/addNewLink?XDEBUG_SESSION_START=19884', 'POST', emit, c, header, dataReady, transResult);
+        whenever(dataReady, () => {
+            debugger;
+            console.log('update completed-', transResult._rawValue);
+            //emit('cevt',[c.SET_DIALOG, dialogData.currentLinks, 'editLinks']);
+            //emit('cevt',[c.EXIT_EDIT_LINK, dialogData.currentLinks, 'editLinks']);
+            emit('cevt', [c.CHANGE_LAYOUT, pageStore.getCurrentPageId]);
+
+        })
+    }
+
+
+    const addNewLink_old = function (selectedLayout,cardInstanceId,  description){
         debugger;
         const {executeTrans} = getTrans();
         const pageStore = useCurrentPage();

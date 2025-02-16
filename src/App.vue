@@ -206,6 +206,7 @@ funcs[c.CARD_AREA_SELECTED] = function(evt){
 
 }
 funcs[c.SET_DIALOG] = function(evt){
+  debugger;
   console.log('in SET_DIALOG-', evt);
   cmdHandlers['dialog']([c.SET_DIALOG, evt[1], "dialog", evt[2]]);
 }

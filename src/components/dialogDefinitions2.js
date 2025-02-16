@@ -11,6 +11,10 @@ import {useCurrentPage} from "../stores/currentPage.js";
 //import {useLogStateStore} from "../stores/logState.js";
 import {getAppearanceConfigs}  from "../components/cardAppearence.js";
 
+import {getLinkFunctions} from "../components/linkFunctions.js";
+const {addNewLink, getLinks, deleteLink} = getLinkFunctions();
+
+
 
 export function getDialogDefinitions(){
 
@@ -1530,6 +1534,10 @@ const defs = function(dialogDef){
                     }
                     currentFuncs[c.SAVE_NEW_EXTERNAL_LINK]=function(emit, dialogData, dialogConfig){
 
+                        dialogData.isExternal = 1;
+                        dialogData.layout_link_to = 0;
+                        addNewLink(dialogData, dialogConfig, emit);
+/*
                         const store = useLogStateStore();
                         const pageStore = useCurrentPage();
                         const ready = ref(false);
