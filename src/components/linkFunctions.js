@@ -26,6 +26,16 @@ export function getLinkFunctions(){
         const header = loginResult.access_token;
         const dataReady = ref(false);
         const transResult = ref({});
+        var urlToUse;
+        if(dialogData.isExternal==1){
+            if(dialogData.linkUrl.includes('http://')||dialogData.linkUrl.includes('https://')){
+                urlToUse = dialogData.linkUrl;
+            }else{
+                urlToUse = 'http://'+dialogData.linkUrl;
+            }
+        }else{
+            urlToUse = "";
+        }
 
         var parms = {
             description:dialogData.description,
@@ -34,7 +44,7 @@ export function getLinkFunctions(){
             layout_id: dialogConfig.layoutId,
             is_external:dialogData.isExternal,
             layout_link_to:dialogData.layout_link_to,
-            linkUrl:dialogData.linkUrl,
+            linkUrl:urlToUse,
             menu_label: dialogData.description,
             show_order:dialogData.currentLinks.length + 1,
             type:'U',
