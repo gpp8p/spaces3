@@ -398,6 +398,7 @@ const defs = function(dialogDef){
                 dialogData: function(emit, c, loginStore, ready, result, config, dialogData){
                     const {loadCardAppearanceConfigs, saveCardAppearanceConfigs, createCard, twListTableHeight} = getAppearanceConfigs();
                     loadCardAppearanceConfigs(emit, c, loginStore, ready, result, config);
+                    //console.log('loadCardAppearanceConfigs dialogData', dialogData);
                 },
                 addActions:function(currentFuncs) {
                     currentFuncs[c.MENU_EXIT_DIALOG]=function(emit, dialogData){
@@ -408,6 +409,7 @@ const defs = function(dialogDef){
                     }
                     currentFuncs[c.MENU_SAVE_DIALOG_DATA]=function(emit, dialogData){
                         const {loadCardAppearanceConfigs, saveCardAppearanceConfigs, createCard, twListTableHeight} = getAppearanceConfigs();
+                        debugger;
                         saveCardAppearanceConfigs(emit, dialogData);
                     }
                 }
@@ -2078,10 +2080,13 @@ const defs = function(dialogDef){
                     }
 
  */
-                    currentFuncs[c.RESOLVE_DATA]=function(dialogFields, evt, emit, dialogData, dialogFieldsData){
+                    currentFuncs[c.RESOLVE_DATA]=function(dialogFields, evt, emit, dialogData, dialogFieldsData, dialogConfig){
                         debugger;
                         var resolvedData = dialogFields[0].dataToShow[evt[1]];
                         console.log('add link to list', resolvedData);
+                        dialogData.isExternal = 0;
+                        dialogData.layout_link_to = evt[1];
+                        addNewLink(dialogData, dialogConfig, emit);
                         emit('cevt', [c.LINK_TO_ADD_SELECTED, resolvedData]);
                         //                      return dataToShow.value[evt[1]];
                     }

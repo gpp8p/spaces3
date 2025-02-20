@@ -197,7 +197,7 @@ export function getAppearanceConfigs(){
         }
         if(typeof(dialogData.primaryFont)!='undefined'){
             debugger;
-            var primaryTextAlignment = toRaw(dialogData.primaryFont.textAlign);
+            var primaryTextAlignment = toRaw(dialogData.primaryFont.fontAlign);
             //newParameters['textAlign']="text-align:"+dialogData.primaryFont.textAlign+";";
             if(typeof(dialogData.primaryFont.fontAlign)!='undefined'){
                 newParameters['textAlign']="text-align:"+dialogData.primaryFont.fontAlign+";";
@@ -241,7 +241,9 @@ export function getAppearanceConfigs(){
         console.log('updatePackage', updatePackage);
         var updateParameters = JSON.stringify(updatePackage);
         const parms = {
-            cardParams: updateParameters
+            cardParams: updateParameters,
+            cardTitle: dialogData.cardName,
+            cardOrientation: dialogData.orient
         }
         executeTrans(parms, c.CHANGE_LAYOUT,  c.API_PATH+'api/shan/saveCardParameters?XDEBUG_SESSION_START=19884', 'POST', emit, c, header, dataReady, transResult);
         whenever(dataReady, () => {
@@ -315,6 +317,11 @@ export function getAppearanceConfigs(){
             newParameters['fontFamily']="font-family:"+dialogData.primaryFont.fontFamily+";";
             newParameters['fontStyle']="font-style:"+dialogData.primaryFont.fontStyle+";";
         }
+/*
+        if(typeof(dialogData.cardTitle)!='undefined'){
+            newParameters['linkMenuTitle']= dialogData.cardTitle;
+        }
+ */
         console.log('newParameters', newParameters);
         updatePackage[0]=dialogData.cardId;
         updatePackage[1]=newParameters;

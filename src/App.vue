@@ -162,6 +162,7 @@ funcs[c.EXIT_EDIT_MODE] = function(evt){
   cmdHandlers['spFrame']([c.SET_TO_DISPLAY_MODE,evt, "Page"]);
 }
 funcs[c.SHOW_DIALOG] = function(evt){
+  debugger;
   console.log('in SHOW_DIALOG-', evt);
   if(typeof(evt[1])!="undefined"){
     dialogConfig.definition = evt[1];

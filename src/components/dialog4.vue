@@ -110,6 +110,12 @@ if(typeof(currentDialogDataLoader)=='function'){
 //      dialogFieldsConfig.value.existingData = existingData;
       dialogFieldsData.value = existingData;
       dialogData = existingData;
+      if(typeof(props.config.cardName)!='undefined'){
+        dialogData.cardName = props.config.cardName;
+      }
+      if(typeof(props.config.orient)!='undefined'){
+        dialogData.orient = props.config.orient;
+      }
 //    reloadDialogFields+=1;
 
     })
@@ -132,9 +138,7 @@ if(typeof(currentDialogDataLoader)=='function'){
 
 
 dialogFieldsData.value.id = props.config.id;
-if(typeof(props.config.orient)!='undefined'){
-  dialogFieldsData.value.orient=props.config.orient
-}
+
 //const dialogFieldsConfig = ref({});
 
 //debugger;
@@ -414,6 +418,7 @@ const mergeDialogFields = function(dialogData, dialogFieldsData) {
 onMounted(() => {
   debugger;
   emit('cevt', [c.SET_CMD_HANDLER, handleCmd, name]);
+
 //  cmdHandlers['mainPage'](['createNewCard', msg[1], 'mainPage']);
   console.log('dialogData', dialogData);
   console.log('props data', props.data.cardDimensions);

@@ -100,7 +100,13 @@ funcs[c.CARD_MENU_SELECTED] = function(cmd){
       break;
     }
     case c.CARD_MENU_CONFIGURE:{
-      emit('cevt', [c.SHOW_DIALOG, 'configureCard', props.config.id]);
+      debugger;
+      var cardProperties = {
+        orient: props.data.orient,
+        cardName: props.data.card_name,
+        cardId: props.config.id
+      }
+      emit('cevt', [c.SHOW_DIALOG, 'configureCard', cardProperties]);
       break;
     }
     case c.CARD_MENU_EDIT:{
