@@ -2083,6 +2083,8 @@ const defs = function(dialogDef){
                     currentFuncs[c.RESOLVE_DATA]=function(dialogFields, evt, emit, dialogData, dialogFieldsData, dialogConfig){
                         debugger;
                         var resolvedData = dialogFields[0].dataToShow[evt[1]];
+                        dialogData.description = resolvedData.description;
+                        dialogData.menu_label = resolvedData.menu_label;
                         console.log('add link to list', resolvedData);
                         dialogData.isExternal = 0;
                         dialogData.layout_link_to = evt[1];

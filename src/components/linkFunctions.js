@@ -34,7 +34,13 @@ export function getLinkFunctions(){
                 urlToUse = 'http://'+dialogData.linkUrl;
             }
         }else{
-            urlToUse = "";
+            urlToUse = "http://localhost:8080";
+        }
+        var mLabel;
+        if(typeof(dialogData.menu_label)!='undefined'){
+            mLabel = dialogData.menu_label;
+        }else{
+            mLabel = dialogData.description;
         }
 
         var parms = {
@@ -45,7 +51,7 @@ export function getLinkFunctions(){
             is_external:dialogData.isExternal,
             layout_link_to:dialogData.layout_link_to,
             linkUrl:urlToUse,
-            menu_label: dialogData.description,
+            menu_label: mLabel,
             show_order:dialogData.currentLinks.length + 1,
             type:'U',
             addInsert:'add',
