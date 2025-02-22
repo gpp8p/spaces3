@@ -2428,8 +2428,9 @@ const defs = function(dialogDef){
                         dialogData.selectedLinkIndex = evt[1];
                         dialogFieldsData.value.selectedLink = dialogData.currentLinks[evt[1]];
                         emit('cevt',[c.SET_DIALOG, dialogData.currentLinks[evt[1]], 'editThisLink']);
-
-
+                    }
+                    currentFuncs[c.EDIT_HEADLINE] = function(emit, dialogData, dialogConfig){
+                        emit('cevt',[c.SET_DIALOG, dialogData, 'editHeadline']);
                     }
                 },
                 menuDefs:{
@@ -2439,11 +2440,66 @@ const defs = function(dialogDef){
                         { type: 'menuItem', config: { label: 'Add Link', actionCode: c.MENU_ADD_LINK } },
                         { type: 'menuItem', config: { label: 'Save', actionCode: c.SAVE_DIALOG_DATA} },
                         { type: 'menuItem', config: { label: 'Reorder', actionCode: c.SET_REORDER} },
+                        {type: 'menuItem',  config: { label: 'Headline', actionCode: c.EDIT_HEADLINE} },
                         { type: 'menuItem', config: { label: 'Done', actionCode: c.EXIT_EDIT_LINK} },
 
 
                     ],
                 },
+            }
+        }
+        case 'editHeadline':{
+            return {
+                dialogAppearence: {
+                    twPrompt: 'text-lg text-current ml-[30%] my-[5%]',
+                    prompt: 'Please Log In...',
+                    twstyle:"fixed w-[50%] h-[40%] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-200 rounded border-2 border-blue-500 shadow-xl shadow-black pl-[5%] pt-[5%]",
+                    menuOpts:"loginMenu",
+
+                },
+                dialogFields : [
+                    {
+                        type:'inputText',
+                        name: 'headline',
+                        size: '50',
+                        maxlength: '50',
+                        label: 'Headline:',
+                        required: true,
+                        startFocus: true,
+                        value: function(existingData){
+                            //debugger;
+                            return existingData.headline;
+                        },
+                        labelStyle:'text-sm text-blue-500 mr-[10%]',
+                        tailwindStyle:'text-sm my-0.5 outline-blue-500 rounded focus:outline-2 focus:outline-blue-500 hover:outline-2 hover:outline-red-500 rounded'
+                    },
+
+                ],
+                defaultData:{},
+                dialogData: function(emit, c, loginStore, ready, result, config, dialogData) {
+                    result.value= {
+                        headline:'put headline here',
+                    }
+                    console.log('dialogData is-', dialogData);
+                    ready.value=true;
+
+                },
+                menuDefs:{
+                    twStyling:'text-xs text-blue-500 w-[60%] mt-[15%] ml-[10%]',
+                    items: [
+                        { type: 'menuItem', config: { label: 'Cancel', actionCode: c.MENU_EXIT_DIALOG } },
+                        { type: 'menuItem', config: { label: 'Save', actionCode: c.SAVE_HEADLINE } },
+                    ],
+                },
+                addActions:function(currentFuncs){
+                    currentFuncs[c.FIELD_CHANGE_EVENT]=function(evt, emit, dialogData){
+
+                    }
+
+
+                    //return currentFuncs;
+                }
+
             }
         }
 
