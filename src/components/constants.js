@@ -69,6 +69,7 @@ export const c = {
     ADD_NEW_EXTERNAL_LINK_TO_LIST:64,
     EDIT_HEADLINE:65,
     SAVE_HEADLINE:66,
+    SAVE_CARD_TITLE:67,
 
 
 

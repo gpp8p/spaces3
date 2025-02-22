@@ -403,7 +403,28 @@ export function getAppearanceConfigs(){
             }
         }
     }
+    const updateCardTitle = function(emit, dialogData) {
+        const store = useLogStateStore();
+        const ready = ref(false);
+        const result = ref({});
+        const pageStore = useCurrentPage();
+        const loginResult= toRaw(store.loginStatus)
+        console.log('store.loginResult', loginResult);
+        console.log('pageStore-', pageStore.getCurrentPageId, pageStore.getCurrentPagePerms);
+        const {executeTrans} = getTrans();
+        const header = loginResult.access_token;
+        const dataReady = ref(false);
+        const transResult = ref({});
+        const params = {
+            layout_id:pageStore.getCurrentPageId,
+            cardTitle:dialogData.cardTitle,
+            org_id: loginResult.orgId,
+            card_instance_id: dialogData.card_instance_id
 
+
+        }
+
+    }
 
     return {loadCardAppearanceConfigs, saveCardAppearanceConfigs, createCard, twListTableHeight}
 }

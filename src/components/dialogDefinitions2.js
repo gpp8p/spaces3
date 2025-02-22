@@ -2460,7 +2460,7 @@ const defs = function(dialogDef){
                 dialogFields : [
                     {
                         type:'inputText',
-                        name: 'headline',
+                        name: 'cardTitle',
                         size: '50',
                         maxlength: '50',
                         label: 'Headline:',
@@ -2468,7 +2468,7 @@ const defs = function(dialogDef){
                         startFocus: true,
                         value: function(existingData){
                             //debugger;
-                            return existingData.headline;
+                            return existingData.cardTitle;
                         },
                         labelStyle:'text-sm text-blue-500 mr-[10%]',
                         tailwindStyle:'text-sm my-0.5 outline-blue-500 rounded focus:outline-2 focus:outline-blue-500 hover:outline-2 hover:outline-red-500 rounded'
@@ -2478,7 +2478,7 @@ const defs = function(dialogDef){
                 defaultData:{},
                 dialogData: function(emit, c, loginStore, ready, result, config, dialogData) {
                     result.value= {
-                        headline:'put headline here',
+                        cardTitle: config.cardTitle,
                     }
                     console.log('dialogData is-', dialogData);
                     ready.value=true;
@@ -2488,11 +2488,17 @@ const defs = function(dialogDef){
                     twStyling:'text-xs text-blue-500 w-[60%] mt-[15%] ml-[10%]',
                     items: [
                         { type: 'menuItem', config: { label: 'Cancel', actionCode: c.MENU_EXIT_DIALOG } },
-                        { type: 'menuItem', config: { label: 'Save', actionCode: c.SAVE_HEADLINE } },
+                        { type: 'menuItem', config: { label: 'Save', actionCode: c.SAVE_CARD_TITLE } },
                     ],
                 },
                 addActions:function(currentFuncs){
                     currentFuncs[c.FIELD_CHANGE_EVENT]=function(evt, emit, dialogData){
+
+                    }
+                    currentFuncs[c.SAVE_CARD_TITLE] = function(emit, dialogData, dialogConfig){
+                        dialogData.card_instance_id = dialogConfig.id;
+                        dialogData.layout_id = dialogConfig.layout_id;
+                        debugger;
 
                     }
 
