@@ -403,7 +403,8 @@ export function getAppearanceConfigs(){
             }
         }
     }
-    const updateCardTitle = function(emit, dialogData) {
+    const updateCardTitle = function(emit, dialogData, dialogConfig) {
+        debugger;
         const store = useLogStateStore();
         const ready = ref(false);
         const result = ref({});
@@ -415,16 +416,20 @@ export function getAppearanceConfigs(){
         const header = loginResult.access_token;
         const dataReady = ref(false);
         const transResult = ref({});
-        const params = {
+        const parms = {
             layout_id:pageStore.getCurrentPageId,
             cardTitle:dialogData.cardTitle,
             org_id: loginResult.orgId,
             card_instance_id: dialogData.card_instance_id
-
-
         }
-
+        debugger;
+        executeTrans(parms, c.CHANGE_LAYOUT,  c.API_PATH+'api/shan/updateCardTitle?XDEBUG_SESSION_START=19884', 'POST', emit, c, header, dataReady, transResult);
+        whenever(dataReady, () => {
+            //debugger;
+            console.log('update completed-', transResult._rawValue);
+            emit('cevt',[c.CHANGE_LAYOUT, pageStore.getCurrentPageId]);
+        })
     }
 
-    return {loadCardAppearanceConfigs, saveCardAppearanceConfigs, createCard, twListTableHeight}
+    return {loadCardAppearanceConfigs, saveCardAppearanceConfigs, createCard, twListTableHeight, updateCardTitle}
 }

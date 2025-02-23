@@ -42,7 +42,7 @@ import { watch } from 'vue'
 import {getLoaders} from '../components/ltLoader.js';
 import { toRaw} from 'vue'
 import {getAppearanceConfigs}  from "../components/cardAppearence.js";
-const {loadCardAppearanceConfigs, saveCardAppearanceConfigs, createCard, twListTableHeight} = getAppearanceConfigs();
+const {loadCardAppearanceConfigs, saveCardAppearanceConfigs, createCard, twListTableHeight, updateCardTitle} = getAppearanceConfigs();
 
 const {handleEvent} = useEventHandler();
 const emit = defineEmits(['cevt']);

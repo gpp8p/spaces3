@@ -396,7 +396,7 @@ const defs = function(dialogDef){
                     ],
                 },
                 dialogData: function(emit, c, loginStore, ready, result, config, dialogData){
-                    const {loadCardAppearanceConfigs, saveCardAppearanceConfigs, createCard, twListTableHeight} = getAppearanceConfigs();
+                    const {loadCardAppearanceConfigs, saveCardAppearanceConfigs, createCard, twListTableHeight, updateCardTitle} = getAppearanceConfigs();
                     loadCardAppearanceConfigs(emit, c, loginStore, ready, result, config);
                     //console.log('loadCardAppearanceConfigs dialogData', dialogData);
                 },
@@ -408,7 +408,7 @@ const defs = function(dialogDef){
                         emit('cevt',[c.EXIT_DIALOG])
                     }
                     currentFuncs[c.MENU_SAVE_DIALOG_DATA]=function(emit, dialogData){
-                        const {loadCardAppearanceConfigs, saveCardAppearanceConfigs, createCard, twListTableHeight} = getAppearanceConfigs();
+                        const {loadCardAppearanceConfigs, saveCardAppearanceConfigs, createCard, twListTableHeight, updateCardTitle} = getAppearanceConfigs();
                         debugger;
                         saveCardAppearanceConfigs(emit, dialogData);
                     }
@@ -625,7 +625,7 @@ const defs = function(dialogDef){
                         emit('cevt',[c.EXIT_DIALOG])
                     }
                     currentFuncs[c.CREATE_NEW_CARD]=function(emit, dialogData){
-                        const {loadCardAppearanceConfigs, saveCardAppearanceConfigs, createCard, twListTableHeight} = getAppearanceConfigs();
+                        const {loadCardAppearanceConfigs, saveCardAppearanceConfigs, createCard, twListTableHeight, updateCardTitle} = getAppearanceConfigs();
                         debugger;
                         if(dialogData.cardType=='notype'){
                             alert('You Must Select a Type');
@@ -2496,9 +2496,11 @@ const defs = function(dialogDef){
 
                     }
                     currentFuncs[c.SAVE_CARD_TITLE] = function(emit, dialogData, dialogConfig){
+                        debugger;
+                        const {loadCardAppearanceConfigs, saveCardAppearanceConfigs, createCard, twListTableHeight, updateCardTitle} = getAppearanceConfigs();
                         dialogData.card_instance_id = dialogConfig.id;
                         dialogData.layout_id = dialogConfig.layout_id;
-                        debugger;
+                        updateCardTitle(emit, dialogData, dialogConfig);
 
                     }
 
