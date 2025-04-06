@@ -310,7 +310,7 @@ export function getAppearanceConfigs(){
             }
         }
         if(typeof(dialogData.primaryFont)!='undefined'){
-            newParameters['textAlign']="text-align:"+dialogData.primaryFont.textAlign+";";
+            newParameters['textAlign']="text-align:"+dialogData.primaryFont.fontAlign+";";
             newParameters['fontColor']="color:"+dialogData.primaryFont.fontColor+";";
             newParameters['fontWeight']="font-weignt:"+dialogData.primaryFont.fontWeight+";";
             newParameters['fontSize']="font-size:"+dialogData.primaryFont.fontSize+";";
