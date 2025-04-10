@@ -220,6 +220,10 @@ funcs[c.FIELD_CHANGE_ALERT]=function(cmd){
         showFontSelector.value=true;
         break;
       }
+      case 'NavigationMenu':{
+        showFontSelector.value=true;
+        break;
+      }
       default:{
         showFontSelector.value=false;
         break;

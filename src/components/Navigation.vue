@@ -110,6 +110,7 @@ funcs[c.CARD_MENU_SELECTED] = function(cmd){
       break;
     }
     case c.CARD_MENU_EDIT:{
+      debugger;
       var cardOrient;
       if(cmd[1].type=='Headline'){
         cardOrient = 'horozontal';

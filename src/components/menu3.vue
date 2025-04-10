@@ -89,6 +89,15 @@ funcs[c.UNSET_CMD_HANDLER]= function(evt){
   console.log('in SET_CMD_HANDLER-', evt);
   let dlt = delete cmdHandlers[evt[2]];
 }
+funcs[c.CARD_MENU_CONFIGURE] = function(evt){
+  emit('cevt', [c.MENU_ITEM_SELECTED, evt[0]]);
+}
+funcs[c.CARD_MENU_EDIT] = function(evt){
+  emit('cevt', [c.MENU_ITEM_SELECTED, evt[0]]);
+}
+funcs[c.CARD_MENU_EXIT] = function(evt){
+  emit('cevt', [c.MENU_ITEM_SELECTED, evt[0]]);
+}
 
 onMounted(() => {
   //debugger;

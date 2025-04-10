@@ -463,7 +463,7 @@ const defs = function(dialogDef){
                                 label: "Headline"
                             },
                             {
-                                value: 'navMenu',
+                                value: 'NavigationMenu',
                                 label: "Navigation Menu"
                             },
                             {
