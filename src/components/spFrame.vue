@@ -97,10 +97,11 @@ funcs[c.RELOAD_PAGE]=function(args){
 }
 funcs[c.MENU_ITEM_SELECTED]=function(args){
   console.log('in spFrame args', args);
-  emit('cevt', [args[1]]);
+  emit('cevt', [c.MENU_ITEM_SELECTED, args[1]]);
 }
 
 funcs[c.MENU_EDIT_PAGE]=function(args){
+  debugger;
   console.log('c.MENU_EDIT_PAGE called', args);
   cmdHandlers['Page']([c.SET_PAGE_EDIT, args, "Page"]);
 }

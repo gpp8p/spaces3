@@ -1,7 +1,7 @@
 <template>
   <div class="w-screen h-screen" id="app">
     <spFrame @cevt="handleEvent($event, funcs, emit)" />
-    <spDialog :config = "dialogConfig" :data="dialogData"  @cevt="handleEvent($event, funcs, emit)" v-if="showDialog==true"></spDialog>
+    <spDialog :config = "dialogConfig" :data="dialogData" v-if="showDialog==true" @cevt="handleEvent($event, funcs, emit)" ></spDialog>
   </div>
 </template>
 
@@ -72,7 +72,18 @@ funcs[c.MENU_LOGIN]=function(evt){
   console.log('in app MENU_LOGIN-', evt);
 }
 funcs[c.EXIT_DIALOG]=function(evt){
+  debugger;
   showDialog.value=false;
+}
+funcs[c.MENU_ITEM_SELECTED]=function(evt){
+  debugger;
+  console.log('in APP MENU_ITEM_SELECTED -  ', evt);
+  funcs[evt[1]](evt);
+}
+funcs[c.MENU_EDIT_PAGE]=function(args){
+  debugger;
+  console.log('c.MENU_EDIT_PAGE called', args);
+  cmdHandlers['spFrame']([c.SET_PAGE_EDIT, args, "Page"]);
 }
 funcs[c.LOGIN_RETURNED]=function(evt){
   debugger;

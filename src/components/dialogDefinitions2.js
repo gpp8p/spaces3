@@ -402,10 +402,10 @@ const defs = function(dialogDef){
                 },
                 addActions:function(currentFuncs) {
                     currentFuncs[c.MENU_EXIT_DIALOG]=function(emit, dialogData){
-                        //debugger;
+                        debugger;
                         console.log('new func exit dialog');
                         //const emit = defineEmits(['cevt']);
-                        emit('cevt',[c.EXIT_DIALOG])
+                        emit('cevt',[c.MENU_ITEM_SELECTED, c.EXIT_DIALOG])
                     }
                     currentFuncs[c.MENU_SAVE_DIALOG_DATA]=function(emit, dialogData){
                         const {loadCardAppearanceConfigs, saveCardAppearanceConfigs, createCard, twListTableHeight, updateCardTitle} = getAppearanceConfigs();

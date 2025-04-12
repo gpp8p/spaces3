@@ -25,6 +25,7 @@
 
 <script>
 import { ref } from 'vue';
+import {c} from "./constants";
 
 export default {
   name: 'menuItemDrop',
@@ -43,8 +44,9 @@ export default {
     };
 
     const emitActionCode = (actionCode) => {
-  //    debugger;
-      emit('cevt', [actionCode]);
+      debugger;
+//      emit('cevt', [actionCode]);
+      emit('cevt', [c.MENU_ITEM_SELECTED,actionCode]);
       showSubItems.value = false;
     };
 
