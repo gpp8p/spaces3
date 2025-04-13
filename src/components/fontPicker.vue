@@ -266,6 +266,11 @@ onMounted(() => {
   switch(props.data.cardType){
     case 'Headline':{
       showFontSelector.value=true;
+      break;
+    }
+    case 'NavigationMenu':{
+      showFontSelector.value=true;
+      break;
     }
   }
   debugger;
@@ -291,6 +296,29 @@ onMounted(() => {
 
     console.log('fontFamily',props.data[props.config.name].fontFamily);
     console.log('typeof fontFamily', typeof(props.data[props.config.name].fontFamily));
+  }else{
+    if(props.config.name=='primaryFont'){
+      currentFontPickerValue.value = {
+        fontColor: '#160aff',
+        fontFamily: 'Ariel',
+        fontSize: '18pt',
+        fontStyle: 'normal',
+        fontWeight: 'bold',
+        textAlign: 'center',
+      }
+      primaryFontFamily.value = currentFontPickerValue.value.fontFamily;
+      primaryFontColor.value = currentFontPickerValue.value.fontColor;
+      primaryFontSize.value = currentFontPickerValue.value.fontSize;
+      primaryFontStyle.value = currentFontPickerValue.value.fontStyle;
+      primaryFontWeight.value = currentFontPickerValue.value.fontWeight;
+      primaryFontAlign.value = currentFontPickerValue.value.textAlign;
+      secondaryFontFamily.value = 'Ariel';
+      secondaryFontColor.value = '#160aff';
+      secondaryFontSize.value = '12pt';
+      secondaryFontStyle.value = 'normal';
+      secondaryFontWeight.value = 'bold';
+      secondaryFontAlign.value = 'left';
+    }
   }
 
 
