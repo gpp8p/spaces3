@@ -56,7 +56,14 @@ const fieldValue = ref('');
 if(typeof(props.config.value)=='function'){
   fieldValue.value = props.config.value(props.data);
 }
+debugger;
 
+//var fieldData = props.data;
+/*
+if(typeof(props.config.defaultData)!='undefined'){
+  fieldData.defaultData = props.config.defaultData;
+}
+*/
 
 const morphs = {
   inputText,

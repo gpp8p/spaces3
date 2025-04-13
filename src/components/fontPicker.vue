@@ -269,27 +269,30 @@ onMounted(() => {
     }
   }
   debugger;
-  currentFontPickerValue.value = props.data[props.config.name];
-  primaryFontFamily.value = props.data[props.config.name].fontFamily;
-  primaryFontColor.value = props.data[props.config.name].fontColor;
-  primaryFontSize.value = props.data[props.config.name].fontSize;
-  primaryFontStyle.value = props.data[props.config.name].fontStyle;
-  primaryFontWeight.value = props.data[props.config.name].fontWeight;
-  primaryFontAlign.value = props.data[props.config.name].textAlign;
-  secondaryFontFamily.value = props.data[props.config.name].fontFamily;
-  if(typeof(props.data[props.config.name].fontColor)!='undefined'){
-    secondaryFontColor.value = props.data[props.config.name].fontColor;
-  }else{
-    secondaryFontColor.value = '#0000FF';
-    fieldValue.value.fontColor = secondaryFontColor.value;
-  }
-  secondaryFontSize.value = props.data[props.config.name].fontSize;
-  secondaryFontStyle.value = props.data[props.config.name].fontStyle;
-  secondaryFontWeight.value = props.data[props.config.name].fontWeight;
-  secondaryFontAlign.value = props.data[props.config.name].textAlign;
+  if(typeof(props.data[props.config.name])!='undefined'){
+    currentFontPickerValue.value = props.data[props.config.name];
+    primaryFontFamily.value = props.data[props.config.name].fontFamily;
+    primaryFontColor.value = props.data[props.config.name].fontColor;
+    primaryFontSize.value = props.data[props.config.name].fontSize;
+    primaryFontStyle.value = props.data[props.config.name].fontStyle;
+    primaryFontWeight.value = props.data[props.config.name].fontWeight;
+    primaryFontAlign.value = props.data[props.config.name].textAlign;
+    secondaryFontFamily.value = props.data[props.config.name].fontFamily;
+    if(typeof(props.data[props.config.name].fontColor)!='undefined'){
+      secondaryFontColor.value = props.data[props.config.name].fontColor;
+    }else{
+      secondaryFontColor.value = '#0000FF';
+      fieldValue.value.fontColor = secondaryFontColor.value;
+    }
+    secondaryFontSize.value = props.data[props.config.name].fontSize;
+    secondaryFontStyle.value = props.data[props.config.name].fontStyle;
+    secondaryFontWeight.value = props.data[props.config.name].fontWeight;
+    secondaryFontAlign.value = props.data[props.config.name].textAlign;
 
-  console.log('fontFamily',props.data[props.config.name].fontFamily);
-  console.log('typeof fontFamily', typeof(props.data[props.config.name].fontFamily));
+    console.log('fontFamily',props.data[props.config.name].fontFamily);
+    console.log('typeof fontFamily', typeof(props.data[props.config.name].fontFamily));
+  }
+
 
 })
 

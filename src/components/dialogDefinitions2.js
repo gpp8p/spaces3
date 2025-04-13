@@ -400,6 +400,38 @@ const defs = function(dialogDef){
                     loadCardAppearanceConfigs(emit, c, loginStore, ready, result, config);
                     //console.log('loadCardAppearanceConfigs dialogData', dialogData);
                 },
+                defaultData:{
+                    borderColor: "#ff1e0f",
+                    borderInclude: true,
+                    borderType: "solid",
+                    borderWidth: "medium",
+                    cardBackground:{
+                        backgroundType: "color",
+                        backgroundColor: "#d1ffd3"
+                    },
+                    cardType: 'notype',
+                    restricted: false,
+                    roundedCorners: true,
+                    shadow: true,
+                    //primaryFont:{
+                    primaryFont:{
+                        fontFamily: 'Arial',
+                        fontSize: '10pt',
+                        fontWeight: 'bold',
+                        fontStyle: 'normal',
+                        fontAlign: 'left',
+                        fontColor: '#FFAABB'
+                    },
+                    secondaryFont:{
+                        fontFamily: 'Arial',
+                        fontSize: '10pt',
+                        fontWeight: 'bold',
+                        fontStyle: 'normal',
+                        fontAlign: 'left',
+                        fontColor: '#FFAABB'
+                    }
+
+                },
                 addActions:function(currentFuncs) {
                     currentFuncs[c.MENU_EXIT_DIALOG]=function(emit, dialogData){
                         debugger;

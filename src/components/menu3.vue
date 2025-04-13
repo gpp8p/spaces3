@@ -90,6 +90,7 @@ funcs[c.UNSET_CMD_HANDLER]= function(evt){
   let dlt = delete cmdHandlers[evt[2]];
 }
 funcs[c.CARD_MENU_CONFIGURE] = function(evt){
+  debugger;
   emit('cevt', [c.MENU_ITEM_SELECTED, evt[0]]);
 }
 funcs[c.CARD_MENU_EDIT] = function(evt){

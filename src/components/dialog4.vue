@@ -135,6 +135,10 @@ if(typeof(currentDialogDataLoader)=='function'){
   dialogFieldsData.value = existingData;
   dialogData.value = existingData;
 }
+debugger;
+if(typeof(getDefaultData(props.config.definition))!='undefined'){
+  dialogFieldsConfig.value.defaultData = getDefaultData(props.config.definition);
+}
 
 
 dialogFieldsData.value.id = props.config.id;
