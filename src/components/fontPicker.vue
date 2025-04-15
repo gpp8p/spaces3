@@ -300,7 +300,7 @@ onMounted(() => {
     if(props.config.name=='primaryFont'){
       currentFontPickerValue.value = {
         fontColor: '#160aff',
-        fontFamily: 'Ariel',
+        fontFamily: 'Arial',
         fontSize: '18pt',
         fontStyle: 'normal',
         fontWeight: 'bold',
@@ -312,7 +312,7 @@ onMounted(() => {
       primaryFontStyle.value = currentFontPickerValue.value.fontStyle;
       primaryFontWeight.value = currentFontPickerValue.value.fontWeight;
       primaryFontAlign.value = currentFontPickerValue.value.textAlign;
-      secondaryFontFamily.value = 'Ariel';
+      secondaryFontFamily.value = 'Arial';
       secondaryFontColor.value = '#160aff';
       secondaryFontSize.value = '12pt';
       secondaryFontStyle.value = 'normal';

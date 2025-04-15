@@ -139,6 +139,21 @@ export function getAppearanceConfigs(){
                     result.value['secondaryFont']=secondaryFont;
                     break;
                 }
+                case'NavigationMenu':{
+                    console.log('headline sub font configs-',domElementConfigs['sub']);
+                    for(var c = 0;c<domElementConfigs['sub'].length;c++){
+                        var elementVal = domElementConfigs['sub'][c][1];
+                        var elementKey =domElementConfigs['sub'][c][0];
+                        var colonAt = elementVal.indexOf(':');
+                        debugger;
+                        console.log('value:',elementKey, '-',elementVal.slice(colonAt+1));
+                        secondaryFont[elementKey]=elementVal.slice(colonAt+1);
+                        secondaryFont[elementKey] = secondaryFont[elementKey].replace(';','');
+                    }
+                    result.value['primaryFont']=primaryFont;
+                    result.value['secondaryFont']=secondaryFont;
+                    break;
+                }
                 default:{
                     break;
                 }
