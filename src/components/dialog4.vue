@@ -60,10 +60,10 @@ import {getDialogDefinitions} from "../components/dialogDefinitions2.js";
 
 
 
-
+// load the dialog definition
 const {getDialogAppearence, getDialogFields, getDefaultData, getDialogData, getMenuDefinitions, getActions, getDialogParams} = getDialogDefinitions();
 const dialogFields = getDialogFields(props.config.definition);
-//const dialogFields = getDialogFields('loginDialog');
+
 console.log('dialogFields-',dialogFields);
 
 import {getLinkFunctions} from "../components/linkFunctions.js";
@@ -102,6 +102,7 @@ if(typeof(currentDialogDataLoader)=='function'){
   currentDialogDataLoader(emit, c, store, ready, result, props.config, dialogData);
   console.log('loader ready',ready);
   if(ready.value==false){
+    //dialogData function  needs to wait for data
     whenever(ready, () => {
       debugger;
       existingData = toRaw(result.value);
@@ -116,10 +117,9 @@ if(typeof(currentDialogDataLoader)=='function'){
       if(typeof(props.config.orient)!='undefined'){
         dialogData.orient = props.config.orient;
       }
-//    reloadDialogFields+=1;
-
     })
   }else{
+    // dialog data function returned ready right away
     existingData = toRaw(result.value);
     console.log('existingData loaded',existingData);
     dialogFieldsConfig.value.dialogFields = dialogFields;
@@ -129,6 +129,7 @@ if(typeof(currentDialogDataLoader)=='function'){
 
 
 }else{
+  //dialog data was not a function - gets the default data
   existingData = getDefaultData(props.config.definition);
   dialogFieldsConfig.value.dialogFields = dialogFields;
   dialogFieldsConfig.value.existingData = existingData;
@@ -136,6 +137,7 @@ if(typeof(currentDialogDataLoader)=='function'){
   dialogData.value = existingData;
 }
 debugger;
+// there is default data in the dialog definition
 if(typeof(getDefaultData(props.config.definition))!='undefined'){
   dialogFieldsConfig.value.defaultData = getDefaultData(props.config.definition);
 }

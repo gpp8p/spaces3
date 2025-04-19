@@ -59,8 +59,7 @@
 
         </div>
         <div>
-
-
+            <div><div><vselect :data = "secondaryFontAlign" @cevt="handleEvent($event, funcs, emit)" :config="secondaryFontAlignConfig"></vselect></div></div>
         </div>
         <div>
           <div><input type="color"  v-model="secondaryFontColor" @change="secondaryColorSelect"/></div>
@@ -144,6 +143,12 @@ const fontAlignConfig = ref({});
 fontAlignConfig.value.selectType = "pulldown";
 fontAlignConfig.value.selectOptions = c.FONT_ALIGNMENT_OPTIONS;
 fontAlignConfig.value.name = 'fontAlign';
+
+const secondaryFontAlignConfig = ref({});
+secondaryFontAlignConfig.value.selectType = "pulldown";
+secondaryFontAlignConfig.value.selectOptions = c.FONT_ALIGNMENT_OPTIONS;
+secondaryFontAlignConfig.value.name = 'textAlign';
+
 
 const primaryFontFamily = ref('');
 const primaryFontColor = ref('');
@@ -300,7 +305,7 @@ onMounted(() => {
     if(props.config.name=='primaryFont'){
       currentFontPickerValue.value = {
         fontColor: '#160aff',
-        fontFamily: 'Arial',
+        fontFamily: 'Ariel',
         fontSize: '18pt',
         fontStyle: 'normal',
         fontWeight: 'bold',
@@ -312,7 +317,7 @@ onMounted(() => {
       primaryFontStyle.value = currentFontPickerValue.value.fontStyle;
       primaryFontWeight.value = currentFontPickerValue.value.fontWeight;
       primaryFontAlign.value = currentFontPickerValue.value.textAlign;
-      secondaryFontFamily.value = 'Arial';
+      secondaryFontFamily.value = 'Ariel';
       secondaryFontColor.value = '#160aff';
       secondaryFontSize.value = '12pt';
       secondaryFontStyle.value = 'normal';

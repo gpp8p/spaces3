@@ -233,6 +233,17 @@ export function getAppearanceConfigs(){
         updatePackage[3]=[];
         if(typeof(dialogData.secondaryFont)!='undefined') {
             debugger;
+            var secondaryFontAlign = '';
+            console.log('secondaryFont.textAlign-',dialogData.secondaryFont.textAlign, typeof(dialogData.secondaryFont.textAlign));
+            if(typeof(dialogData.secondaryFont.textAlign)!='undefined'){
+                if(dialogData.secondaryFont.textAlign=='undefined'){
+                    secondaryFontAlign = dialogData.secondaryFont.fontAlign;
+                }else{
+                    secondaryFontAlign = dialogData.secondaryFont.textAlign;
+                }
+            }else{
+                secondaryFontAlign = dialogData.secondaryFont.fontAlign;
+            }
             var elementStyles = {
                 elementName: 'sub',
                 elementStyles: {
@@ -241,6 +252,7 @@ export function getAppearanceConfigs(){
                     fontColor: "color:" + dialogData.secondaryFont.fontColor + ";",
                     fontWeight: "font-weight:" + dialogData.secondaryFont.fontWeight + ";",
                     fontStyle: "font-style:" + dialogData.secondaryFont.fontStyle + ";",
+                    textAlign: "text-align:"+secondaryFontAlign+";"
                 },
                 elementConfiguration: {
                     fontFamily: dialogData.secondaryFont.fontFamily,
@@ -248,6 +260,7 @@ export function getAppearanceConfigs(){
                     fontColor: dialogData.secondaryFont.fontColor,
                     fontWeight: dialogData.secondaryFont.fontWeight,
                     fontStyle: dialogData.secondaryFont.fontStyle,
+                    textAlign: secondaryFontAlign,
                 }
             }
             updatePackage[3].push(elementStyles);
