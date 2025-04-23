@@ -197,7 +197,8 @@ funcs[c.MENU_ITEM_SELECTED]=function(evt){
     type: props.data.card_component,
     cardTitle: props.data.card_parameters.content.card_name,
     cardId: props.data.id,
-    cardAction: evt[1]
+    cardAction: evt[1],
+    position: toRaw(props.data.card_position)
   }
   //debugger;
   cmdHandlers[cardContentName.value]([c.CARD_MENU_SELECTED, cardReferencedData, cardContentName.value]);

@@ -183,6 +183,9 @@ funcs[c.SET_TO_DISPLAY_MODE] = function(cmd){
   pageMode.value=c.PAGE_DISPLAY;
 
 }
+funcs[c.FILL_IN_AREA] = function(cmd){
+  console.log('in fillInArea-',cmd);
+}
 funcs[c.MOUSE_EVT] = function(evt){
   //console.log('in MOUSE_EVT', evt);
   //if(evt[1]==c.MOUSE_UP){
@@ -282,6 +285,10 @@ onMounted(() => {
 onUnmounted(() => {
   emit('cevt', [c.UNSET_CMD_HANDLER, name]);
 })
+
+const fillInArea = function(topLeftX, topleftY, bottomRightX, bottomRightY, selectedColor){
+  console.log('in finnInArea-',topLeftX, topleftY, bottomRightX, bottomRightY, selectedColor);
+}
 
 const fillCellsInArea = function(dragX, dragY, topLeftX, topLeftY, fillColor){
   console.log('fillCellsInArea called', dragX, dragY, topLeftX, topLeftY, fillColor);

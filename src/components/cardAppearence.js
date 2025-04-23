@@ -231,6 +231,7 @@ export function getAppearanceConfigs(){
         updatePackage[1]=newParameters;
         updatePackage[2]={};
         updatePackage[3]=[];
+        //do I still need this ?
         if(typeof(dialogData.secondaryFont)!='undefined') {
             debugger;
             var secondaryFontAlign = '';

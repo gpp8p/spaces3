@@ -134,6 +134,11 @@ funcs[c.CARD_MENU_SELECTED] = function(cmd){
       emit('cevt', [c.SHOW_DIALOG, 'editLinks',  configPackage]);
       break;
     }
+    case c.CARD_MENU_RESIZE:{
+      console.log('in CARD_MENU_RESIZE-', cmd);
+      emit('cevt', [c.FILL_IN_AREA, cmd[1].position]);
+      debugger;
+    }
   }
 
 }

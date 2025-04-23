@@ -70,6 +70,7 @@ export const c = {
     EDIT_HEADLINE:65,
     SAVE_HEADLINE:66,
     SAVE_CARD_TITLE:67,
+    FILL_IN_AREA:68,
 
 
 
