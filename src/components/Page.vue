@@ -143,10 +143,13 @@ funcs[c.SET_PAGE_EDIT]= function(cmd){
   console.log('set page edit called', cmd);
   debugger;
   pageCells.value = createBlankPage(fieldValue.value.layout.height, fieldValue.value.layout.width, '#DBAA6E');
+  debugger;
   fieldValue.value.pageCells = pageCells.value;
   pageMode.value = c.PAGE_EDIT;
 
 }
+
+
 
 funcs[c.SET_CMD_HANDLER]= function(evt){
   console.log('in SET_CMD_HANDLER-', evt);
@@ -185,6 +188,15 @@ funcs[c.SET_TO_DISPLAY_MODE] = function(cmd){
 }
 funcs[c.FILL_IN_AREA] = function(cmd){
   console.log('in fillInArea-',cmd);
+  debugger;
+  for(var c = 0;c<toRaw(fieldValue.value).cards.length; c++){
+    console.log('in fieldValue', c, toRaw(fieldValue.value).cards[c]);
+    if(toRaw(fieldValue.value).cards[c].id==cmd[2]){
+      toRaw(fieldValue.value).cards[c].resize=true;
+    }else{
+      toRaw(fieldValue.value).cards[c].resize=false;
+    }
+  }
 }
 funcs[c.MOUSE_EVT] = function(evt){
   //console.log('in MOUSE_EVT', evt);
@@ -419,6 +431,68 @@ const createBlankPage = function(height, width, backgroundColor) {
     }
   }
   return pageCells;
+}
+
+const createBlankPageWithCardSelection = function(height, width, backgroundColor, resizeBackGroundColor) {
+  //debugger;
+//      console.log('entering createBlankPage-', height, width, backgroundColor);
+
+  var pageCells = [];
+  var newCellId = 1;
+  height++;
+  width++;
+  for (var h = 1; h < height; h++) {
+    for (var w = 1; w < width; w++) {
+      var thisCellStatus = cellSelectionStatus(w,h);
+      switch(thisCellStatus = function(x,y)){
+        case c.CELL_RESIZE:{
+          var c = createBlankCellInstance(h, w, 1, 1, newCellId,resizeBackGroundColor);
+          pageCells.push(c);
+          newCellId++;
+          break;
+        }
+        case c.CELL_IN_CARD:{
+          break;
+        }
+        case c.CELL_IN_BLANK:{
+          var c = createBlankCellInstance(h, w, 1, 1, newCellId,backgroundColor);
+          pageCells.push(c);
+          newCellId++;
+          break;
+        }
+
+      }
+    }
+  }
+  return pageCells;
+}
+
+const cellSelectionStatus = function(x,y){
+  var cards = fieldValue.value.cards;
+  console.log('cards-',cards, x,y, cards.length);
+  //debugger;
+  var returnValue;
+  for(let c = 0; c < cards.length; c++){
+    var thisCard = toRaw(cards[c]);
+    console.log('thisCard',thisCard, c);
+    if(y>=thisCard.card_position[0] && y<=((thisCard.card_position[2]+thisCard.card_position[0])-1)){
+      if(x>=thisCard.card_position[1] && x<=((thisCard.card_position[3]+thisCard.card_position[1])-1)){
+        if(typeof(thisCard.resize)!='undefined'){
+          if(thisCard.resize==true){
+            return c.CELL_RESIZE
+          }else{
+            return c.CELL_IN_CARD;
+          }
+        }
+        return c.CELL_IN_CARD;
+      }else{
+        return c.CELL_IN_BLANK;
+      }
+    }else{
+      return c.CELL_IN_BLANK;
+    }
+  }
+  return c.CELL_IN_BLANK;
 }
 
 const isCellInSelectedArea = function(x,y){

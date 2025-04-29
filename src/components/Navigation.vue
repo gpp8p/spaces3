@@ -136,7 +136,7 @@ funcs[c.CARD_MENU_SELECTED] = function(cmd){
     }
     case c.CARD_MENU_RESIZE:{
       console.log('in CARD_MENU_RESIZE-', cmd);
-      emit('cevt', [c.FILL_IN_AREA, cmd[1].position]);
+      emit('cevt', [c.FILL_IN_AREA, cmd[1].position, props.config.id]);
       debugger;
     }
   }

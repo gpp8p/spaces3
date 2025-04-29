@@ -71,7 +71,10 @@ export const c = {
     SAVE_HEADLINE:66,
     SAVE_CARD_TITLE:67,
     FILL_IN_AREA:68,
-
+    SET_CARD_EDIT: 69,
+    CELL_RESIZE:70,
+    CELL_IN_CARD:71,
+    CELL_IN_BLANK:72,
 
 
 
