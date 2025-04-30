@@ -197,6 +197,11 @@ funcs[c.FILL_IN_AREA] = function(cmd){
       toRaw(fieldValue.value).cards[c].resize=false;
     }
   }
+  pageCells.value = createBlankPageWithCardSelection(fieldValue.value.layout.height, fieldValue.value.layout.width, '#DBAA6E', '#AABBCC');
+  fieldValue.value.pageCells = pageCells.value;
+//  pageMode.value = c.PAGE_EDIT;
+  pageReload.value+=1;
+
 }
 funcs[c.MOUSE_EVT] = function(evt){
   //console.log('in MOUSE_EVT', evt);
@@ -444,10 +449,11 @@ const createBlankPageWithCardSelection = function(height, width, backgroundColor
   for (var h = 1; h < height; h++) {
     for (var w = 1; w < width; w++) {
       var thisCellStatus = cellSelectionStatus(w,h);
-      switch(thisCellStatus = function(x,y)){
+      var newCell;
+      switch(thisCellStatus){
         case c.CELL_RESIZE:{
-          var c = createBlankCellInstance(h, w, 1, 1, newCellId,resizeBackGroundColor);
-          pageCells.push(c);
+          newCell = createBlankCellInstance(h, w, 1, 1, newCellId,resizeBackGroundColor);
+          pageCells.push(newCell);
           newCellId++;
           break;
         }
@@ -455,8 +461,8 @@ const createBlankPageWithCardSelection = function(height, width, backgroundColor
           break;
         }
         case c.CELL_IN_BLANK:{
-          var c = createBlankCellInstance(h, w, 1, 1, newCellId,backgroundColor);
-          pageCells.push(c);
+          newCell = createBlankCellInstance(h, w, 1, 1, newCellId,backgroundColor);
+          pageCells.push(newCell);
           newCellId++;
           break;
         }
@@ -472,9 +478,9 @@ const cellSelectionStatus = function(x,y){
   console.log('cards-',cards, x,y, cards.length);
   //debugger;
   var returnValue;
-  for(let c = 0; c < cards.length; c++){
-    var thisCard = toRaw(cards[c]);
-    console.log('thisCard',thisCard, c);
+  for(let cs = 0; c < cards.length; cs++){
+    var thisCard = toRaw(cards[cs]);
+    console.log('thisCard',thisCard, cs);
     if(y>=thisCard.card_position[0] && y<=((thisCard.card_position[2]+thisCard.card_position[0])-1)){
       if(x>=thisCard.card_position[1] && x<=((thisCard.card_position[3]+thisCard.card_position[1])-1)){
         if(typeof(thisCard.resize)!='undefined'){
