@@ -91,7 +91,7 @@ funcs[c.SET_CMD_HANDLER]= function(evt){
  */
 
 funcs[c.UNSET_CMD_HANDLER]= function(evt){
-  console.log('in SET_CMD_HANDLER-', evt);
+  //console.log('in SET_CMD_HANDLER-', evt);
   let dlt = delete cmdHandlers[evt[2]];
 }
 

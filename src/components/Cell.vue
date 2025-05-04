@@ -90,7 +90,7 @@ onMounted(() => {
   // debugger;
 //  emit('cevt', [c.SET_CMD_HANDLER, handleCmd, name]);
   cellCss.value = props.config.cell_parameters.style;
-  console.log("cellCss-",cellCss.value);
+  //console.log("cellCss-",cellCss.value);
   thisCellAddress.value = cellAddress(props.config.cell_position[1], props.config.cell_position[0]);
   emit('cevt', [c.SET_CMD_HANDLER, handleCmd, thisCellAddress.value]);
 //  emit('cevt', ['setPageCmdHandler', handleCmd, name, thisCellAddress]);

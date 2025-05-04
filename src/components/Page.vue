@@ -152,7 +152,7 @@ funcs[c.SET_PAGE_EDIT]= function(cmd){
 
 
 funcs[c.SET_CMD_HANDLER]= function(evt){
-  console.log('in SET_CMD_HANDLER-', evt);
+  //console.log('in SET_CMD_HANDLER-', evt);
   debugger;
   cmdHandlers[evt[2]]=evt[1];
 }
@@ -199,6 +199,14 @@ funcs[c.FILL_IN_AREA] = function(cmd){
   }
   pageCells.value = createBlankPageWithCardSelection(fieldValue.value.layout.height, fieldValue.value.layout.width, '#DBAA6E', '#AABBCC');
   fieldValue.value.pageCells = pageCells.value;
+  var resizedCardRemoved = [];
+  for(var crd = 0;crd<toRaw(fieldValue.value).cards.length; crd++){
+    var thisCrd = toRaw(fieldValue.value).cards[crd];
+    if(thisCrd.resize!=true){
+      resizedCardRemoved.push(thisCrd);
+    }
+  }
+  fieldValue.value.cards = resizedCardRemoved;
 //  pageMode.value = c.PAGE_EDIT;
   pageReload.value+=1;
 
@@ -446,22 +454,28 @@ const createBlankPageWithCardSelection = function(height, width, backgroundColor
   var newCellId = 1;
   height++;
   width++;
+  debugger;
   for (var h = 1; h < height; h++) {
+    console.log('looking at row', h);
     for (var w = 1; w < width; w++) {
+//      console.log('looking at cell- y,x', h, w);
       var thisCellStatus = cellSelectionStatus(w,h);
       var newCell;
       switch(thisCellStatus){
         case c.CELL_RESIZE:{
           newCell = createBlankCellInstance(h, w, 1, 1, newCellId,resizeBackGroundColor);
+          console.log('Cell in resize-', newCell);
           pageCells.push(newCell);
           newCellId++;
           break;
         }
         case c.CELL_IN_CARD:{
+          console.log('CELL_IN_CARD h,w-', h,w );
           break;
         }
         case c.CELL_IN_BLANK:{
           newCell = createBlankCellInstance(h, w, 1, 1, newCellId,backgroundColor);
+          //console.log('CELL_IN_BLANK-', newCell);
           pageCells.push(newCell);
           newCellId++;
           break;
@@ -475,14 +489,18 @@ const createBlankPageWithCardSelection = function(height, width, backgroundColor
 
 const cellSelectionStatus = function(x,y){
   var cards = fieldValue.value.cards;
-  console.log('cards-',cards, x,y, cards.length);
+  //console.log('cards-',cards, x,y, cards.length);
   //debugger;
   var returnValue;
-  for(let cs = 0; c < cards.length; cs++){
+  for(let cs = 0; cs < cards.length; cs++){
     var thisCard = toRaw(cards[cs]);
-    console.log('thisCard',thisCard, cs);
+    //console.log('thisCard, x.y',thisCard, x,y);
+ //   console.log('thisCard ypos', thisCard.card_position[0], thisCard.card_position[2]+thisCard.card_position[0])-1 ;
+ //   console.log('thisCard xpos', thisCard.card_position[1], thisCard.card_position[3]+thisCard.card_position[1])-1 ;
+
     if(y>=thisCard.card_position[0] && y<=((thisCard.card_position[2]+thisCard.card_position[0])-1)){
       if(x>=thisCard.card_position[1] && x<=((thisCard.card_position[3]+thisCard.card_position[1])-1)){
+        console.log('in a card-', thisCard);
         if(typeof(thisCard.resize)!='undefined'){
           if(thisCard.resize==true){
             return c.CELL_RESIZE
