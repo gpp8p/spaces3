@@ -75,6 +75,7 @@ const dragAtX = ref(0);
 const dragAtY = ref(0);
 const dragWasAtX = ref(0);
 const dragWasAtY = ref(0);
+const allCards = ref([]);
 const reloadThisPage = function(){
 
   console.log('page parms-', parms);
@@ -208,6 +209,7 @@ funcs[c.FILL_IN_AREA] = function(cmd){
       console.log('card to be resized', thisCrd);
     }
   }
+  allCards.value = fieldValue.value.cards;
   fieldValue.value.cards = resizedCardRemoved;
 //  pageMode.value = c.PAGE_EDIT;
   pageReload.value+=1;
@@ -234,6 +236,23 @@ funcs[c.MOUSE_EVT] = function(evt){
       console.log('in mouse down-', evt, evt[1]);
       if(evt[1]==c.MOUSE_UP){
         debugger;
+        if(allCards.value.length!= fieldValue.value.cards.length){
+          console.log('this is a resize');
+          for(var crd = 0;crd<allCards.value.length; crd++){
+            var thisCard = allCards.value[crd];
+            if(thisCard.resize==true){
+              console.log('card being resized is', thisCard);
+              console.log('card being resized drag', dragStartX.value,dragStartY.value, evt[3], evt[4]);
+              var newTopLeft = dragStartX.value;
+              var newTopRight = dragStartY.value;
+              var newHeight  = evt[4]- dragStartY.value;
+              var newWidth  = evt[3]- dragStartX.value;
+              console.log('card being resized new loc', newTopRight, newTopLeft, newHeight+1, newWidth+1);
+            }
+          }
+
+        }
+
         console.log('mouse event up-', evt);
         dragEndX.value = evt[3];
         dragEndY.value = evt[4];
