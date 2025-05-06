@@ -204,6 +204,8 @@ funcs[c.FILL_IN_AREA] = function(cmd){
     var thisCrd = toRaw(fieldValue.value).cards[crd];
     if(thisCrd.resize!=true){
       resizedCardRemoved.push(thisCrd);
+    }else{
+      console.log('card to be resized', thisCrd);
     }
   }
   fieldValue.value.cards = resizedCardRemoved;
@@ -326,6 +328,8 @@ const fillCellsInArea = function(dragX, dragY, topLeftX, topLeftY, fillColor){
       for (var row = (topLeftY); row < (dragY+1); row++) {
         for (var col = (topLeftX); col < (dragX+1); col++) {
           var thisCellAddress = cellAddress(col, row);
+          var thisExistingBackground = cmdHandlers[thisCellAddress]([c.GET_BACKGROUND, '']);
+          console.log('existingBackground', thisExistingBackground);
           cmdHandlers[thisCellAddress]([c.SET_CELL, fillColor, thisCellAddress]);
         }
       }
@@ -465,6 +469,10 @@ const createBlankPageWithCardSelection = function(height, width, backgroundColor
         case c.CELL_RESIZE:{
           newCell = createBlankCellInstance(h, w, 1, 1, newCellId,resizeBackGroundColor);
           console.log('Cell in resize-', newCell);
+          newCell.cellInResize = true;
+          newCell.backgroundColor = backgroundColor;
+          newCell.resizeBackgroundColor = resizeBackGroundColor;
+          newCell.selectedColor = c.SELECTED_COLOR;
           pageCells.push(newCell);
           newCellId++;
           break;
@@ -476,6 +484,10 @@ const createBlankPageWithCardSelection = function(height, width, backgroundColor
         case c.CELL_IN_BLANK:{
           newCell = createBlankCellInstance(h, w, 1, 1, newCellId,backgroundColor);
           //console.log('CELL_IN_BLANK-', newCell);
+          newCell.cellInResize = false;
+          newCell.backgroundColor = backgroundColor;
+          newCell.resizeBackgroundColor = resizeBackGroundColor;
+          newCell.selectedColor = c.SELECTED_COLOR;
           pageCells.push(newCell);
           newCellId++;
           break;

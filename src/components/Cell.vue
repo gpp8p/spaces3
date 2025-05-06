@@ -37,6 +37,8 @@ const cmdHandlers = {}
 
 const fieldValue = ref('');
 const cellCss = ref('');
+const backgroundNow = ref('');
+const draggedInResize = ref(false);
 
 const thisCellAddress = ref('');
 
@@ -78,12 +80,28 @@ funcs[c.UNSET_CMD_HANDLER]= function(evt){
   let dlt = delete cmdHandlers[evt[2]];
 }
 funcs[c.SET_CELL] = function(cmd){
- // debugger;
-  //console.log('in SET_CELL-', cmd);
-  var thisCellStyle = props.config.cell_parameters.gridCss+";"+"background-color:"+cmd[1]+";";
+  //debugger;
+  console.log('in SET_CELL-', cmd);
+  //backgroundNow.value = cmd[1];
+  if(props.config.cellInResize==true){
+      if(cmd[1]==props.config.selectedColor){
+        var thisCellStyle = props.config.cell_parameters.gridCss+";"+"background-color:"+cmd[1]+";";
+      }else{
+        var thisCellStyle = props.config.cell_parameters.gridCss+";"+"background-color:"+props.config.resizeBackgroundColor+";";
+      }
+  }else{
+    var thisCellStyle = props.config.cell_parameters.gridCss+";"+"background-color:"+cmd[1]+";";
+  }
+  //var thisCellStyle = props.config.cell_parameters.gridCss+";"+"background-color:"+cmd[1]+";";
   cellCss.value = thisCellStyle;
   //console.log('cellCss now', cellCss.value);
 
+}
+
+funcs[c.GET_BACKGROUND] = function(cms){
+  debugger;
+  console.log('returning existingBackground', backgroundNow.value);
+  return backgroundNow.value
 }
 
 onMounted(() => {

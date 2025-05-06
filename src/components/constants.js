@@ -75,6 +75,7 @@ export const c = {
     CELL_RESIZE:70,
     CELL_IN_CARD:71,
     CELL_IN_BLANK:72,
+    GET_BACKGROUND:73,
 
 
 
