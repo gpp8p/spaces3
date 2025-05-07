@@ -79,13 +79,13 @@ const allCards = ref([]);
 const reloadThisPage = function(){
 
   console.log('page parms-', parms);
-  debugger;
+//  debugger;
 //const ready = ref(false);
   executeTrans(parms.value, c.TRANS_GET_LAYOUT,  c.API_PATH+'api/shan/getLayout?XDEBUG_SESSION_START=19884', 'GET', emit, c, header, dataReady, transResult);
   dataReady.value = false;
   whenever(dataReady, () => {
     console.log('data is ready-', transResult, fieldValue.value);
-    debugger;
+    //debugger;
     fieldValue.value = transResult.value;
     fieldValue.value.pageName=c.PAGE_DISPLAY_NAME;
     fieldValue.value.layout.pageDimensions=toRaw(props.config).pageDimensions;
@@ -101,7 +101,7 @@ const reloadThisPage = function(){
 //const ready = ref(false);
 executeTrans(parms, c.TRANS_GET_LAYOUT,  c.API_PATH+'api/shan/getLayout?XDEBUG_SESSION_START=19884', 'GET', emit, c, header, dataReady, transResult);
 whenever(dataReady, () => {
-  debugger;
+  //debugger;
   console.log('data is ready-', transResult);
   fieldValue.value = transResult.value;
   fieldValue.value.pageName=c.PAGE_DISPLAY_NAME;
@@ -118,7 +118,7 @@ if(typeof(props.config.value)=='function'){
 
 const handleCmd = function(args){
   console.log('handleCmd-', name, args);
-  debugger;
+  //debugger;
   if(name==args[2] || args[2]=='*') {
     if(typeof(funcs[args[0]])!='undefined'){
       console.log('Found func-', args[1]);
@@ -142,9 +142,9 @@ const passCmdDown = function(args){
 
 funcs[c.SET_PAGE_EDIT]= function(cmd){
   console.log('set page edit called', cmd);
-  debugger;
+  //debugger;
   pageCells.value = createBlankPage(fieldValue.value.layout.height, fieldValue.value.layout.width, '#DBAA6E');
-  debugger;
+  //debugger;
   fieldValue.value.pageCells = pageCells.value;
   pageMode.value = c.PAGE_EDIT;
 
@@ -154,7 +154,7 @@ funcs[c.SET_PAGE_EDIT]= function(cmd){
 
 funcs[c.SET_CMD_HANDLER]= function(evt){
   //console.log('in SET_CMD_HANDLER-', evt);
-  debugger;
+  //debugger;
   cmdHandlers[evt[2]]=evt[1];
 }
 funcs[c.UNSET_CMD_HANDLER]= function(evt){
@@ -168,7 +168,7 @@ funcs[c.SET_CONTENT_DIMENSIONS]=function(evt){
 }
 funcs[c.SET_NEW_LAYOUT]= function(cmd){
   console.log('in SET_NEW_LAYOUT handler-', cmd);
-  debugger;
+  //debugger;
   pageStore.setCurrentPageId(cmd[1]);
   console.log('currentPageId',pageStore.getCurrentPageId)
   parms.value   = {
@@ -189,7 +189,7 @@ funcs[c.SET_TO_DISPLAY_MODE] = function(cmd){
 }
 funcs[c.FILL_IN_AREA] = function(cmd){
   console.log('in fillInArea-',cmd);
-  debugger;
+  //debugger;
   for(var c = 0;c<toRaw(fieldValue.value).cards.length; c++){
     console.log('in fieldValue', c, toRaw(fieldValue.value).cards[c]);
     if(toRaw(fieldValue.value).cards[c].id==cmd[2]){
@@ -248,33 +248,43 @@ funcs[c.MOUSE_EVT] = function(evt){
               var newHeight  = evt[4]- dragStartY.value;
               var newWidth  = evt[3]- dragStartX.value;
               console.log('card being resized new loc', newTopRight, newTopLeft, newHeight+1, newWidth+1);
+              thisCard.card_position = [newTopLeft, newTopRight, newHeight+1, newWidth+1];
+              fieldValue.value.cards = allCards.value;
+
+
+
             }
           }
-
-        }
-
-        console.log('mouse event up-', evt);
-        dragEndX.value = evt[3];
-        dragEndY.value = evt[4];
-        try {
           mouseStatus.value = c.MOUSE_STATUS_NOT_CLICKED;
-          fillCellsInArea(dragEndX.value, dragEndY.value, dragStartX.value, dragStartY.value, c.SELECTED_COLOR);
-          emit('cevt',[c.CARD_AREA_SELECTED,dragEndX.value, dragEndY.value, dragStartX.value, dragStartY.value ]);
-          console.log('mouseStatus reset');
-          dragEndX.value = 0;
-          dragEndY.value = 0;
-          dragStartX.value = 0;
-          dragStartY.value = 0;
+          pageMode.value = c.PAGE_DISPLAY;
+          pageReload.value+=1;
+
+        }else{
+          console.log('mouse event up-', evt);
+          dragEndX.value = evt[3];
+          dragEndY.value = evt[4];
+          try {
+            mouseStatus.value = c.MOUSE_STATUS_NOT_CLICKED;
+            fillCellsInArea(dragEndX.value, dragEndY.value, dragStartX.value, dragStartY.value, c.SELECTED_COLOR);
+            emit('cevt',[c.CARD_AREA_SELECTED,dragEndX.value, dragEndY.value, dragStartX.value, dragStartY.value ]);
+            console.log('mouseStatus reset');
+            dragEndX.value = 0;
+            dragEndY.value = 0;
+            dragStartX.value = 0;
+            dragStartY.value = 0;
 
 
 
 
 
-        } catch (e) {
-//              debugger;
+          } catch (e) {
+//              //debugger;
 //              console.log('error 1', e);
 //              console.log('error in fillCells',this.dragEndX, this.dragEndY, this.dragStartX, this.dragStartY);
+          }
         }
+
+
 
       }
       if(evt[1]==c.MOUSE_OVER){
@@ -477,7 +487,7 @@ const createBlankPageWithCardSelection = function(height, width, backgroundColor
   var newCellId = 1;
   height++;
   width++;
-  debugger;
+  //debugger;
   for (var h = 1; h < height; h++) {
     console.log('looking at row', h);
     for (var w = 1; w < width; w++) {

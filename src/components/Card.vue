@@ -191,7 +191,7 @@ funcs[c.UNSET_CMD_HANDLER]= function(evt){
   let dlt = delete cmdHandlers[evt[2]];
 }
 funcs[c.MENU_ITEM_SELECTED]=function(evt){
-  debugger;
+  //debugger;
   console.log('in card MENU_ITEM)SELECTED-', evt);
   var cardReferencedData = {
     type: props.data.card_component,

@@ -51,7 +51,7 @@ const reloadMenu = ref(0);
 
 const handleCmd = function(args){
   console.log('handleCmd-', name, args);
-  debugger;
+  //debugger;
   if(name==args[2] || args[2]=='*') {
     if(typeof(funcs[args[0]])!='undefined'){
       console.log('Found func-', args[1]);
@@ -74,7 +74,7 @@ const passCmdDown = function(args){
 }
 funcs[c.MENU_ITEM_SELECTED]= function(evt){
   console.log('in headline  c.-MENU_ITEM_SELECTED', evt);
-  debugger;
+  //debugger;
   if(evt[2]==0){
     emit('cevt', [c.CHANGE_LAYOUT, evt[1]]);
   }else{
@@ -93,14 +93,14 @@ funcs[c.UNSET_CMD_HANDLER]= function(evt){
 }
 funcs[c.CARD_MENU_SELECTED] = function(cmd){
   console.log('Navigation in CARD_MENU_SELECTED-', cmd);
-  debugger;
+  //debugger;
   switch(cmd[1].cardAction){
     case c.CARD_MENU_EXIT:{
       emit('cevt', [c.EXIT_EDIT_MODE]);
       break;
     }
     case c.CARD_MENU_CONFIGURE:{
-      debugger;
+      //debugger;
       var cardProperties = {
         orient: props.data.orient,
         cardName: props.data.card_name,
@@ -110,7 +110,7 @@ funcs[c.CARD_MENU_SELECTED] = function(cmd){
       break;
     }
     case c.CARD_MENU_EDIT:{
-      debugger;
+      //debugger;
       var cardOrient;
       if(cmd[1].type=='Headline'){
         cardOrient = 'horozontal';
@@ -137,7 +137,7 @@ funcs[c.CARD_MENU_SELECTED] = function(cmd){
     case c.CARD_MENU_RESIZE:{
       console.log('in CARD_MENU_RESIZE-', cmd);
       emit('cevt', [c.FILL_IN_AREA, cmd[1].position, props.config.id]);
-      debugger;
+      //debugger;
     }
   }
 
@@ -146,7 +146,7 @@ funcs[c.CARD_MENU_SELECTED] = function(cmd){
 
 
 onMounted(() => {
-  debugger;
+  //debugger;
   emit('cevt', [c.SET_CMD_HANDLER, handleCmd, name]);
   //headlineMenu.value.twStyling = 'border-4 my-10 w-3/4 mx-auto border-blue-200';
   //console.log('element styles-', props.config.elementStyles.sub[0]);
@@ -161,7 +161,7 @@ onMounted(() => {
   //headlineMenu.value.orient = props.config.content.orient;
 
 
-  debugger;
+  //debugger;
   for(var i=0;i<toRaw(props.data.availableLinks).length;i++){
     hasLinks.value = true;
     var thisItem = {

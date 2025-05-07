@@ -8,7 +8,7 @@
 </template>
 
 <script setup>
-debugger;
+//debugger;
 const props = defineProps({
   config: {
     type: Object,
@@ -45,7 +45,7 @@ const handleClick = function(){
 }
 */
 const handleClick = () => {
-  debugger;
+  //debugger;
   if(typeof(toRaw(props.config.link))=='undefined'){
     //emit('cevt', [props.config.actionCode]);
     emit('cevt', [c.MENU_ITEM_SELECTED, props.config.actionCode]);
@@ -89,7 +89,7 @@ funcs[c.UNSET_CMD_HANDLER]= function(evt){
 }
 
 onMounted(() => {
-  debugger;
+  //debugger;
   emit('cevt', [c.SET_CMD_HANDLER, handleCmd, name]);
 })
 
