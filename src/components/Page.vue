@@ -250,9 +250,21 @@ funcs[c.MOUSE_EVT] = function(evt){
               console.log('card being resized new loc', newTopRight, newTopLeft, newHeight+1, newWidth+1);
               thisCard.card_position = [newTopLeft, newTopRight, newHeight+1, newWidth+1];
               fieldValue.value.cards = allCards.value;
-
-
-
+              var styleElements = thisCard.card_parameters.style.split(";");
+              console.log('styles for this card', styleElements);
+              var revisedStyleElements = '';
+              debugger;
+              styleElements.forEach(styleElement => {
+                if(styleElement.startsWith('grid-area')){
+                  var thisRevisedElement = 'grid-area:'+ newTopRight.toString() + "/"+ newTopLeft.toString()+"/"+(newTopRight + newHeight+1).toString()+"/"+(newTopLeft+newWidth+1).toString()+ ";";
+                  revisedStyleElements=revisedStyleElements+thisRevisedElement;
+                }else{
+                  revisedStyleElements=revisedStyleElements+styleElement+";";
+                }
+              });
+              revisedStyleElements = revisedStyleElements.slice(0, -1);
+              console.log('revisedStyleElements',revisedStyleElements);
+              thisCard.card_parameters.style = revisedStyleElements;
             }
           }
           mouseStatus.value = c.MOUSE_STATUS_NOT_CLICKED;
