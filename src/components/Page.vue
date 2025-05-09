@@ -248,7 +248,7 @@ funcs[c.MOUSE_EVT] = function(evt){
               var newHeight  = evt[4]- dragStartY.value;
               var newWidth  = evt[3]- dragStartX.value;
               console.log('card being resized new loc', newTopRight, newTopLeft, newHeight+1, newWidth+1);
-              thisCard.card_position = [newTopLeft, newTopRight, newHeight+1, newWidth+1];
+              thisCard.card_position = [newTopRight, newTopLeft, newHeight+1, newWidth+1];
               fieldValue.value.cards = allCards.value;
               var styleElements = thisCard.card_parameters.style.split(";");
               console.log('styles for this card', styleElements);
