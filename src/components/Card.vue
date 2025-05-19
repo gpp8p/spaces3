@@ -1,5 +1,5 @@
 <template>
-<div :style = "props.data.card_parameters.style" class="cardStyle">
+<div :style = "props.data.card_parameters.style" class="cardStyle" v-if="props.data.resize==false || typeof(props.data.resize)=='undefined'">
     <div  v-if="props.config.mode==c.MODE_EDIT" >
       <dynamicMenu :config="toRaw(menuDefinitions)" :key = "reloadMenu" :data="menuData" @cevt="handleEvent($event, funcs, emit)" />
     </div>
@@ -54,6 +54,9 @@ const menuStyle = ref('');
 const cardConfigs = ref({});
 
 const cardContentName = ref('');
+
+// check to see use in Page
+//const resize = ref(false);
 
 const handleCmd = function(args){
   console.log('handleCmd-', name, args);
@@ -125,7 +128,7 @@ const getMenuDefinitions = function(menuType){
                 { subLabel: 'Edit', actionCode: c.CARD_MENU_EDIT  },
                 { subLabel: 'Configure', actionCode: c.CARD_MENU_CONFIGURE },
                 { subLabel: 'Delete', actionCode: c.CARD_MENU_DELETE  },
-                { subLabel: 'Resize/Move', actionCode: c.CARD_MENU_CONFIGURE },
+                { subLabel: 'Resize/Move', actionCode: c.CARD_MENU_RESIZE },
                 { subLabel: 'Save', actionCode: c.CARD_MENU_SAVE },
                 { subLabel: 'Exit', actionCode: c.CARD_MENU_EXIT },
               ]

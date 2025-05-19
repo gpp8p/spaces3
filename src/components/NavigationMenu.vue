@@ -66,7 +66,11 @@ funcs[c.UNSET_CMD_HANDLER]= function(evt){
   console.log('in SET_CMD_HANDLER-', evt);
   let dlt = delete cmdHandlers[evt[2]];
 }
-
+case c.CARD_MENU_RESIZE:{
+  console.log('in CARD_MENU_RESIZE-', cmd);
+  emit('cevt', [c.FILL_IN_AREA, cmd[1].position, props.config.id]);
+  //debugger;
+}
 
 onMounted(() => {
   debugger;

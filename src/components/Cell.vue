@@ -3,7 +3,7 @@
         v-on:mousedown="mouseDown"
         v-on:mousemove="mouseOver"
         v-on:mouseup="mouseUp">
-
+      {{props.config.id}}
   </span>
 </template>
 
@@ -107,8 +107,15 @@ funcs[c.GET_BACKGROUND] = function(cms){
 onMounted(() => {
   // debugger;
 //  emit('cevt', [c.SET_CMD_HANDLER, handleCmd, name]);
-  cellCss.value = props.config.cell_parameters.style;
-  //console.log("cellCss-",cellCss.value);
+  if(props.config.cellInResize==true){
+    cellCss.value = props.config.cell_parameters.gridCss+";"+"background-color:"+props.config.resizeBackgroundColor+";";
+  }else{
+    cellCss.value = props.config.cell_parameters.style;
+  }
+  if(props.config.cellInResize==true){
+    console.log('cellCss set to', cellCss.value);
+  }
+//  console.log("cellCss-",cellCss.value, props.config);
   thisCellAddress.value = cellAddress(props.config.cell_position[1], props.config.cell_position[0]);
   emit('cevt', [c.SET_CMD_HANDLER, handleCmd, thisCellAddress.value]);
 //  emit('cevt', ['setPageCmdHandler', handleCmd, name, thisCellAddress]);

@@ -65,6 +65,7 @@ const parms = ref({});
 
 const pageCells = ref([]);
 
+const inResize = ref(false);
 const mouseStatus = ref(c.MOUSE_STATUS_NOT_CLICKED);
 const dragStartX = ref(0);
 const dragStartY = ref(0);
@@ -78,13 +79,13 @@ const dragWasAtY = ref(0);
 const allCards = ref([]);
 const reloadThisPage = function(){
 
-  console.log('page parms-', parms);
+  // console.log('page parms-', parms);
 //  debugger;
 //const ready = ref(false);
   executeTrans(parms.value, c.TRANS_GET_LAYOUT,  c.API_PATH+'api/shan/getLayout?XDEBUG_SESSION_START=19884', 'GET', emit, c, header, dataReady, transResult);
   dataReady.value = false;
   whenever(dataReady, () => {
-    console.log('data is ready-', transResult, fieldValue.value);
+    // console.log('data is ready-', transResult, fieldValue.value);
     //debugger;
     fieldValue.value = transResult.value;
     fieldValue.value.pageName=c.PAGE_DISPLAY_NAME;
@@ -93,7 +94,7 @@ const reloadThisPage = function(){
       pageMode.value=c.PAGE_DISPLAY;
     }
     pageReload.value+=1;
-    console.log('pageReload');
+    // console.log('pageReload');
   })
 }
 
@@ -102,7 +103,7 @@ const reloadThisPage = function(){
 executeTrans(parms, c.TRANS_GET_LAYOUT,  c.API_PATH+'api/shan/getLayout?XDEBUG_SESSION_START=19884', 'GET', emit, c, header, dataReady, transResult);
 whenever(dataReady, () => {
   //debugger;
-  console.log('data is ready-', transResult);
+  // console.log('data is ready-', transResult);
   fieldValue.value = transResult.value;
   fieldValue.value.pageName=c.PAGE_DISPLAY_NAME;
   fieldValue.value.layout.pageDimensions=toRaw(props.config).pageDimensions;
@@ -117,11 +118,11 @@ if(typeof(props.config.value)=='function'){
 }
 
 const handleCmd = function(args){
-  console.log('handleCmd-', name, args);
+  // console.log('handleCmd-', name, args);
   //debugger;
   if(name==args[2] || args[2]=='*') {
     if(typeof(funcs[args[0]])!='undefined'){
-      console.log('Found func-', args[1]);
+      // console.log('Found func-', args[1]);
       funcs[args[0]](args);
     }else{
       passCmdDown(args);
@@ -141,7 +142,7 @@ const passCmdDown = function(args){
 }
 
 funcs[c.SET_PAGE_EDIT]= function(cmd){
-  console.log('set page edit called', cmd);
+  // console.log('set page edit called', cmd);
   //debugger;
   pageCells.value = createBlankPage(fieldValue.value.layout.height, fieldValue.value.layout.width, '#DBAA6E');
   //debugger;
@@ -158,19 +159,19 @@ funcs[c.SET_CMD_HANDLER]= function(evt){
   cmdHandlers[evt[2]]=evt[1];
 }
 funcs[c.UNSET_CMD_HANDLER]= function(evt){
-  console.log('in SET_CMD_HANDLER-', evt);
+  // console.log('in SET_CMD_HANDLER-', evt);
   let dlt = delete cmdHandlers[evt[2]];
 }
 funcs[c.SET_CONTENT_DIMENSIONS]=function(evt){
-  console.log('in SET_CONTENT_DIMENSIONS', evt);
+  // console.log('in SET_CONTENT_DIMENSIONS', evt);
 //  contentDimensions.value = evt[1];
 
 }
 funcs[c.SET_NEW_LAYOUT]= function(cmd){
-  console.log('in SET_NEW_LAYOUT handler-', cmd);
+  // console.log('in SET_NEW_LAYOUT handler-', cmd);
   //debugger;
   pageStore.setCurrentPageId(cmd[1]);
-  console.log('currentPageId',pageStore.getCurrentPageId)
+  // console.log('currentPageId',pageStore.getCurrentPageId)
   parms.value   = {
     orgId:loginResult.orgId,
     userId:loginResult.userId,
@@ -183,36 +184,48 @@ funcs[c.SET_NEW_LAYOUT]= function(cmd){
 
 }
 funcs[c.SET_TO_DISPLAY_MODE] = function(cmd){
-  console.log('in page SET_TO_DISPLAY_MODE');
+  // console.log('in page SET_TO_DISPLAY_MODE');
   pageMode.value=c.PAGE_DISPLAY;
 
 }
 funcs[c.FILL_IN_AREA] = function(cmd){
-  console.log('in fillInArea-',cmd);
-  //debugger;
+  // console.log('in fillInArea-',cmd);
+  //debugger
+  fieldValue.value.pageCells = [];
+  inResize.value=true;
   for(var c = 0;c<toRaw(fieldValue.value).cards.length; c++){
-    console.log('in fieldValue', c, toRaw(fieldValue.value).cards[c]);
+    // console.log('in fieldValue', c, toRaw(fieldValue.value).cards[c]);
     if(toRaw(fieldValue.value).cards[c].id==cmd[2]){
       toRaw(fieldValue.value).cards[c].resize=true;
     }else{
       toRaw(fieldValue.value).cards[c].resize=false;
     }
   }
-  pageCells.value = createBlankPageWithCardSelection(fieldValue.value.layout.height, fieldValue.value.layout.width, '#DBAA6E', '#AABBCC');
-  fieldValue.value.pageCells = pageCells.value;
+  /*
   var resizedCardRemoved = [];
   for(var crd = 0;crd<toRaw(fieldValue.value).cards.length; crd++){
     var thisCrd = toRaw(fieldValue.value).cards[crd];
     if(thisCrd.resize!=true){
       resizedCardRemoved.push(thisCrd);
     }else{
-      console.log('card to be resized', thisCrd);
+      // console.log('card to be resized', thisCrd);
     }
   }
+  */
   allCards.value = fieldValue.value.cards;
-  fieldValue.value.cards = resizedCardRemoved;
+  //fieldValue.value.cards = resizedCardRemoved;
+  //debugger;
+  console.log('pageCells before',pageCells.value);
+  pageCells.value = createBlankPageWithCardSelection2(fieldValue.value.layout.height, fieldValue.value.layout.width, '#DBAA6E', '#AABBCC');
+  console.log('pageCells after',pageCells.value);
+  //debugger
+  fieldValue.value.pageCells = pageCells.value;
+
 //  pageMode.value = c.PAGE_EDIT;
   pageReload.value+=1;
+  console.log('page has been reloaded');
+
+
 
 }
 funcs[c.MOUSE_EVT] = function(evt){
@@ -233,27 +246,27 @@ funcs[c.MOUSE_EVT] = function(evt){
       break;
     }
     case c.MOUSE_STATUS_DOWN: {
-      console.log('in mouse down-', evt, evt[1]);
+      // console.log('in mouse down-', evt, evt[1]);
       if(evt[1]==c.MOUSE_UP){
-        debugger;
-        if(allCards.value.length!= fieldValue.value.cards.length){
-          console.log('this is a resize');
+        debugger
+        if(inResize.value==true){
+          // console.log('this is a resize');
           for(var crd = 0;crd<allCards.value.length; crd++){
             var thisCard = allCards.value[crd];
             if(thisCard.resize==true){
-              console.log('card being resized is', thisCard);
-              console.log('card being resized drag', dragStartX.value,dragStartY.value, evt[3], evt[4]);
+              // console.log('card being resized is', thisCard);
+              // console.log('card being resized drag', dragStartX.value,dragStartY.value, evt[3], evt[4]);
               var newTopLeft = dragStartX.value;
               var newTopRight = dragStartY.value;
               var newHeight  = evt[4]- dragStartY.value;
               var newWidth  = evt[3]- dragStartX.value;
-              console.log('card being resized new loc', newTopRight, newTopLeft, newHeight+1, newWidth+1);
+              // console.log('card being resized new loc', newTopRight, newTopLeft, newHeight+1, newWidth+1);
               thisCard.card_position = [newTopRight, newTopLeft, newHeight+1, newWidth+1];
               fieldValue.value.cards = allCards.value;
               var styleElements = thisCard.card_parameters.style.split(";");
-              console.log('styles for this card', styleElements);
+              // console.log('styles for this card', styleElements);
               var revisedStyleElements = '';
-              debugger;
+              //debugger
               styleElements.forEach(styleElement => {
                 if(styleElement.startsWith('grid-area')){
                   var thisRevisedElement = 'grid-area:'+ newTopRight.toString() + "/"+ newTopLeft.toString()+"/"+(newTopRight + newHeight+1).toString()+"/"+(newTopLeft+newWidth+1).toString()+ ";";
@@ -263,8 +276,9 @@ funcs[c.MOUSE_EVT] = function(evt){
                 }
               });
               revisedStyleElements = revisedStyleElements.slice(0, -1);
-              console.log('revisedStyleElements',revisedStyleElements);
+              // console.log('revisedStyleElements',revisedStyleElements);
               thisCard.card_parameters.style = revisedStyleElements;
+              inResize.value=false;
             }
           }
           mouseStatus.value = c.MOUSE_STATUS_NOT_CLICKED;
@@ -272,14 +286,14 @@ funcs[c.MOUSE_EVT] = function(evt){
           pageReload.value+=1;
 
         }else{
-          console.log('mouse event up-', evt);
+          // console.log('mouse event up-', evt);
           dragEndX.value = evt[3];
           dragEndY.value = evt[4];
           try {
             mouseStatus.value = c.MOUSE_STATUS_NOT_CLICKED;
             fillCellsInArea(dragEndX.value, dragEndY.value, dragStartX.value, dragStartY.value, c.SELECTED_COLOR);
             emit('cevt',[c.CARD_AREA_SELECTED,dragEndX.value, dragEndY.value, dragStartX.value, dragStartY.value ]);
-            console.log('mouseStatus reset');
+            // console.log('mouseStatus reset');
             dragEndX.value = 0;
             dragEndY.value = 0;
             dragStartX.value = 0;
@@ -300,27 +314,27 @@ funcs[c.MOUSE_EVT] = function(evt){
 
       }
       if(evt[1]==c.MOUSE_OVER){
-        console.log('drag over',evt, dragAtX.value, dragAtY.value, dragWasAtX.value, dragWasAtY.value );
+        // console.log('drag over',evt, dragAtX.value, dragAtY.value, dragWasAtX.value, dragWasAtY.value );
         dragAtX.value = evt[3];
         dragAtY.value = evt[4];
         if(dragAtX.value==dragWasAtX.value && dragAtY.value==dragWasAtY.value){
-          console.log('same cell-',dragWasAtX.value, dragWasAtY.value, dragStartX.value, dragStartY.value);
+          // console.log('same cell-',dragWasAtX.value, dragWasAtY.value, dragStartX.value, dragStartY.value);
           try {
-            console.log('filling selected', dragWasAtX.value, dragWasAtY.value, dragStartX.value, dragStartY.value)
+            // console.log('filling selected', dragWasAtX.value, dragWasAtY.value, dragStartX.value, dragStartY.value)
             fillCellsInArea(dragAtX.value, dragAtY.value, dragStartX.value, dragStartY.value, c.SELECTED_COLOR);
           } catch (e) {
 //              debugger;
-            console.log('error 2', e);
+            // console.log('error 2', e);
 //              console.log('error in fillCells',this.dragEndX, this.dragEndY, this.dragStartX, this.dragStartY);
           }
         }else{
-          console.log('different cell-',dragWasAtX.value, dragWasAtY.value, dragStartX.value, dragStartY.value);
+          // console.log('different cell-',dragWasAtX.value, dragWasAtY.value, dragStartX.value, dragStartY.value);
           try {
-            console.log('filling unselected', dragWasAtX.value, dragWasAtY.value, dragStartX.value, dragStartY.value);
+            // console.log('filling unselected', dragWasAtX.value, dragWasAtY.value, dragStartX.value, dragStartY.value);
             fillCellsInArea(dragWasAtX.value, dragWasAtY.value, dragStartX.value, dragStartY.value, c.UNSELECTED_COLOR);
           } catch (e) {
 //              debugger;
-            console.log('error 1', e);
+            // console.log('error 1', e);
 //              console.log('error in fillCells',this.dragEndX, this.dragEndY, this.dragStartX, this.dragStartY);
           }
           dragWasAtX.value = evt[3];
@@ -355,13 +369,13 @@ onUnmounted(() => {
 })
 
 const fillInArea = function(topLeftX, topleftY, bottomRightX, bottomRightY, selectedColor){
-  console.log('in finnInArea-',topLeftX, topleftY, bottomRightX, bottomRightY, selectedColor);
+  // console.log('in finnInArea-',topLeftX, topleftY, bottomRightX, bottomRightY, selectedColor);
 }
 
 const fillCellsInArea = function(dragX, dragY, topLeftX, topLeftY, fillColor){
-  console.log('fillCellsInArea called', dragX, dragY, topLeftX, topLeftY, fillColor);
+  // console.log('fillCellsInArea called', dragX, dragY, topLeftX, topLeftY, fillColor);
   var thisDragDirectiion = dragDirection(dragX, dragY, topLeftX, topLeftY);
-  console.log('dragDirection-',thisDragDirectiion);
+  // console.log('dragDirection-',thisDragDirectiion);
   //debugger;
   switch(thisDragDirectiion){
     case c.DIRECTION_DOWN_RIGHT:{
@@ -370,7 +384,7 @@ const fillCellsInArea = function(dragX, dragY, topLeftX, topLeftY, fillColor){
         for (var col = (topLeftX); col < (dragX+1); col++) {
           var thisCellAddress = cellAddress(col, row);
           var thisExistingBackground = cmdHandlers[thisCellAddress]([c.GET_BACKGROUND, '']);
-          console.log('existingBackground', thisExistingBackground);
+          // console.log('existingBackground', thisExistingBackground);
           cmdHandlers[thisCellAddress]([c.SET_CELL, fillColor, thisCellAddress]);
         }
       }
@@ -490,70 +504,260 @@ const createBlankPage = function(height, width, backgroundColor) {
   }
   return pageCells;
 }
-
-const createBlankPageWithCardSelection = function(height, width, backgroundColor, resizeBackGroundColor) {
-  //debugger;
-//      console.log('entering createBlankPage-', height, width, backgroundColor);
+const createBlankPageWithCardSelection2 = function(height, width, backgroundColor, resizeBackGroundColor){
+  console.log('entering createBlankPageWithCardSelection-', height, width, backgroundColor);
 
   var pageCells = [];
   var newCellId = 1;
   height++;
   width++;
   //debugger;
-  for (var h = 1; h < height; h++) {
-    console.log('looking at row', h);
-    for (var w = 1; w < width; w++) {
-//      console.log('looking at cell- y,x', h, w);
-      var thisCellStatus = cellSelectionStatus(w,h);
-      var newCell;
-      switch(thisCellStatus){
-        case c.CELL_RESIZE:{
-          newCell = createBlankCellInstance(h, w, 1, 1, newCellId,resizeBackGroundColor);
-          console.log('Cell in resize-', newCell);
-          newCell.cellInResize = true;
-          newCell.backgroundColor = backgroundColor;
-          newCell.resizeBackgroundColor = resizeBackGroundColor;
-          newCell.selectedColor = c.SELECTED_COLOR;
-          pageCells.push(newCell);
-          newCellId++;
-          break;
-        }
-        case c.CELL_IN_CARD:{
-          console.log('CELL_IN_CARD h,w-', h,w );
-          break;
-        }
-        case c.CELL_IN_BLANK:{
-          newCell = createBlankCellInstance(h, w, 1, 1, newCellId,backgroundColor);
-          //console.log('CELL_IN_BLANK-', newCell);
-          newCell.cellInResize = false;
-          newCell.backgroundColor = backgroundColor;
-          newCell.resizeBackgroundColor = resizeBackGroundColor;
-          newCell.selectedColor = c.SELECTED_COLOR;
-          pageCells.push(newCell);
-          newCellId++;
-          break;
-        }
+  var cards = fieldValue.value.cards;
+  //debugger;
+  console.log('cards--',toRaw(cards), toRaw(cards).length);
+  var pageCards = toRaw(cards);
 
+  var cellValues = createCellValueArray(pageCards.length, height-1, width-1, "");
+  console.log('cellValues---',cellValues);
+  debugger
+  var returnValue;
+  for(var cs = 0; cs < pageCards.length; cs++) {
+    var thisCard = pageCards[cs];
+    console.log('looking at thisCard', thisCard);
+    for (var h = 1; h < height; h++) {
+      for (var w = 1; w < width; w++){
+        var thisCellStatus = cellSelectionStatus(w,h, thisCard);
+        var newCell;
+        switch(thisCellStatus){
+          case c.CELL_RESIZE:{
+            cellValues[cs][h-1][w-1] = 'R';
+            break;
+          }
+          case c.CELL_IN_CARD:{
+            //console.log('CELL_IN_CARD h,w-', h,w );
+            cellValues[cs][h-1][w-1] = 'C';
+            break;
+          }
+          case c.CELL_IN_BLANK:{
+            cellValues[cs][h-1][w-1] = 'B';
+            break;
+          }
+        }
       }
     }
   }
+  for (h = 1; h < height; h++){
+    for (w = 1; w < width; w++){
+      var resizeSpotted = false;
+      var cardSpotted = false;
+      var blankSpotted = false;
+      for(cs = 0; cs < pageCards.length; cs++) {
+        var thisCard = pageCards[cs];
+        switch (cellValues[cs][h - 1][w - 1]) {
+          case 'B': {
+
+            break;
+          }
+          case 'C': {
+            cardSpotted = true;
+            break;
+          }
+          case 'R': {
+            resizeSpotted = true;
+            break;
+          }
+        }
+        if(resizeSpotted==true && thisCard.resize==true){
+          newCell = createBlankCellInstance(h, w, 1, 1, newCellId, resizeBackGroundColor);
+          //console.log('Cell in resize-', newCell);
+          newCell.cellInResize = true;
+          newCell.backgroundColor = resizeBackGroundColor;
+          newCell.resizeBackgroundColor = resizeBackGroundColor;
+          newCell.selectedColor = c.SELECTED_COLOR;
+          pageCells.push(newCell);
+          newCellId++;
+        }else{
+          if(cardSpotted==true && thisCard.resize==false){
+            console.log('In a card', thisCard);
+          }
+          if(cardSpotted==false && resizeSpotted==false){
+            newCell = createBlankCellInstance(h, w, 1, 1, newCellId, backgroundColor);
+            newCell.cellInResize = false;
+            newCell.backgroundColor = backgroundColor;
+            newCell.resizeBackgroundColor = resizeBackGroundColor;
+            newCell.selectedColor = c.SELECTED_COLOR;
+            pageCells.push(newCell);
+            newCellId++;
+          }
+        }
+      }
+    }
+  }
+  showPageCells(pageCells);
+  display3DArray('cellValues',cellValues);
   return pageCells;
 }
 
+
+
+const createBlankPageWithCardSelection = function(height, width, backgroundColor, resizeBackGroundColor) {
+  //debugger
+  console.log('entering createBlankPageWithCardSelection-', height, width, backgroundColor);
+
+  var pageCells = [];
+  var newCellId = 1;
+  height++;
+  width++;
+  //debugger;
+  var cards = fieldValue.value.cards;
+  //debugger;
+  console.log('cards--',toRaw(cards), toRaw(cards).length);
+  var pageCards = toRaw(cards);
+
+  var cellValues = createCellValueArray(pageCards.length, height-1, width-1, "");
+  console.log('cellValues---',cellValues);
+  debugger
+  var returnValue;
+  for(var cs = 0; cs < pageCards.length; cs++) {
+    var thisCard = pageCards[cs];
+    console.log('looking at thisCard', thisCard);
+/*
+    if(thisCard.id==368){
+      debugger;
+    }
+    if(thisCard.id==370){
+      debugger;
+    }
+
+ */
+    for (var h = 1; h < height; h++) {
+       console.log('looking at row', h);
+
+      for (var w = 1; w < width; w++) {
+        // console.log('looking at cell- y,x', h, w);
+        if(h==6){
+          //       debugger;
+        }
+//        if(newCellId==86){
+//          debugger;
+//        }
+        //console.log('calling cellSelectionStatus with thisCard---',thisCard);
+        var thisCellStatus = cellSelectionStatus(w,h, thisCard);
+        var newCell;
+        switch(thisCellStatus){
+          case c.CELL_RESIZE:{
+            newCell = createBlankCellInstance(h, w, 1, 1, newCellId,resizeBackGroundColor);
+            //console.log('Cell in resize-', newCell);
+            newCell.cellInResize = true;
+            newCell.backgroundColor = resizeBackGroundColor;
+            newCell.resizeBackgroundColor = resizeBackGroundColor;
+            newCell.selectedColor = c.SELECTED_COLOR;
+            pageCells.push(newCell);
+            console.log('Cell in resize-', newCell);
+            cellValues[cs][h-1][w-1] = 'R';
+            newCellId++;
+
+            break;
+          }
+          case c.CELL_IN_CARD:{
+            //console.log('CELL_IN_CARD h,w-', h,w );
+            cellValues[cs][h-1][w-1] = 'C';
+            break;
+          }
+          case c.CELL_IN_BLANK:{
+            newCell = createBlankCellInstance(h, w, 1, 1, newCellId,backgroundColor);
+            //console.log('CELL_IN_BLANK-', newCell);
+            newCell.cellInResize = false;
+            newCell.backgroundColor = backgroundColor;
+            newCell.resizeBackgroundColor = resizeBackGroundColor;
+            newCell.selectedColor = c.SELECTED_COLOR;
+            pageCells.push(newCell);
+            console.log('Cell in blank-', newCell);
+            cellValues[cs][h-1][w-1] = 'B';
+            newCellId++;
+            break;
+          }
+
+        }
+      }
+    }
+
+  }
+
+  debugger;
+  showPageCells(pageCells);
+  display3DArray('cellValues',cellValues);
+  //console.log('cellValues', cellValues);
+  return pageCells;
+
+}
+
+const cellSelectionStatus = function(x,y,thisCard){
+  var cardTopLeftY = thisCard.card_position[0];
+  var cardTopLeftX = thisCard.card_position[1];
+  var cardBottomLeftX = thisCard.card_position[1]+thisCard.card_position[3];
+  var cardBottomLeftY = thisCard.card_position[0]+thisCard.card_position[2];
+  // console.log('x cardTopLeftX', x, cardTopLeftX);
+  // console.log('x cardBottomLeftX', x, cardBottomLeftX);
+  // console.log('y cardTopLeftY', y, cardTopLeftY);
+  console.log('y cardBottomLeftY', y, cardBottomLeftY);
+  if(x>=cardTopLeftX && x<cardBottomLeftX){
+    if(y>=cardTopLeftY && y<cardBottomLeftY){
+
+
+//    if(x>=thisCard.card_position[0] && x<=((thisCard.card_position[2]+thisCard.card_position[0])-1)){
+//      if(y>=thisCard.card_position[1] && y<=((thisCard.card_position[3]+thisCard.card_position[1])-1)){
+      // console.log('in a card-', thisCard);
+      if(typeof(thisCard.resize)!='undefined'){
+        if(thisCard.resize==true){
+          return c.CELL_RESIZE
+        }else{
+          return c.CELL_IN_CARD;
+        }
+      }
+      return c.CELL_IN_CARD;
+    }else{
+      return c.CELL_IN_BLANK;
+    }
+  }else{
+    return c.CELL_IN_BLANK;
+  }
+}
+/*
 const cellSelectionStatus = function(x,y){
   var cards = fieldValue.value.cards;
-  //console.log('cards-',cards, x,y, cards.length);
   //debugger;
+  // console.log('cards--',toRaw(cards), x,y, toRaw(cards).length);
+  var pageCards = toRaw(cards);
+  //debugger
   var returnValue;
-  for(let cs = 0; cs < cards.length; cs++){
-    var thisCard = toRaw(cards[cs]);
-    //console.log('thisCard, x.y',thisCard, x,y);
- //   console.log('thisCard ypos', thisCard.card_position[0], thisCard.card_position[2]+thisCard.card_position[0])-1 ;
- //   console.log('thisCard xpos', thisCard.card_position[1], thisCard.card_position[3]+thisCard.card_position[1])-1 ;
+  for(var cs = 0; cs < pageCards.length; cs++){
+    var thisCard = pageCards[cs];
+    // console.log('thisCard x y',thisCard, x,y);
+    if(x==15 && y==15){
+      //debugger
+    }
+    //console.log('thisCard.id', thisCard.id);
+    // console.log('thisCard ypos', thisCard.card_position[0], thisCard.card_position[2]+thisCard.card_position[0])-1 ;
+    // console.log('thisCard xpos', thisCard.card_position[1], thisCard.card_position[3]+thisCard.card_position[1])-1 ;
+    if(thisCard.id==359){
+      //debugger
+    }
+    var cardTopLeftY = thisCard.card_position[0];
+    var cardTopLeftX = thisCard.card_position[1];
+    var cardBottomLeftX = thisCard.card_position[1]+thisCard.card_position[3];
+    var cardBottomLeftY = thisCard.card_position[0]+thisCard.card_position[2];
+    // console.log('x cardTopLeftX', x, cardTopLeftX);
+    // console.log('x cardBottomLeftX', x, cardBottomLeftX);
+    // console.log('y cardTopLeftY', y, cardTopLeftY);
+    // console.log('y cardBottomLeftY', y, cardBottomLeftY);
+    if(x>=cardTopLeftX && x<cardBottomLeftX){
+      if(y>=cardTopLeftY && y<cardBottomLeftY){
 
-    if(y>=thisCard.card_position[0] && y<=((thisCard.card_position[2]+thisCard.card_position[0])-1)){
-      if(x>=thisCard.card_position[1] && x<=((thisCard.card_position[3]+thisCard.card_position[1])-1)){
-        console.log('in a card-', thisCard);
+
+//    if(x>=thisCard.card_position[0] && x<=((thisCard.card_position[2]+thisCard.card_position[0])-1)){
+//      if(y>=thisCard.card_position[1] && y<=((thisCard.card_position[3]+thisCard.card_position[1])-1)){
+        // console.log('in a card-', thisCard);
         if(typeof(thisCard.resize)!='undefined'){
           if(thisCard.resize==true){
             return c.CELL_RESIZE
@@ -571,15 +775,15 @@ const cellSelectionStatus = function(x,y){
   }
   return c.CELL_IN_BLANK;
 }
-
+*/
 const isCellInSelectedArea = function(x,y){
   var cards = fieldValue.value.cards;
-  console.log('cards-',cards, x,y, cards.length);
+  //console.log('cards-',cards, x,y, cards.length);
   //debugger;
   var returnValue;
   for(let c = 0; c < cards.length; c++){
     var thisCard = toRaw(cards[c]);
-    console.log('thisCard',thisCard, c);
+    // console.log('thisCard',thisCard, c);
     if(y>=thisCard.card_position[0] && y<=((thisCard.card_position[2]+thisCard.card_position[0])-1)){
       if(x>=thisCard.card_position[1] && x<=((thisCard.card_position[3]+thisCard.card_position[1])-1)){
         returnValue = true;
@@ -638,7 +842,7 @@ const computeGridCss = function(row, col, height, width){
 
 const updateBlankPage = function(height, width, backgroundColor, selectedArea, existingPageCells){
   var pageCells = [];
-  console.log('inUpdateBlankPage-', existingPageCells);
+  // console.log('inUpdateBlankPage-', existingPageCells);
   height++;
   width++;
 //      debugger;
@@ -651,16 +855,16 @@ const updateBlankPage = function(height, width, backgroundColor, selectedArea, e
     if(isCellInSelectedArea(cellPositionX, cellPositionY, selectedArea)==false){
       pageCells.push(thisCell);
     }else{
-      console.log('cell in selected area-', thisCell);
+      // console.log('cell in selected area-', thisCell);
 //          debugger;
       var newCell = createBlankCellInstance(cellPositionY, cellPositionX, 1, 1, thisCell.id, '#00FFCC');
-      console.log('cell in selected area replacement-',newCell);
+      // console.log('cell in selected area replacement-',newCell);
 //          thisCell.cell_parameters.backgroundColor='#00FFCC';
 //          debugger;
       pageCells.push(newCell);
     }
   }
-  console.log('resulting page cells', pageCells);
+  // console.log('resulting page cells', pageCells);
   return pageCells;
 }
 const cellAddress = function(x,y){
@@ -673,7 +877,71 @@ const cellAddress = function(x,y){
   return  addrX.slice(-4)+addrY.slice(-4);
 }
 
+const showPageCells = function(pageCells){
+  for(var pc=0; pc<pageCells.length;pc++){
+    console.log('new pageCell-',pageCells[pc]);
+  }
+}
 
+const createCellValueArray = function(dim1, dim2, dim3, initValue) {
+  // Validate inputs
+  if (!Number.isInteger(dim1) || !Number.isInteger(dim2) || !Number.isInteger(dim3) ||
+      dim1 <= 0 || dim2 <= 0 || dim3 <= 0) {
+    throw new Error('All dimensions must be positive integers');
+  }
+  debugger;
+  // Create the array structure
+  const array = new Array(dim1);
+
+  for (let i = 0; i < dim1; i++) {
+    array[i] = new Array(dim2);
+
+    for (let j = 0; j < dim2; j++) {
+      array[i][j] = new Array(dim3);
+
+      for (let k = 0; k < dim3; k++) {
+        array[i][j][k] = initValue;
+      }
+    }
+  }
+  console.log('new array', array);
+  return array;
+}
+
+const display3DArray = function(array) {
+  if (!Array.isArray(array) || !Array.isArray(array[0]) || !Array.isArray(array[0][0])) {
+    console.error('Input is not a three-dimensional array');
+    return;
+  }
+
+  const dim1 = array.length;
+
+  console.log('3D Array Contents:');
+
+  for (let i = 0; i < dim1; i++) {
+    console.log(`Dimension 1, Index ${i}:`);
+
+    for (let j = 0; j < array[i].length; j++) {
+      let rowOutput = `  Dimension 2, Index ${j}: [ `;
+
+      for (let k = 0; k < array[i][j].length; k++) {
+        // Add the element value, followed by a comma if not the last element
+        rowOutput += array[i][j][k];
+        if (k < array[i][j].length - 1) {
+          rowOutput += ', ';
+        }
+      }
+
+      rowOutput += ' ]';
+      console.log(rowOutput);
+    }
+
+    // Add a blank line between dimensions for better readability
+    if (i < dim1 - 1) {
+      console.log('');
+    }
+  }
+}
 
 </script>
 
