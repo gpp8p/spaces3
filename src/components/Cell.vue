@@ -3,7 +3,6 @@
         v-on:mousedown="mouseDown"
         v-on:mousemove="mouseOver"
         v-on:mouseup="mouseUp">
-      {{props.config.id}}
   </span>
 </template>
 

@@ -222,6 +222,7 @@ funcs[c.FILL_IN_AREA] = function(cmd){
   fieldValue.value.pageCells = pageCells.value;
 
 //  pageMode.value = c.PAGE_EDIT;
+
   pageReload.value+=1;
   console.log('page has been reloaded');
 
@@ -266,7 +267,7 @@ funcs[c.MOUSE_EVT] = function(evt){
               var styleElements = thisCard.card_parameters.style.split(";");
               // console.log('styles for this card', styleElements);
               var revisedStyleElements = '';
-              //debugger
+              debugger
               styleElements.forEach(styleElement => {
                 if(styleElement.startsWith('grid-area')){
                   var thisRevisedElement = 'grid-area:'+ newTopRight.toString() + "/"+ newTopLeft.toString()+"/"+(newTopRight + newHeight+1).toString()+"/"+(newTopLeft+newWidth+1).toString()+ ";";
@@ -278,6 +279,7 @@ funcs[c.MOUSE_EVT] = function(evt){
               revisedStyleElements = revisedStyleElements.slice(0, -1);
               // console.log('revisedStyleElements',revisedStyleElements);
               thisCard.card_parameters.style = revisedStyleElements;
+              allCards.value[crd].resize=false;
               inResize.value=false;
             }
           }
@@ -594,7 +596,7 @@ const createBlankPageWithCardSelection2 = function(height, width, backgroundColo
     }
   }
   showPageCells(pageCells);
-  display3DArray('cellValues',cellValues);
+  //display3DArray('cellValues',cellValues);
   return pageCells;
 }
 
@@ -686,7 +688,7 @@ const createBlankPageWithCardSelection = function(height, width, backgroundColor
 
   debugger;
   showPageCells(pageCells);
-  display3DArray('cellValues',cellValues);
+  //display3DArray('cellValues',cellValues);
   //console.log('cellValues', cellValues);
   return pageCells;
 
@@ -907,7 +909,7 @@ const createCellValueArray = function(dim1, dim2, dim3, initValue) {
   console.log('new array', array);
   return array;
 }
-
+/*
 const display3DArray = function(array) {
   if (!Array.isArray(array) || !Array.isArray(array[0]) || !Array.isArray(array[0][0])) {
     console.error('Input is not a three-dimensional array');
@@ -942,7 +944,7 @@ const display3DArray = function(array) {
     }
   }
 }
-
+*/
 </script>
 
 <style scoped>
