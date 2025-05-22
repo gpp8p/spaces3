@@ -432,6 +432,35 @@ export function getAppearanceConfigs(){
             }
         }
     }
+    const updateCardResize = function(emit, cardId, newTopLeftY, newTopLeftX, newHeight, newWidth){
+        const store = useLogStateStore();
+        const ready = ref(false);
+        const result = ref({});
+        const pageStore = useCurrentPage();
+        const loginResult= toRaw(store.loginStatus)
+        console.log('store.loginResult', loginResult);
+        console.log('pageStore-', pageStore.getCurrentPageId, pageStore.getCurrentPagePerms);
+        const {executeTrans} = getTrans();
+        const header = loginResult.access_token;
+        const dataReady = ref(false);
+        const transResult = ref({});
+        const parms = {
+            layoutId:pageStore.getCurrentPageId,
+            cardId:cardId,
+            col:newTopLeftX,
+            row:newTopLeftY,
+            width:newWidth,
+            height:newHeight,
+        }
+        debugger;
+        executeTrans(parms, c.CHANGE_LAYOUT,  c.API_PATH+'api/shan/resizeCard?XDEBUG_SESSION_START=19884', 'POST', emit, c, header, dataReady, transResult);
+        whenever(dataReady, () => {
+            //debugger;
+            console.log('update completed-', transResult._rawValue);
+            //emit('cevt',[c.CHANGE_LAYOUT, pageStore.getCurrentPageId]);
+        })
+
+    }
     const updateCardTitle = function(emit, dialogData, dialogConfig) {
         debugger;
         const store = useLogStateStore();
@@ -460,5 +489,5 @@ export function getAppearanceConfigs(){
         })
     }
 
-    return {loadCardAppearanceConfigs, saveCardAppearanceConfigs, createCard, twListTableHeight, updateCardTitle}
+    return {loadCardAppearanceConfigs, saveCardAppearanceConfigs, createCard, twListTableHeight, updateCardTitle,updateCardResize}
 }

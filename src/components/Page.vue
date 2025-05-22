@@ -29,6 +29,7 @@ import {useEventHandler} from "./eventHandler.js";
 import {ref, nextTick} from 'vue';
 import displayGrid from "../components/displayGrid.vue";
 import editGrid from "../components/editGrid.vue";
+import {getAppearanceConfigs}  from "../components/cardAppearence.js";
 
 
 
@@ -252,17 +253,22 @@ funcs[c.MOUSE_EVT] = function(evt){
         debugger
         if(inResize.value==true){
           // console.log('this is a resize');
+          var cardBeingResized;
+          var newTopX;
+          var newTopY;
+          var newHeight;
+          var newWidth;
           for(var crd = 0;crd<allCards.value.length; crd++){
             var thisCard = allCards.value[crd];
             if(thisCard.resize==true){
               // console.log('card being resized is', thisCard);
               // console.log('card being resized drag', dragStartX.value,dragStartY.value, evt[3], evt[4]);
-              var newTopLeft = dragStartX.value;
-              var newTopRight = dragStartY.value;
+              var newTopX = dragStartX.value;
+              var newTopY = dragStartY.value;
               var newHeight  = evt[4]- dragStartY.value;
               var newWidth  = evt[3]- dragStartX.value;
-              // console.log('card being resized new loc', newTopRight, newTopLeft, newHeight+1, newWidth+1);
-              thisCard.card_position = [newTopRight, newTopLeft, newHeight+1, newWidth+1];
+              // console.log('card being resized new loc', newTopY, newTopX, newHeight+1, newWidth+1);
+              thisCard.card_position = [newTopY, newTopX, newHeight+1, newWidth+1];
               fieldValue.value.cards = allCards.value;
               var styleElements = thisCard.card_parameters.style.split(";");
               // console.log('styles for this card', styleElements);
@@ -270,7 +276,7 @@ funcs[c.MOUSE_EVT] = function(evt){
               debugger
               styleElements.forEach(styleElement => {
                 if(styleElement.startsWith('grid-area')){
-                  var thisRevisedElement = 'grid-area:'+ newTopRight.toString() + "/"+ newTopLeft.toString()+"/"+(newTopRight + newHeight+1).toString()+"/"+(newTopLeft+newWidth+1).toString()+ ";";
+                  var thisRevisedElement = 'grid-area:'+ newTopY.toString() + "/"+ newTopX.toString()+"/"+(newTopY + newHeight+1).toString()+"/"+(newTopX+newWidth+1).toString()+ ";";
                   revisedStyleElements=revisedStyleElements+thisRevisedElement;
                 }else{
                   revisedStyleElements=revisedStyleElements+styleElement+";";
@@ -279,10 +285,14 @@ funcs[c.MOUSE_EVT] = function(evt){
               revisedStyleElements = revisedStyleElements.slice(0, -1);
               // console.log('revisedStyleElements',revisedStyleElements);
               thisCard.card_parameters.style = revisedStyleElements;
+              cardBeingResized = thisCard;
               allCards.value[crd].resize=false;
               inResize.value=false;
             }
           }
+          const {loadCardAppearanceConfigs, saveCardAppearanceConfigs, createCard, twListTableHeight, updateCardTitle, updateCardResize} = getAppearanceConfigs();
+          debugger;
+          updateCardResize(emit, toRaw(cardBeingResized.id), newTopY, newTopX, newHeight+1, newWidth+1)
           mouseStatus.value = c.MOUSE_STATUS_NOT_CLICKED;
           pageMode.value = c.PAGE_DISPLAY;
           pageReload.value+=1;
