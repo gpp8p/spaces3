@@ -499,6 +499,10 @@ const defs = function(dialogDef){
                                 label: "Navigation Menu"
                             },
                             {
+                                value: 'richTextEditor',
+                                label: "Rich Text Editor"
+                            },
+                            {
                                 value: 'pdf',
                                 label: "PDF"
                             }

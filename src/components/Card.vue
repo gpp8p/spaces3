@@ -83,6 +83,7 @@ const passCmdDown = function(args){
 }
 import Headline from './Navigation.vue';
 import RichText from './textShow.vue';
+import richTextEditor from './richTextEditor.vue';
 import NavigationMenu from './Navigation.vue';
 import imageCard from './imageCard.vue';
 import loginLink from './loginLink.vue';
@@ -93,6 +94,7 @@ const morphs = {
   Headline,
   RichText,
   NavigationMenu,
+  richTextEditor,
   imageCard,
   loginLink,
 }
@@ -136,6 +138,21 @@ const getMenuDefinitions = function(menuType){
           },
         ]
 
+      }
+    }
+    case 'richTextEditor':{
+      return {
+        twStyling:'text-xs text-blue-500 w-[100%] bg-yellow-200',
+        name: 'cardMenu',
+        items: [
+          { type: 'menuItem', config: { label: 'Edit', actionCode: c.CARD_MENUS_EDIT } },
+          { type: 'menuItem', config: { label: 'Configure', actionCode: c.CARD_MENUS_CONFIGURE } },
+          { type: 'menuItem', config: { label: 'Resize/Move', actionCode: c.CARD_MENUS_RESIZE } },
+          { type: 'menuItem', config: { label: 'Delete', actionCode: c.CARD_MENUS_DELETE } },
+          { type: 'menuItem', config: { label: 'Save', actionCode: c.CARD_MENUS_SAVE } },
+          { type: 'menuItem', config: { label: 'Exit', actionCode: c.CARD_MENUS_EXIT } },
+
+        ]
       }
     }
     case 'RichText':{
