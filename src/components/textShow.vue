@@ -78,6 +78,9 @@ funcs[c.CARD_MENU_SELECTED] = function(cmd){
     case c.CARD_MENUS_CONFIGURE:{
       emit('cevt', [c.SHOW_DIALOG, 'configureCard', props.config.id]);
     }
+    case c.CARD_MENUS_EDIT: {
+      emit('cevt', [c.SHOW_DIALOG, 'editText', props.config.id, props.data.cardText]);
+    }
   }
 
 }

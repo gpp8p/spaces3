@@ -6,7 +6,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import {computed, ref} from 'vue';
 import {c} from "./components/constants.js";
 import spFrame from './components/spFrame.vue';
 import spDialog from './components/dialog4.vue';
@@ -26,6 +26,14 @@ const app = createApp(App)
 
 app.use(pinia);
 
+//import { useRoute, useRouter } from 'vue-router'
+import { onMounted } from 'vue'
+
+
+
+
+//const router = useRouter()
+//console.log('route.path', route.path)
 
 // app.mount('#app');
 
@@ -43,7 +51,7 @@ const frameConfig = ref(
 
 const cmdHandlers = {}
 
-var dialogConfig = {};
+var dialogConfig = ref({});
 var dialogData = {};
 
 const store = useLogStateStore();
@@ -52,10 +60,13 @@ debugger;
 
 const showDialog = ref(false);
 const loginRequired = ref(true);
+console.log('current location', window.Document.URL);
+
 if(loginRequired.value===true){
-  dialogConfig.definition = 'loginDialog';
-  showDialog.value=true;
+//  dialogConfig.value.definition = 'loginDialog';
+//  showDialog.value=true;
 }
+
 console.log('dialogConfig-', dialogConfig);
 
 const funcs = [];
@@ -147,17 +158,17 @@ funcs[c.CHANGE_DIALOG_CONFIGURATION]= function(evt){
 }
 funcs[c.MENU_PAGE_SETTINGS]= function(evt){
   console.log('in MENU_PAGE_SETTINGS-', evt);
-  dialogConfig.definition = 'pageSettings';
+  dialogConfig.value.definition = 'pageSettings';
   showDialog.value=true;
 }
 funcs[c.MENU_MYSPACES]= function(evt){
   console.log('inMENU_MYSPACES-', evt);
-  dialogConfig.definition = 'mySpaces';
+  dialogConfig.value.definition = 'mySpaces';
   showDialog.value=true;
 }
 funcs[c.MENU_CREATE]= function(evt){
   console.log('in MENU_CREATE-', evt);
-  dialogConfig.definition = 'pageCreate';
+  dialogConfig.value.definition = 'pageCreate';
   showDialog.value=true;
 }
 funcs[c.TRANSACTION_COMPLETED] = function(evt){
@@ -176,22 +187,25 @@ funcs[c.SHOW_DIALOG] = function(evt){
   debugger;
   console.log('in SHOW_DIALOG-', evt);
   if(typeof(evt[1])!="undefined"){
-    dialogConfig.definition = evt[1];
+    dialogConfig.value.definition = evt[1];
   }
   if(typeof(evt[2].cardId)!="undefined"){
-    dialogConfig.id = evt[2].cardId;
+    dialogConfig.value.id = evt[2].cardId;
   }else{
-    dialogConfig.id = evt[2];
+    dialogConfig.value.id = evt[2];
   }
-  dialogConfig.layoutId = pageStore.getCurrentPageId;
+  dialogConfig.value.layoutId = pageStore.getCurrentPageId;
   if(typeof(evt[2].cardName)!="undefined"){
-    dialogConfig.cardName = evt[2].cardName;
+    dialogConfig.value.cardName = evt[2].cardName;
   }
   if(typeof(evt[2].cardName)!="undefined"){
-    dialogConfig.cardTitle = evt[2].cardTitle;
+    dialogConfig.value.cardTitle = evt[2].cardTitle;
   }
   if(typeof(evt[2].orient)!="undefined"){
-    dialogConfig.orient = evt[2].orient;
+    dialogConfig.value.orient = evt[2].orient;
+  }
+  if(typeof(evt[3])!="undefined"){
+    dialogConfig.value.existingData = evt[3];
   }
   console.log('in SHOW_DIALOG dialogConfig', dialogConfig);
   showDialog.value=true;
@@ -206,7 +220,7 @@ funcs[c.LINK_TO_ADD_SELECTED]=function(evt){
 }
 funcs[c.CARD_AREA_SELECTED] = function(evt){
   console.log('in CARD-AREA-SELECTED-', evt);
-  dialogConfig.definition = 'createCard';
+  dialogConfig.value.definition = 'createCard';
   dialogData.cardDimensions = {};
   dialogData.cardDimensions.startX = evt[3];
   dialogData.cardDimensions.startY = evt[4];
@@ -229,6 +243,30 @@ funcs[c.UPDATE_SELECTED_LINK] = function(evt){
   debugger;
   cmdHandlers['dialog']([c.UPDATE_SELECTED_LINK, evt, "dialog"]);
 }
+funcs[c.CARD_MENUS_EDIT] = function(evt){
+  console.log('in CARD-MENUS-EDIT-', evt);
+}
+
+onMounted(() => {
+  console.log('current window', window.document.URL);
+  console.log('openPage in url',window.document.URL.includes('setPage'));
+  if(window.document.URL.includes('setPage')){
+    var ls = toRaw(store.loginStatus);
+    debugger;
+    console.log('store.loginResult', ls.loginResult);
+    if(typeof(ls.loginResult)=='undefined'){
+      dialogConfig.value.definition = 'loginDialog';
+      showDialog.value=true;
+    }
+  }else{
+    dialogConfig.value.definition = 'loginDialog';
+    showDialog.value=true;
+  }
+
+  debugger;
+})
+
+
 
 
 </script>

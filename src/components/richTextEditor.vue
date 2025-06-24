@@ -1,4 +1,4 @@
-<!-- RichTextEditor.vue - Simplified Working Version -->
+<!-- RichTextEditor.vue - Enhanced with Alignment and Super/Subscript -->
 <template>
   <div class="rich-text-editor">
     <!-- Menu Bar -->
@@ -29,7 +29,7 @@
         </select>
       </div>
 
-      <!-- Font Color - CLEANED UP VERSION -->
+      <!-- Font Color -->
       <div class="menu-group color-group">
         <label>Color:</label>
         <div class="color-picker-wrapper">
@@ -55,7 +55,69 @@
         </div>
       </div>
 
-      <!-- Formatting Buttons -->
+      <!-- Highlight Color -->
+      <div class="menu-group color-group">
+        <label>Highlight:</label>
+        <div class="color-picker-wrapper">
+          <button
+              class="color-button highlight-button"
+              :style="{ backgroundColor: currentFormat.backgroundColor }"
+              @click.stop="showHighlightPicker = !showHighlightPicker"
+              :class="{ active: currentFormat.mark }"
+          >
+            <span class="color-preview" :style="{ backgroundColor: currentFormat.backgroundColor }"></span>
+            Mark
+          </button>
+
+          <div v-if="showHighlightPicker" class="color-picker-dropdown">
+            <input
+                type="color"
+                v-model="currentFormat.backgroundColor"
+                @change="handleHighlightChange"
+                class="color-picker-input"
+            />
+            <button @click="toggleFormat('mark')" class="toggle-highlight-button"
+                    :class="{ active: currentFormat.mark }">
+              {{ currentFormat.mark ? 'ON' : 'OFF' }}
+            </button>
+            <button @click="showHighlightPicker = false" class="color-picker-close">×</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Alignment Buttons -->
+      <div class="formatting-buttons alignment-group">
+        <button
+            :class="{ active: currentParagraphAlignment === 'left' }"
+            @click="setAlignment('left')"
+            title="Align Left"
+        >
+          ⫷
+        </button>
+        <button
+            :class="{ active: currentParagraphAlignment === 'center' }"
+            @click="setAlignment('center')"
+            title="Align Center"
+        >
+          ═
+        </button>
+        <button
+            :class="{ active: currentParagraphAlignment === 'right' }"
+            @click="setAlignment('right')"
+            title="Align Right"
+        >
+          ⫸
+        </button>
+        <button
+            :class="{ active: currentParagraphAlignment === 'justify' }"
+            @click="setAlignment('justify')"
+            title="Justify"
+        >
+          ≡
+        </button>
+      </div>
+
+      <!-- Text Formatting Buttons -->
       <div class="formatting-buttons">
         <button
             :class="{ active: currentFormat.bold }"
@@ -78,6 +140,38 @@
         >
           <u>U</u>
         </button>
+        <button
+            :class="{ active: currentFormat.strikethrough }"
+            @click="toggleFormat('strikethrough')"
+            title="Strikethrough"
+        >
+          <s>S</s>
+        </button>
+        <button
+            :class="{ active: currentFormat.mark }"
+            @click="toggleFormat('mark')"
+            title="Highlight/Mark"
+        >
+          <mark>H</mark>
+        </button>
+      </div>
+
+      <!-- Super/Subscript Buttons -->
+      <div class="formatting-buttons script-group">
+        <button
+            :class="{ active: currentFormat.superscript }"
+            @click="toggleFormat('superscript')"
+            title="Superscript"
+        >
+          X<sup>²</sup>
+        </button>
+        <button
+            :class="{ active: currentFormat.subscript }"
+            @click="toggleFormat('subscript')"
+            title="Subscript"
+        >
+          X<sub>₂</sub>
+        </button>
       </div>
     </div>
 
@@ -86,9 +180,10 @@
       <span>Characters: {{ characterCount }}</span>
       <span>Words: {{ wordCount }}</span>
       <span>HTML Length: {{ htmlLength }}</span>
+      <span>Alignment: {{ currentParagraphAlignment || 'left' }}</span>
     </div>
 
-    <!-- Content Area - WITH FORMATTING -->
+    <!-- Content Area -->
     <div
         ref="contentArea"
         class="content-area"
@@ -142,6 +237,8 @@ const emit = defineEmits(['cevt'])
 // Component state
 const contentArea = ref(null)
 const showColorPicker = ref(false)
+const showHighlightPicker = ref(false)
+const currentParagraphAlignment = ref('left')
 
 // Simple reactive counters
 const characterCount = ref(0)
@@ -149,21 +246,23 @@ const wordCount = ref(0)
 const htmlLength = ref(0)
 const htmlContent = ref('')
 
-// Format state - represents "what format to use for new text"
+// Enhanced format state with super/subscript
 const currentFormat = reactive({
   fontFamily: 'Helvetica',
   fontSize: '12pt',
   color: '#0000ff',
+  backgroundColor: '#ffff00', // Default yellow highlight
   bold: false,
   italic: false,
-  underline: false
+  underline: false,
+  strikethrough: false,
+  mark: false,
+  superscript: false,
+  subscript: false
 })
 
 // Computed
 const showOutput = computed(() => props.config?.showOutput === true)
-
-// SIMPLIFIED APPROACH: Let browser handle most of the typing
-// We'll just update our format template and apply it when needed
 
 const updateCounts = () => {
   if (contentArea.value) {
@@ -182,10 +281,32 @@ const updateHtmlContent = () => {
   if (contentArea.value) {
     htmlContent.value = contentArea.value.innerHTML
     updateCounts()
+    updateCurrentAlignment()
   }
 }
 
-// Event handlers - WITH FORMATTING
+// Check current paragraph alignment
+const updateCurrentAlignment = () => {
+  const selection = window.getSelection()
+  if (selection.rangeCount) {
+    const range = selection.getRangeAt(0)
+    let container = range.commonAncestorContainer
+
+    // Walk up to find the paragraph/div container
+    while (container && container !== contentArea.value) {
+      if (container.nodeType === Node.ELEMENT_NODE &&
+          (container.tagName === 'DIV' || container.tagName === 'P')) {
+        const style = window.getComputedStyle(container)
+        currentParagraphAlignment.value = style.textAlign || 'left'
+        return
+      }
+      container = container.parentElement
+    }
+  }
+  currentParagraphAlignment.value = 'left'
+}
+
+// Event handlers
 const handleInput = () => {
   console.log('📝 Input event')
   updateHtmlContent()
@@ -205,7 +326,7 @@ const handleKeyDown = (event) => {
 
   if (event.key === 'Enter') {
     event.preventDefault()
-    insertFormattedText('\n')
+    handleEnterKey()
     return
   }
 
@@ -219,34 +340,54 @@ const handleKeyDown = (event) => {
     currentFormat.underline = false
     currentFormat.bold = false
     currentFormat.italic = false
+    currentFormat.strikethrough = false
+    currentFormat.mark = false
+    currentFormat.superscript = false
+    currentFormat.subscript = false
     console.log('🔄 Reset formatting with Escape')
   }
 }
 
-// Smart text insertion that merges with existing spans
+// Enhanced Enter key handling for paragraph alignment
+const handleEnterKey = () => {
+  const selection = window.getSelection()
+  if (!selection.rangeCount) return
+
+  const range = selection.getRangeAt(0)
+
+  // Create new div with current alignment
+  const newDiv = document.createElement('div')
+  newDiv.style.textAlign = currentParagraphAlignment.value || 'left'
+
+  // Add a br for proper line spacing
+  const br = document.createElement('br')
+  newDiv.appendChild(br)
+
+  range.deleteContents()
+  range.insertNode(newDiv)
+
+  // Position cursor inside the new div
+  const newRange = document.createRange()
+  newRange.setStart(newDiv, 0)
+  newRange.setEnd(newDiv, 0)
+  selection.removeAllRanges()
+  selection.addRange(newRange)
+
+  setTimeout(updateHtmlContent, 10)
+}
+
+// Enhanced text insertion with super/subscript support
 const insertFormattedText = (text) => {
   const selection = window.getSelection()
   if (!selection.rangeCount) return
 
   const range = selection.getRangeAt(0)
 
-  if (text === '\n') {
-    // Handle line breaks
-    const br = document.createElement('br')
-    range.deleteContents()
-    range.insertNode(br)
-    range.setStartAfter(br)
-    range.setEndAfter(br)
-    selection.removeAllRanges()
-    selection.addRange(range)
-    return
-  }
-
   // Check if we can merge with existing span
   const canMerge = tryToMergeWithExistingSpan(range, text)
 
   if (!canMerge) {
-    // CRITICAL FIX: Ensure we're not inside another span when creating new one
+    // Ensure we're not inside another span when creating new one
     ensureCursorOutsideSpans(range)
 
     // Create new formatted span
@@ -255,13 +396,18 @@ const insertFormattedText = (text) => {
     span.style.fontSize = currentFormat.fontSize
     span.style.color = currentFormat.color
 
-    // IMPORTANT: Only apply formatting if the boolean is true
+    // Apply background color if mark is enabled
+    if (currentFormat.mark) {
+      span.style.backgroundColor = currentFormat.backgroundColor
+      console.log('✅ Applied highlight/mark with color:', currentFormat.backgroundColor)
+    }
+
+    // Apply text formatting
     if (currentFormat.bold) {
       span.style.fontWeight = 'bold'
       console.log('✅ Applied bold to new span')
     } else {
       span.style.fontWeight = 'normal'
-      console.log('✅ Applied normal weight to new span')
     }
 
     if (currentFormat.italic) {
@@ -269,19 +415,40 @@ const insertFormattedText = (text) => {
       console.log('✅ Applied italic to new span')
     } else {
       span.style.fontStyle = 'normal'
-      console.log('✅ Applied normal style to new span')
     }
 
+    // Handle superscript/subscript (mutually exclusive)
+    if (currentFormat.superscript) {
+      span.style.verticalAlign = 'super'
+      span.style.fontSize = '0.8em'
+      console.log('✅ Applied superscript to new span')
+    } else if (currentFormat.subscript) {
+      span.style.verticalAlign = 'sub'
+      span.style.fontSize = '0.8em'
+      console.log('✅ Applied subscript to new span')
+    } else {
+      span.style.verticalAlign = 'baseline'
+    }
+
+    // Handle text decorations
+    let decorations = []
     if (currentFormat.underline) {
-      span.style.textDecoration = 'underline'
+      decorations.push('underline')
       span.classList.add('editor-underlined')
-      span.classList.remove('editor-not-underlined')
       console.log('✅ Applied underline to new span')
+    }
+    if (currentFormat.strikethrough) {
+      decorations.push('line-through')
+      span.classList.add('editor-strikethrough')
+      console.log('✅ Applied strikethrough to new span')
+    }
+
+    if (decorations.length > 0) {
+      span.style.textDecoration = decorations.join(' ')
     } else {
       span.style.textDecoration = 'none'
       span.classList.add('editor-not-underlined')
-      span.classList.remove('editor-underlined')
-      console.log('✅ Applied no decoration to new span')
+      span.classList.add('editor-not-strikethrough')
     }
 
     span.textContent = text
@@ -304,10 +471,15 @@ const insertFormattedText = (text) => {
       console.log('🎯 Positioned cursor inside new span text node')
     }
 
-    console.log('✨ Created new SIBLING span for:', text, 'with format:', {
+    console.log('✨ Created new span with enhanced format:', {
       bold: currentFormat.bold,
       italic: currentFormat.italic,
-      underline: currentFormat.underline
+      underline: currentFormat.underline,
+      strikethrough: currentFormat.strikethrough,
+      mark: currentFormat.mark,
+      superscript: currentFormat.superscript,
+      subscript: currentFormat.subscript,
+      backgroundColor: currentFormat.backgroundColor
     })
   }
 
@@ -356,7 +528,7 @@ const ensureCursorOutsideSpans = (range) => {
   }
 }
 
-// Try to merge new text with existing span that has same formatting
+// Enhanced span matching with super/subscript support
 const tryToMergeWithExistingSpan = (range, text) => {
   try {
     console.log('🔍 Trying to merge text:', text)
@@ -398,7 +570,7 @@ const tryToMergeWithExistingSpan = (range, text) => {
           console.log('❌ Span format does not match - will create new span')
           console.log('🔧 FORCING cursor out of mismatched span before creating new one')
 
-          // CRITICAL FIX: Move cursor out of the current span before creating new one
+          // Move cursor out of the current span before creating new one
           const selection = window.getSelection()
           const newRange = document.createRange()
 
@@ -425,7 +597,7 @@ const tryToMergeWithExistingSpan = (range, text) => {
   }
 }
 
-// Check if a span matches the current format
+// Enhanced span format matching with super/subscript
 const spanMatchesCurrentFormat = (span) => {
   if (!span || span.tagName !== 'SPAN') {
     console.log('❌ Not a span element')
@@ -446,39 +618,54 @@ const spanMatchesCurrentFormat = (span) => {
   const colorMatch = style.color === currentFormat.color ||
       (style.color && style.color.includes('rgb') && rgbToHex(style.color) === currentFormat.color)
 
-  // IMPROVED: Check weight (bold) - handle both explicit and implicit values
+  // Background color comparison for mark/highlight
+  const bgColorMatch = currentFormat.mark ?
+      (style.backgroundColor === currentFormat.backgroundColor ||
+          (style.backgroundColor && style.backgroundColor.includes('rgb') && rgbToHex(style.backgroundColor) === currentFormat.backgroundColor)) :
+      (!style.backgroundColor || style.backgroundColor === '' || style.backgroundColor === 'transparent')
+
+  // Check weight (bold)
   const spanWeight = style.fontWeight || 'normal'
   const weightMatch = currentFormat.bold ?
       (spanWeight === 'bold' || spanWeight === '700') :
       (spanWeight === 'normal' || spanWeight === '400' || spanWeight === '')
 
-  // IMPROVED: Check italic - handle both explicit and implicit values
+  // Check italic
   const spanItalic = style.fontStyle || 'normal'
   const italicMatch = currentFormat.italic ?
       spanItalic === 'italic' :
       (spanItalic === 'normal' || spanItalic === '')
 
-  // IMPROVED: Check underline - handle both explicit and implicit values
+  // Check vertical alignment for super/subscript
+  const spanVertAlign = style.verticalAlign || 'baseline'
+  const superMatch = currentFormat.superscript === (spanVertAlign === 'super')
+  const subMatch = currentFormat.subscript === (spanVertAlign === 'sub')
+
+  // Enhanced text decoration checking for underline and strikethrough
   const spanDecoration = style.textDecoration || 'none'
-  const underlineMatch = currentFormat.underline ?
-      spanDecoration.includes('underline') :
-      (spanDecoration === 'none' || spanDecoration === '' || !spanDecoration.includes('underline'))
+  const decorationParts = spanDecoration.split(' ').filter(d => d && d !== 'none')
 
-  console.log('🔍 Underline comparison details:')
-  console.log('  - Span textDecoration:', `"${spanDecoration}"`)
-  console.log('  - Current underline state:', currentFormat.underline)
-  console.log('  - Expected match:', currentFormat.underline ? 'should include underline' : 'should not include underline')
-  console.log('  - Match result:', underlineMatch)
+  const hasUnderline = decorationParts.includes('underline')
+  const hasStrikethrough = decorationParts.includes('line-through')
 
-  const matches = fontMatch && sizeMatch && colorMatch && weightMatch && italicMatch && underlineMatch
+  const underlineMatch = currentFormat.underline === hasUnderline
+  const strikethroughMatch = currentFormat.strikethrough === hasStrikethrough
 
-  console.log('🔍 Span format comparison:', {
+  const matches = fontMatch && sizeMatch && colorMatch && bgColorMatch &&
+      weightMatch && italicMatch && underlineMatch && strikethroughMatch &&
+      superMatch && subMatch
+
+  console.log('🔍 Enhanced span format comparison:', {
     font: fontMatch,
     size: sizeMatch,
     color: colorMatch,
-    weight: weightMatch + ` (span: "${spanWeight}", current bold: ${currentFormat.bold})`,
-    italic: italicMatch + ` (span: "${spanItalic}", current italic: ${currentFormat.italic})`,
-    underline: underlineMatch + ` (span: "${spanDecoration}", current underline: ${currentFormat.underline})`,
+    backgroundColor: bgColorMatch,
+    weight: weightMatch,
+    italic: italicMatch,
+    underline: underlineMatch,
+    strikethrough: strikethroughMatch,
+    superscript: superMatch,
+    subscript: subMatch,
     overall: matches
   })
 
@@ -499,8 +686,10 @@ const rgbToHex = (rgb) => {
 
 const handleClick = () => {
   console.log('🖱️ Click in content area')
-  // Just save position, don't change format state
-  setTimeout(updateCounts, 10)
+  setTimeout(() => {
+    updateCounts()
+    updateCurrentAlignment()
+  }, 10)
 }
 
 const handlePaste = (event) => {
@@ -527,28 +716,92 @@ const onFormatChange = () => {
 const handleColorChange = () => {
   console.log('✅ Color change completed:', currentFormat.color)
   onFormatChange()
-  // Keep picker open for now, user can close manually or click elsewhere
+}
+
+const handleColorInput = () => {
+  console.log('🎨 Color input:', currentFormat.color)
+}
+
+// Highlight color handlers
+const handleHighlightChange = () => {
+  console.log('✅ Highlight color change completed:', currentFormat.backgroundColor)
+  if (currentFormat.mark) {
+    applyFormatToSelection()
+  }
+}
+
+// Alignment handlers
+const setAlignment = (alignment) => {
+  console.log('📐 Setting alignment to:', alignment)
+  currentParagraphAlignment.value = alignment
+  applyAlignmentToCurrentParagraph(alignment)
+}
+
+const applyAlignmentToCurrentParagraph = (alignment) => {
+  const selection = window.getSelection()
+  if (!selection.rangeCount) return
+
+  const range = selection.getRangeAt(0)
+  let container = range.commonAncestorContainer
+
+  // Find the paragraph container
+  while (container && container !== contentArea.value) {
+    if (container.nodeType === Node.ELEMENT_NODE &&
+        (container.tagName === 'DIV' || container.tagName === 'P')) {
+      container.style.textAlign = alignment
+      console.log('✅ Applied alignment', alignment, 'to paragraph')
+      setTimeout(updateHtmlContent, 10)
+      return
+    }
+    container = container.parentElement
+  }
+
+  // If no paragraph container found, wrap selection in a div
+  const div = document.createElement('div')
+  div.style.textAlign = alignment
+
+  try {
+    const contents = range.extractContents()
+    div.appendChild(contents)
+    range.insertNode(div)
+
+    // Restore selection
+    const newRange = document.createRange()
+    newRange.selectNodeContents(div)
+    selection.removeAllRanges()
+    selection.addRange(newRange)
+
+    console.log('✅ Created new paragraph with alignment:', alignment)
+    setTimeout(updateHtmlContent, 10)
+  } catch (error) {
+    console.error('Error applying alignment:', error)
+  }
 }
 
 const toggleFormat = (formatType) => {
   console.log('🔍 toggleFormat called with formatType:', `"${formatType}"`, 'type:', typeof formatType)
 
-  currentFormat[formatType] = !currentFormat[formatType]
-  console.log('🎯 Toggled', formatType, 'to:', currentFormat[formatType])
-
-  // Special handling for underline debugging - check exact string match
-  if (formatType === 'underline') {
-    console.log('🔍 Underline toggle details:')
-    console.log('  - New underline state:', currentFormat.underline)
-    console.log('  - Button should show active:', currentFormat.underline)
+  // Handle mutually exclusive super/subscript
+  if (formatType === 'superscript') {
+    currentFormat.superscript = !currentFormat.superscript
+    if (currentFormat.superscript) {
+      currentFormat.subscript = false // Turn off subscript
+    }
+  } else if (formatType === 'subscript') {
+    currentFormat.subscript = !currentFormat.subscript
+    if (currentFormat.subscript) {
+      currentFormat.superscript = false // Turn off superscript
+    }
   } else {
-    console.log('🔍 formatType was not "underline", it was:', `"${formatType}"`)
+    currentFormat[formatType] = !currentFormat[formatType]
   }
+
+  console.log('🎯 Toggled', formatType, 'to:', currentFormat[formatType])
 
   applyFormatToSelection()
 }
 
-// Apply current format to selected text
+// Enhanced format application with super/subscript support
 const applyFormatToSelection = () => {
   const selection = window.getSelection()
   if (!selection.rangeCount) {
@@ -562,7 +815,7 @@ const applyFormatToSelection = () => {
     return
   }
 
-  console.log('✨ Applying format to selection')
+  console.log('✨ Applying enhanced format to selection')
 
   try {
     // Extract selected content
@@ -574,9 +827,32 @@ const applyFormatToSelection = () => {
     span.style.fontSize = currentFormat.fontSize
     span.style.color = currentFormat.color
 
+    // Apply background color if mark is enabled
+    if (currentFormat.mark) {
+      span.style.backgroundColor = currentFormat.backgroundColor
+    }
+
+    // Apply formatting
     if (currentFormat.bold) span.style.fontWeight = 'bold'
     if (currentFormat.italic) span.style.fontStyle = 'italic'
-    if (currentFormat.underline) span.style.textDecoration = 'underline'
+
+    // Handle superscript/subscript
+    if (currentFormat.superscript) {
+      span.style.verticalAlign = 'super'
+      span.style.fontSize = '0.8em'
+    } else if (currentFormat.subscript) {
+      span.style.verticalAlign = 'sub'
+      span.style.fontSize = '0.8em'
+    }
+
+    // Handle text decorations
+    let decorations = []
+    if (currentFormat.underline) decorations.push('underline')
+    if (currentFormat.strikethrough) decorations.push('line-through')
+
+    if (decorations.length > 0) {
+      span.style.textDecoration = decorations.join(' ')
+    }
 
     // Add the selected content to our formatted span
     span.appendChild(contents)
@@ -640,6 +916,7 @@ onMounted(() => {
     if (contentArea.value) {
       contentArea.value.focus()
       updateCounts()
+      updateCurrentAlignment()
     }
   })
 })
@@ -664,6 +941,7 @@ onMounted(() => {
   border-bottom: 1px solid #ddd;
   background-color: #f5f5f5;
   margin-bottom: 10px;
+  color: blue !important;
 }
 
 .menu-group {
@@ -712,56 +990,17 @@ onMounted(() => {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+.highlight-button.active {
+  border-color: #28a745;
+  background-color: #f8f9fa;
+}
+
 .color-preview {
   width: 16px;
   height: 16px;
   border-radius: 2px;
   border: 1px solid rgba(0, 0, 0, 0.2);
   display: block;
-}
-
-.color-picker-dropdown {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  z-index: 1000;
-  background: white;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  padding: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  min-width: 200px;
-}
-
-.color-picker-input {
-  width: 50px;
-  height: 30px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  background: none;
-}
-
-.color-picker-close {
-  background: #dc3545;
-  color: white;
-  border: none;
-  border-radius: 50%;
-  width: 24px;
-  height: 24px;
-  cursor: pointer;
-  font-size: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-}
-
-.color-picker-close:hover {
-  background: #c82333;
 }
 
 .color-picker-dropdown {
@@ -787,6 +1026,31 @@ onMounted(() => {
   border-radius: 4px;
   cursor: pointer;
   background: none;
+}
+
+.toggle-highlight-button {
+  padding: 4px 8px;
+  border: 1px solid #6c757d;
+  border-radius: 3px;
+  background: white;
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: bold;
+  min-width: 40px;
+}
+
+.toggle-highlight-button.active {
+  background: #28a745;
+  color: white;
+  border-color: #28a745;
+}
+
+.toggle-highlight-button:hover {
+  background: #e9ecef;
+}
+
+.toggle-highlight-button.active:hover {
+  background: #218838;
 }
 
 .color-picker-close {
@@ -815,6 +1079,18 @@ onMounted(() => {
   padding-left: 10px;
 }
 
+.alignment-group {
+  border-left: none;
+  padding-left: 0;
+  border-right: 1px solid #ddd;
+  padding-right: 10px;
+}
+
+.script-group {
+  border-left: none;
+  padding-left: 0;
+}
+
 .formatting-buttons button {
   padding: 6px 10px;
   border: 1px solid #ccc;
@@ -823,6 +1099,9 @@ onMounted(() => {
   cursor: pointer;
   font-size: 14px;
   min-width: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .formatting-buttons button:hover {
@@ -835,6 +1114,19 @@ onMounted(() => {
   border-color: #005a87;
 }
 
+/* Special styling for alignment buttons */
+.alignment-group button {
+  font-family: monospace;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+/* Special styling for script buttons */
+.script-group button {
+  font-size: 12px;
+  padding: 6px 8px;
+}
+
 .stats-bar {
   display: flex;
   gap: 20px;
@@ -845,6 +1137,7 @@ onMounted(() => {
   margin-bottom: 10px;
   font-size: 12px;
   color: #495057;
+  flex-wrap: wrap;
 }
 
 .content-area {
@@ -925,7 +1218,7 @@ onMounted(() => {
   padding: 15px 0;
 }
 
-/* Editor-specific underline control */
+/* Enhanced editor-specific styling for new format options */
 .editor-underlined {
   text-decoration: underline !important;
 }
@@ -933,6 +1226,20 @@ onMounted(() => {
 .editor-not-underlined {
   text-decoration: none !important;
   text-decoration-line: none !important;
+}
+
+.editor-strikethrough {
+  text-decoration: line-through !important;
+}
+
+.editor-not-strikethrough {
+  text-decoration: none !important;
+  text-decoration-line: none !important;
+}
+
+/* Combined text decorations */
+.editor-underlined.editor-strikethrough {
+  text-decoration: underline line-through !important;
 }
 
 .save-button {

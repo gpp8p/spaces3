@@ -34,6 +34,7 @@ export function getDialogDefinitions(){
         return currentDefs.defaultData;
     }
     const getDialogData = function(dialogDef){
+        debugger;
         var currentDefs = defs(dialogDef);
         return currentDefs.dialogData;
     }
@@ -2546,7 +2547,58 @@ const defs = function(dialogDef){
 
             }
         }
+        case 'editText':{
+            return {
+                dialogAppearence: {
+                    // styling for the prompt
+                    twPrompt: 'text-lg text-current ml-[30%] my-[5%]',
+                    // the prompt itself
+                    prompt: 'My Spaces',
+                    // overall styling for the dialog
+                    twstyle:"fixed w-[50%] h-auto p-[2%] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-200 rounded border-2 border-blue-500 shadow-xl shadow-black",
+                },
+                dialogFields:
+                [
+                    {
+                        name: 'textEditor',
+                        type: 'richTextEditor',
+                        startFocus: false,
+                        // styling of the table header
+                        twhead: 'bg-blue-800 flex text-white w-full h-10',
+                        // styling of the row (tr) element in the header
+                        twheadtr: 'flex w-full mb-4',
+                        // styling for the table body
+                        twbody: 'bg-grey-light flex flex-col items-center justify-between overflow-y-scroll w-full',
+                        //row styling in the body
+                        twtr:'flex w-full mb-[1px] hover:bg-green-400 text-xs',
+                        // not in use
+                        testtwheadth:'py-2 pl-3.5 w-1/4',
+                        //cell styling in the body
+                        twtd:'flex w-full mb-4 hover:bg-green-400',
 
+                    }
+                ],
+                dialogData: function(emit, c, loginStore, ready, result, config, dialogData) {
+                    debugger;
+                    result = toRaw(config).existingData;
+//                    ready.value = true;
+                },
+                addActions:function(currentFuncs) {
+                    currentFuncs[c.MENU_EXIT_DIALOG] = function (emit, dialogData) {
+                        //debugger;
+                        console.log('new func exit dialog');
+                        //const emit = defineEmits(['cevt']);
+                        emit('cevt', [c.EXIT_DIALOG])
+                    }
+                },
+                menuDefs:{
+                    twStyling:'text-xs text-blue-500 w-[100%]',
+                    items: [
+                        { type: 'menuItem', config: { label: 'Cancel', actionCode: c.MENU_EXIT_DIALOG } },
+                    ],
+                }
+            }
+        }
         case 'mySpaces':{
             return {
                 dialogAppearence: {
