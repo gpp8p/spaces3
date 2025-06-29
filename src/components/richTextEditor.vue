@@ -899,12 +899,23 @@ const save = () => {
 
 // Initialize
 const initializeContent = () => {
+
+  debugger;
+
   if (props.data && props.data.content) {
     if (contentArea.value) {
       contentArea.value.innerHTML = props.data.content
       updateHtmlContent()
     }
   }
+/*
+  if(props.data){
+    if (contentArea.value) {
+      contentArea.value.innerHTML = props.data
+      updateHtmlContent()
+    }
+  }
+*/
 }
 
 watch(() => props.data, initializeContent, { deep: true })

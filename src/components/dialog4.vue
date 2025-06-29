@@ -120,11 +120,15 @@ if(typeof(currentDialogDataLoader)=='function'){
     })
   }else{
     // dialog data function returned ready right away
+    debugger;
     existingData = toRaw(result.value);
     console.log('existingData loaded',existingData);
     dialogFieldsConfig.value.dialogFields = dialogFields;
-//    dialogFieldsConfig.value.existingData = existingData;
-    dialogFieldsData.value = existingData;
+    if(toRaw(props.config).definition=='editText'){
+      dialogFieldsData.value.content = existingData;
+    }else{
+      dialogFieldsData.value = existingData;
+    }
   }
 
 

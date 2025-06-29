@@ -42,6 +42,7 @@ import listTable from "../components/listTable.vue";
 import htmlPasswordInput from '../components/htmlPasswordInput.vue';
 import borderPicker from "../components/borderPicker.vue";
 import fontPicker from "../components/fontPicker.vue";
+import richTextEditor from "../components/richTextEditor.vue";
 
 
 const {handleEvent} = useEventHandler();
@@ -76,7 +77,8 @@ const morphs = {
   listTable,
   htmlPasswordInput,
   borderPicker,
-  fontPicker
+  fontPicker,
+  richTextEditor
 }
 
 const handleCmd = function(args){

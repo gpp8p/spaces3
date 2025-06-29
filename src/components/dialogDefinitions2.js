@@ -2580,8 +2580,8 @@ const defs = function(dialogDef){
                 ],
                 dialogData: function(emit, c, loginStore, ready, result, config, dialogData) {
                     debugger;
-                    result = toRaw(config).existingData;
-//                    ready.value = true;
+                    result.value = toRaw(config).existingData;
+                    ready.value = true;
                 },
                 addActions:function(currentFuncs) {
                     currentFuncs[c.MENU_EXIT_DIALOG] = function (emit, dialogData) {
