@@ -693,7 +693,7 @@ const handleClick = () => {
 }
 
 const handlePaste = (event) => {
-  console.log('📋 Paste event')
+  console.log('📋 Paste event', event)
   event.preventDefault()
 
   // Get plain text and insert with current formatting
@@ -899,23 +899,12 @@ const save = () => {
 
 // Initialize
 const initializeContent = () => {
-
-  debugger;
-
   if (props.data && props.data.content) {
     if (contentArea.value) {
       contentArea.value.innerHTML = props.data.content
       updateHtmlContent()
     }
   }
-/*
-  if(props.data){
-    if (contentArea.value) {
-      contentArea.value.innerHTML = props.data
-      updateHtmlContent()
-    }
-  }
-*/
 }
 
 watch(() => props.data, initializeContent, { deep: true })

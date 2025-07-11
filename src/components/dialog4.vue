@@ -435,7 +435,7 @@ onMounted(() => {
   if(typeof(existingData)!='undefined'){
     dialogData = existingData;
   }
-  dialogData.cardDimensions =  props.data.cardDimensions;
+//  dialogData.cardDimensions =  props.data.cardDimensions;
 
 
   console.log('dialogData after', dialogData);
