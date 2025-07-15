@@ -246,6 +246,10 @@ funcs[c.UPDATE_SELECTED_LINK] = function(evt){
 funcs[c.CARD_MENUS_EDIT] = function(evt){
   console.log('in CARD-MENUS-EDIT-', evt);
 }
+funcs[c.SAVE_TEXT_CONTENT] = function(evt){
+  console.log('in SAVE_TEXT_CONTENT-', evt);
+  cmdHandlers['spFrame']([c.SAVE_TEXT_CONTENT, evt, "Page"]);
+}
 
 onMounted(() => {
   console.log('current window', window.document.URL);

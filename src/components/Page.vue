@@ -30,6 +30,8 @@ import {ref, nextTick} from 'vue';
 import displayGrid from "../components/displayGrid.vue";
 import editGrid from "../components/editGrid.vue";
 import {getAppearanceConfigs}  from "../components/cardAppearence.js";
+import axios from 'axios'
+
 
 
 
@@ -166,6 +168,31 @@ funcs[c.UNSET_CMD_HANDLER]= function(evt){
 funcs[c.SET_CONTENT_DIMENSIONS]=function(evt){
   // console.log('in SET_CONTENT_DIMENSIONS', evt);
 //  contentDimensions.value = evt[1];
+
+}
+funcs[c.SAVE_TEXT_CONTENT] = function(cmd){
+  console.log('in Page SAVE_TEXT_CONTENT', cmd[1][2], cmd[1][1]);
+  debugger;
+  var cardParams = {
+    cardText:cmd[1][1],
+    cardType:'textShow'
+  }
+  var cardConfigurationPackage = [cmd[1][2], cardParams];
+  var jsonCardConfigurationPackage = JSON.stringify(cardConfigurationPackage);
+  const loginResult= toRaw(loginStore.loginStatus);
+  const apiPath = 'http://localhost:8000/';
+  axios.post(apiPath+'api/shan/saveCardContent?XDEBUG_SESSION_START=14252', {
+    cardParams: jsonCardConfigurationPackage,
+    domElement: 'main',
+    org: loginResult.orgId,
+    layoutId: pageStore.getCurrentPageId
+  }).then(response=>
+  {
+    console.log(response);
+    this.$emit('configurationHasBeenSaved')
+  }).catch(function(error) {
+    console.log(error);
+  });
 
 }
 funcs[c.SET_NEW_LAYOUT]= function(cmd){

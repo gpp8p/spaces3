@@ -218,6 +218,7 @@
 <script setup>
 import { ref, reactive, computed, nextTick, watch } from 'vue'
 import { onMounted, onUnmounted } from 'vue'
+import {c} from "../components/constants.js";
 
 const props = defineProps({
   config: {
@@ -893,7 +894,7 @@ const cleanupHtml = () => {
 
 const save = () => {
   updateHtmlContent()
-  emit('cevt', htmlContent.value)
+  emit('cevt', [c.SAVE_TEXT_CONTENT,htmlContent.value, props.data.id])
   console.log('💾 Saved:', htmlContent.value)
 }
 
