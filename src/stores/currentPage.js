@@ -12,6 +12,9 @@ export const useCurrentPage = defineStore('currentPage', {
         },
         getCurrentPagePerms(){
             return this.currentPagePerms;
+        },
+        getAreaSelected(){
+            return this.currentPage.areaSelected;
         }
     },
     //actions
@@ -22,6 +25,9 @@ export const useCurrentPage = defineStore('currentPage', {
         },
         setCurrentPagePerms(perms){
             this.currentPagePerms = perms;
+        },
+        setAreaSelected(areaSelected){
+            this.currentPage.areaSelected = areaSelected;
         }
     }
 

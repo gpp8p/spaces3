@@ -224,6 +224,7 @@ funcs[c.MENU_ITEM_SELECTED]=function(evt){
   cmdHandlers[cardContentName.value]([c.CARD_MENU_SELECTED, cardReferencedData, cardContentName.value]);
 }
 onBeforeMount(()=>{
+  debugger;
   cardConfigs.value = props.data.card_parameters;
   cardConfigs.value.elementStyles = props.data.elementStyles;
   cardConfigs.value.id = props.data.id;

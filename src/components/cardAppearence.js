@@ -267,6 +267,7 @@ export function getAppearanceConfigs(){
             updatePackage[3].push(elementStyles);
         }
 
+
         console.log('updatePackage', updatePackage);
         var updateParameters = JSON.stringify(updatePackage);
         const parms = {
@@ -378,7 +379,7 @@ export function getAppearanceConfigs(){
             }
             updatePackage[3].push(elementStyles);
         }
-
+        var selectedArea = pageStore.getAreaSelected;
         debugger;
         console.log('updatePackage', updatePackage, dialogData);
         var updateParameters = JSON.stringify(updatePackage);
@@ -388,10 +389,10 @@ export function getAppearanceConfigs(){
             cardTitle:dialogData.cardTitle,
             restricted:isRestricted,
             cardType:dialogData.cardType,
-            topLeftRow:dialogData.cardDimensions.startY,
-            topLeftCol:dialogData.cardDimensions.startX,
-            bottomRightRow:dialogData.cardDimensions.endY,
-            bottomRightCol:dialogData.cardDimensions.endX,
+            topLeftRow:selectedArea.dragStartY,
+            topLeftCol:selectedArea.dragStartX,
+            bottomRightRow:selectedArea.dragEndY,
+            bottomRightCol:selectedArea.dragEndX,
         }
         console.log('parms for new card',parms);
 

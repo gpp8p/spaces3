@@ -326,11 +326,20 @@ funcs[c.MOUSE_EVT] = function(evt){
 
         }else{
           // console.log('mouse event up-', evt);
+          debugger;
           dragEndX.value = evt[3];
           dragEndY.value = evt[4];
+
           try {
             mouseStatus.value = c.MOUSE_STATUS_NOT_CLICKED;
             fillCellsInArea(dragEndX.value, dragEndY.value, dragStartX.value, dragStartY.value, c.SELECTED_COLOR);
+            var currentAreaSelected = {
+              dragStartX: dragStartX.value,
+              dragStartY: dragStartY.value,
+              dragEndX: dragEndX.value,
+              dragEndY: dragEndY.value,
+            }
+            pageStore.setAreaSelected(currentAreaSelected);
             emit('cevt',[c.CARD_AREA_SELECTED,dragEndX.value, dragEndY.value, dragStartX.value, dragStartY.value ]);
             // console.log('mouseStatus reset');
             dragEndX.value = 0;

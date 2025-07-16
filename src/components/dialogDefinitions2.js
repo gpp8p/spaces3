@@ -488,7 +488,7 @@ const defs = function(dialogDef){
                                 label: 'Select Type',
                             },
                             {
-                                value: 'textShow',
+                                value: 'RichText',
                                 label: "Rich Text",
                             },
                             {
