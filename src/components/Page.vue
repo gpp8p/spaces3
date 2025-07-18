@@ -188,8 +188,16 @@ funcs[c.SAVE_TEXT_CONTENT] = function(cmd){
     layoutId: pageStore.getCurrentPageId
   }).then(response=>
   {
+
     console.log(response);
-    this.$emit('configurationHasBeenSaved')
+    emit('cevt',[c.EXIT_DIALOG]);
+    debugger;
+    pageMode.value=c.PAGE_DISPLAY;
+    nextTick(() => {
+      reloadThisPage();
+    });
+
+    //this.$emit('configurationHasBeenSaved')
   }).catch(function(error) {
     console.log(error);
   });
