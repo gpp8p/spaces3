@@ -361,6 +361,7 @@ const handleEnterKey = () => {
   newDiv.style.textAlign = currentParagraphAlignment.value || 'left'
 
   // Add a br for proper line spacing
+  console.log('br added at 364');
   const br = document.createElement('br')
   newDiv.appendChild(br)
 
@@ -528,7 +529,7 @@ const ensureCursorOutsideSpans = (range) => {
     return false
   }
 }
-
+/*
 // Enhanced span matching with super/subscript support
 const tryToMergeWithExistingSpan = (range, text) => {
   try {
@@ -594,6 +595,49 @@ const tryToMergeWithExistingSpan = (range, text) => {
     return false // Couldn't merge
   } catch (error) {
     console.error('💥 Error in tryToMergeWithExistingSpan:', error)
+    return false
+  }
+}
+*/
+const tryToMergeWithExistingSpan = (range, text) => {
+  try {
+    const startContainer = range.startContainer
+
+    if (startContainer.nodeType === Node.TEXT_NODE) {
+      const parentSpan = startContainer.parentElement
+
+      if (parentSpan && parentSpan.tagName === 'SPAN') {
+        const spanMatches = spanMatchesCurrentFormat(parentSpan)
+
+        if (spanMatches) {
+          // ✅ NEW: Insert at current cursor position, not just at end
+          const offset = range.startOffset
+          const currentText = startContainer.textContent
+          const newText = currentText.slice(0, offset) + text + currentText.slice(offset)
+
+          startContainer.textContent = newText
+
+          // Move cursor to after inserted text
+          const newRange = document.createRange()
+          newRange.setStart(startContainer, offset + text.length)
+          newRange.setEnd(startContainer, offset + text.length)
+          const selection = window.getSelection()
+          selection.removeAllRanges()
+          selection.addRange(newRange)
+
+          console.log('✅ Merged text at position', offset, 'in existing span')
+          return true // Successfully merged
+        } else {
+          // Only move cursor outside if formats DON'T match
+          console.log('❌ Formats don\'t match - moving cursor outside span')
+          // Move cursor logic here...
+        }
+      }
+    }
+
+    return false
+  } catch (error) {
+    console.error('Error in tryToMergeWithExistingSpan:', error)
     return false
   }
 }
@@ -882,6 +926,7 @@ const cleanupHtml = () => {
     if (line.trim()) {
       return `<div>${line}</div>`
     } else {
+      console.log('br added at 886');
       return '<div><br></div>'
     }
   }).join('')
