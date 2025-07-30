@@ -316,6 +316,7 @@ const handleInput = () => {
 
 const handleKeyDown = (event) => {
   console.log('⌨️ Key:', event.key)
+  debugger;
 
   // Special handling for new text to apply current formatting
   if (event.key.length === 1) {
@@ -361,7 +362,6 @@ const handleEnterKey = () => {
   newDiv.style.textAlign = currentParagraphAlignment.value || 'left'
 
   // Add a br for proper line spacing
-  console.log('br added at 364');
   const br = document.createElement('br')
   newDiv.appendChild(br)
 
@@ -378,118 +378,25 @@ const handleEnterKey = () => {
   setTimeout(updateHtmlContent, 10)
 }
 
-// Enhanced text insertion with super/subscript support
 const insertFormattedText = (text) => {
+  debugger;
   const selection = window.getSelection()
   if (!selection.rangeCount) return
 
   const range = selection.getRangeAt(0)
 
-  // Check if we can merge with existing span
-  const canMerge = tryToMergeWithExistingSpan(range, text)
+  // Try to merge or split existing span
+  const wasHandled = tryToMergeWithExistingSpan(range, text)
 
-  if (!canMerge) {
-    // Ensure we're not inside another span when creating new one
-    ensureCursorOutsideSpans(range)
-
-    // Create new formatted span
-    const span = document.createElement('span')
-    span.style.fontFamily = currentFormat.fontFamily
-    span.style.fontSize = currentFormat.fontSize
-    span.style.color = currentFormat.color
-
-    // Apply background color if mark is enabled
-    if (currentFormat.mark) {
-      span.style.backgroundColor = currentFormat.backgroundColor
-      console.log('✅ Applied highlight/mark with color:', currentFormat.backgroundColor)
-    }
-
-    // Apply text formatting
-    if (currentFormat.bold) {
-      span.style.fontWeight = 'bold'
-      console.log('✅ Applied bold to new span')
-    } else {
-      span.style.fontWeight = 'normal'
-    }
-
-    if (currentFormat.italic) {
-      span.style.fontStyle = 'italic'
-      console.log('✅ Applied italic to new span')
-    } else {
-      span.style.fontStyle = 'normal'
-    }
-
-    // Handle superscript/subscript (mutually exclusive)
-    if (currentFormat.superscript) {
-      span.style.verticalAlign = 'super'
-      span.style.fontSize = '0.8em'
-      console.log('✅ Applied superscript to new span')
-    } else if (currentFormat.subscript) {
-      span.style.verticalAlign = 'sub'
-      span.style.fontSize = '0.8em'
-      console.log('✅ Applied subscript to new span')
-    } else {
-      span.style.verticalAlign = 'baseline'
-    }
-
-    // Handle text decorations
-    let decorations = []
-    if (currentFormat.underline) {
-      decorations.push('underline')
-      span.classList.add('editor-underlined')
-      console.log('✅ Applied underline to new span')
-    }
-    if (currentFormat.strikethrough) {
-      decorations.push('line-through')
-      span.classList.add('editor-strikethrough')
-      console.log('✅ Applied strikethrough to new span')
-    }
-
-    if (decorations.length > 0) {
-      span.style.textDecoration = decorations.join(' ')
-    } else {
-      span.style.textDecoration = 'none'
-      span.classList.add('editor-not-underlined')
-      span.classList.add('editor-not-strikethrough')
-    }
-
-    span.textContent = text
-
-    // Get fresh range after cursor adjustment
-    const selection2 = window.getSelection()
-    const freshRange = selection2.getRangeAt(0)
-
-    freshRange.deleteContents()
-    freshRange.insertNode(span)
-
-    // Position cursor INSIDE the new span's text node
-    const textNode = span.firstChild
-    if (textNode) {
-      const newRange = document.createRange()
-      newRange.setStart(textNode, textNode.textContent.length)
-      newRange.setEnd(textNode, textNode.textContent.length)
-      selection2.removeAllRanges()
-      selection2.addRange(newRange)
-      console.log('🎯 Positioned cursor inside new span text node')
-    }
-
-    console.log('✨ Created new span with enhanced format:', {
-      bold: currentFormat.bold,
-      italic: currentFormat.italic,
-      underline: currentFormat.underline,
-      strikethrough: currentFormat.strikethrough,
-      mark: currentFormat.mark,
-      superscript: currentFormat.superscript,
-      subscript: currentFormat.subscript,
-      backgroundColor: currentFormat.backgroundColor
-    })
+  if (!wasHandled) {
+    // No existing span - create new one normally
+    // ... existing span creation logic
   }
 
   setTimeout(() => {
     updateHtmlContent()
   }, 10)
 }
-
 // Ensure cursor is positioned outside any existing spans to avoid nesting
 const ensureCursorOutsideSpans = (range) => {
   try {
@@ -529,79 +436,11 @@ const ensureCursorOutsideSpans = (range) => {
     return false
   }
 }
-/*
-// Enhanced span matching with super/subscript support
 const tryToMergeWithExistingSpan = (range, text) => {
+  debugger;
   try {
     console.log('🔍 Trying to merge text:', text)
     const startContainer = range.startContainer
-    console.log('📍 Start container:', startContainer.nodeType, startContainer)
-
-    // If we're in a text node, check its parent span
-    if (startContainer.nodeType === Node.TEXT_NODE) {
-      const parentSpan = startContainer.parentElement
-      console.log('👨‍👦 Parent element:', parentSpan?.tagName, parentSpan)
-
-      if (parentSpan && parentSpan.tagName === 'SPAN') {
-        console.log('📏 Cursor position:', range.startOffset, 'Text length:', startContainer.textContent.length)
-
-        // Check if this span has the same formatting as current format
-        const spanMatches = spanMatchesCurrentFormat(parentSpan)
-
-        if (spanMatches) {
-          // Check if we're at the end of this text node
-          if (range.startOffset === startContainer.textContent.length) {
-            console.log('✅ Perfect merge conditions - appending text')
-
-            // Just append to the existing text node
-            startContainer.textContent += text
-
-            // Move cursor to end of updated text
-            const newRange = document.createRange()
-            newRange.setStart(startContainer, startContainer.textContent.length)
-            newRange.setEnd(startContainer, startContainer.textContent.length)
-            const selection = window.getSelection()
-            selection.removeAllRanges()
-            selection.addRange(newRange)
-
-            return true // Successfully merged
-          } else {
-            console.log('❌ Not at end of text node')
-          }
-        } else {
-          console.log('❌ Span format does not match - will create new span')
-          console.log('🔧 FORCING cursor out of mismatched span before creating new one')
-
-          // Move cursor out of the current span before creating new one
-          const selection = window.getSelection()
-          const newRange = document.createRange()
-
-          // Position cursor right after the parent span
-          newRange.setStartAfter(parentSpan)
-          newRange.setEndAfter(parentSpan)
-          selection.removeAllRanges()
-          selection.addRange(newRange)
-
-          console.log('✅ Moved cursor outside of mismatched span')
-          return false // Don't merge, but cursor is now positioned correctly
-        }
-      } else {
-        console.log('❌ Parent is not a span')
-      }
-    } else {
-      console.log('❌ Not in a text node')
-    }
-
-    return false // Couldn't merge
-  } catch (error) {
-    console.error('💥 Error in tryToMergeWithExistingSpan:', error)
-    return false
-  }
-}
-*/
-const tryToMergeWithExistingSpan = (range, text) => {
-  try {
-    const startContainer = range.startContainer
 
     if (startContainer.nodeType === Node.TEXT_NODE) {
       const parentSpan = startContainer.parentElement
@@ -610,7 +449,7 @@ const tryToMergeWithExistingSpan = (range, text) => {
         const spanMatches = spanMatchesCurrentFormat(parentSpan)
 
         if (spanMatches) {
-          // ✅ NEW: Insert at current cursor position, not just at end
+          // ✅ Formats match - merge at current position
           const offset = range.startOffset
           const currentText = startContainer.textContent
           const newText = currentText.slice(0, offset) + text + currentText.slice(offset)
@@ -628,19 +467,184 @@ const tryToMergeWithExistingSpan = (range, text) => {
           console.log('✅ Merged text at position', offset, 'in existing span')
           return true // Successfully merged
         } else {
-          // Only move cursor outside if formats DON'T match
-          console.log('❌ Formats don\'t match - moving cursor outside span')
-          // Move cursor logic here...
+          // ❌ Formats don't match - split the span at cursor position
+          console.log('❌ Formats don\'t match - splitting span at cursor position')
+          splitSpanAtCursor(range, text)
+          return true // Handled the insertion
         }
       }
+    }else{
+      ensureCursorOutsideSpans(range)
+
+      // Create new formatted span
+      const span = document.createElement('span')
+      span.style.fontFamily = currentFormat.fontFamily
+      span.style.fontSize = currentFormat.fontSize
+      span.style.color = currentFormat.color
+
+      // Apply background color if mark is enabled
+      if (currentFormat.mark) {
+        span.style.backgroundColor = currentFormat.backgroundColor
+        console.log('✅ Applied highlight/mark with color:', currentFormat.backgroundColor)
+      }
+
+      // Apply text formatting
+      if (currentFormat.bold) {
+        span.style.fontWeight = 'bold'
+        console.log('✅ Applied bold to new span')
+      } else {
+        span.style.fontWeight = 'normal'
+      }
+
+      if (currentFormat.italic) {
+        span.style.fontStyle = 'italic'
+        console.log('✅ Applied italic to new span')
+      } else {
+        span.style.fontStyle = 'normal'
+      }
+
+      // Handle superscript/subscript (mutually exclusive)
+      if (currentFormat.superscript) {
+        span.style.verticalAlign = 'super'
+        span.style.fontSize = '0.8em'
+        console.log('✅ Applied superscript to new span')
+      } else if (currentFormat.subscript) {
+        span.style.verticalAlign = 'sub'
+        span.style.fontSize = '0.8em'
+        console.log('✅ Applied subscript to new span')
+      } else {
+        span.style.verticalAlign = 'baseline'
+      }
+
+      // Handle text decorations
+      let decorations = []
+      if (currentFormat.underline) {
+        decorations.push('underline')
+        span.classList.add('editor-underlined')
+        console.log('✅ Applied underline to new span')
+      }
+      if (currentFormat.strikethrough) {
+        decorations.push('line-through')
+        span.classList.add('editor-strikethrough')
+        console.log('✅ Applied strikethrough to new span')
+      }
+
+      if (decorations.length > 0) {
+        span.style.textDecoration = decorations.join(' ')
+      } else {
+        span.style.textDecoration = 'none'
+        span.classList.add('editor-not-underlined')
+        span.classList.add('editor-not-strikethrough')
+      }
+
+      span.textContent = text
+
+      // Get fresh range after cursor adjustment
+      const selection2 = window.getSelection()
+      const freshRange = selection2.getRangeAt(0)
+
+      freshRange.deleteContents()
+      freshRange.insertNode(span)
+
+      // Position cursor INSIDE the new span's text node
+      const textNode = span.firstChild
+      if (textNode) {
+        const newRange = document.createRange()
+        newRange.setStart(textNode, textNode.textContent.length)
+        newRange.setEnd(textNode, textNode.textContent.length)
+        selection2.removeAllRanges()
+        selection2.addRange(newRange)
+        console.log('🎯 Positioned cursor inside new span text node')
+      }
+
+      console.log('✨ Created new span with enhanced format:', {
+        bold: currentFormat.bold,
+        italic: currentFormat.italic,
+        underline: currentFormat.underline,
+        strikethrough: currentFormat.strikethrough,
+        mark: currentFormat.mark,
+        superscript: currentFormat.superscript,
+        subscript: currentFormat.subscript,
+        backgroundColor: currentFormat.backgroundColor
+      })
+      return true;
     }
 
-    return false
+    return false // Couldn't merge
   } catch (error) {
-    console.error('Error in tryToMergeWithExistingSpan:', error)
+    console.error('💥 Error in tryToMergeWithExistingSpan:', error)
     return false
   }
 }
+
+const splitSpanAtCursor = (range, text) => {
+  try {
+    const startContainer = range.startContainer
+    const parentSpan = startContainer.parentElement
+    const offset = range.startOffset
+    const originalText = startContainer.textContent
+
+    // Split the text into before and after parts
+    const beforeText = originalText.slice(0, offset)
+    const afterText = originalText.slice(offset)
+
+    // Create new span with current formatting for the inserted text
+    const newSpan = document.createElement('span')
+    newSpan.style.fontFamily = currentFormat.fontFamily
+    newSpan.style.fontSize = currentFormat.fontSize
+    newSpan.style.color = currentFormat.color
+
+    if (currentFormat.mark) {
+      newSpan.style.backgroundColor = currentFormat.backgroundColor
+    }
+    if (currentFormat.bold) newSpan.style.fontWeight = 'bold'
+    if (currentFormat.italic) newSpan.style.fontStyle = 'italic'
+    if (currentFormat.superscript) {
+      newSpan.style.verticalAlign = 'super'
+      newSpan.style.fontSize = '0.8em'
+    } else if (currentFormat.subscript) {
+      newSpan.style.verticalAlign = 'sub'
+      newSpan.style.fontSize = '0.8em'
+    }
+
+    let decorations = []
+    if (currentFormat.underline) decorations.push('underline')
+    if (currentFormat.strikethrough) decorations.push('line-through')
+    if (decorations.length > 0) {
+      newSpan.style.textDecoration = decorations.join(' ')
+    }
+
+    newSpan.textContent = text
+
+    // Update the original span to only contain the "before" text
+    startContainer.textContent = beforeText
+
+    // Insert the new span after the original span
+    parentSpan.parentNode.insertBefore(newSpan, parentSpan.nextSibling)
+
+    // If there's "after" text, create another span with original formatting
+    if (afterText) {
+      const afterSpan = parentSpan.cloneNode(false) // Clone without children
+      afterSpan.textContent = afterText
+      parentSpan.parentNode.insertBefore(afterSpan, newSpan.nextSibling)
+    }
+
+    // Position cursor at end of new span
+    const newRange = document.createRange()
+    const textNode = newSpan.firstChild
+    newRange.setStart(textNode, textNode.textContent.length)
+    newRange.setEnd(textNode, textNode.textContent.length)
+    const selection = window.getSelection()
+    selection.removeAllRanges()
+    selection.addRange(newRange)
+
+    console.log('✅ Split span and inserted new formatted text at cursor position')
+
+  } catch (error) {
+    console.error('Error in splitSpanAtCursor:', error)
+  }
+}
+
 
 // Enhanced span format matching with super/subscript
 const spanMatchesCurrentFormat = (span) => {
@@ -926,7 +930,6 @@ const cleanupHtml = () => {
     if (line.trim()) {
       return `<div>${line}</div>`
     } else {
-      console.log('br added at 886');
       return '<div><br></div>'
     }
   }).join('')
