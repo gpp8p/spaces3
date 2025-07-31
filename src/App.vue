@@ -250,6 +250,10 @@ funcs[c.SAVE_TEXT_CONTENT] = function(evt){
   console.log('in SAVE_TEXT_CONTENT-', evt);
   cmdHandlers['spFrame']([c.SAVE_TEXT_CONTENT, evt, "Page"]);
 }
+funcs[c.CARD_DELETE] = function(evt){
+  console.log('in top CARD-DELETE-', evt);
+  cmdHandlers['spFrame']([c.CARD_DELETE, evt, "Page"]);
+}
 
 onMounted(() => {
   console.log('current window', window.document.URL);

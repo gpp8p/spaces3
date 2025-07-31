@@ -462,6 +462,34 @@ export function getAppearanceConfigs(){
         })
 
     }
+    const deleteCard = function(emit, cardId){
+        debugger;
+        const store = useLogStateStore();
+        const ready = ref(false);
+        const result = ref({});
+        const pageStore = useCurrentPage();
+        const loginResult= toRaw(store.loginStatus)
+        console.log('store.loginResult', loginResult);
+        console.log('pageStore-', pageStore.getCurrentPageId, pageStore.getCurrentPagePerms);
+        const {executeTrans} = getTrans();
+        const header = loginResult.access_token;
+        const dataReady = ref(false);
+        const transResult = ref({});
+        const parms = {
+            layoutId:pageStore.getCurrentPageId,
+            orgId: loginResult.orgId,
+            cardId: cardId
+        }
+        debugger;
+        executeTrans(parms, c.CHANGE_LAYOUT,  c.API_PATH+'api/shan/deleteCard?XDEBUG_SESSION_START=19884', 'GET', emit, c, header, dataReady, transResult);
+        whenever(dataReady, () => {
+            debugger;
+            console.log('card delete completed-', transResult._rawValue);
+            emit('cevt',[c.CHANGE_LAYOUT, pageStore.getCurrentPageId]);
+        })
+
+
+    }
     const updateCardTitle = function(emit, dialogData, dialogConfig) {
         debugger;
         const store = useLogStateStore();
@@ -490,5 +518,5 @@ export function getAppearanceConfigs(){
         })
     }
 
-    return {loadCardAppearanceConfigs, saveCardAppearanceConfigs, createCard, twListTableHeight, updateCardTitle,updateCardResize}
+    return {loadCardAppearanceConfigs, saveCardAppearanceConfigs, createCard, twListTableHeight, updateCardTitle,updateCardResize, deleteCard}
 }

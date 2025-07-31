@@ -77,6 +77,7 @@ export const c = {
     CELL_IN_BLANK:72,
     GET_BACKGROUND:73,
     SAVE_TEXT_CONTENT:74,
+    CARD_DELETE:75,
 
 
 

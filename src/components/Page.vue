@@ -153,7 +153,11 @@ funcs[c.SET_PAGE_EDIT]= function(cmd){
   pageMode.value = c.PAGE_EDIT;
 
 }
-
+funcs[c.CARD_DELETE] = function(cmd){
+  console.log('in page CARD_DELETE', cmd);
+  const {loadCardAppearanceConfigs, saveCardAppearanceConfigs, createCard, twListTableHeight, updateCardTitle, updateCardResize, deleteCard} = getAppearanceConfigs();
+  deleteCard(emit,cmd[1]);
+}
 
 
 funcs[c.SET_CMD_HANDLER]= function(evt){
@@ -325,7 +329,7 @@ funcs[c.MOUSE_EVT] = function(evt){
               inResize.value=false;
             }
           }
-          const {loadCardAppearanceConfigs, saveCardAppearanceConfigs, createCard, twListTableHeight, updateCardTitle, updateCardResize} = getAppearanceConfigs();
+          const {loadCardAppearanceConfigs, saveCardAppearanceConfigs, createCard, twListTableHeight, updateCardTitle, updateCardResize, deleteCard} = getAppearanceConfigs();
           debugger;
           updateCardResize(emit, toRaw(cardBeingResized.id), newTopY, newTopX, newHeight+1, newWidth+1)
           mouseStatus.value = c.MOUSE_STATUS_NOT_CLICKED;

@@ -148,7 +148,7 @@ const getMenuDefinitions = function(menuType){
           { type: 'menuItem', config: { label: 'Edit', actionCode: c.CARD_MENUS_EDIT } },
           { type: 'menuItem', config: { label: 'Configure', actionCode: c.CARD_MENUS_CONFIGURE } },
           { type: 'menuItem', config: { label: 'Resize/Move', actionCode: c.CARD_MENUS_RESIZE } },
-          { type: 'menuItem', config: { label: 'Delete', actionCode: c.CARD_MENUS_DELETE } },
+          { type: 'menuItem', config: { label: 'Delete', actionCode: c.CARD_MENU_DELETE } },
           { type: 'menuItem', config: { label: 'Save', actionCode: c.CARD_MENUS_SAVE } },
           { type: 'menuItem', config: { label: 'Exit', actionCode: c.CARD_MENUS_EXIT } },
 
@@ -162,8 +162,8 @@ const getMenuDefinitions = function(menuType){
         items: [
           { type: 'menuItem', config: { label: 'Edit', actionCode: c.CARD_MENUS_EDIT } },
           { type: 'menuItem', config: { label: 'Configure', actionCode: c.CARD_MENUS_CONFIGURE } },
-          { type: 'menuItem', config: { label: 'Resize/Move', actionCode: c.CARD_MENUS_RESIZE } },
-          { type: 'menuItem', config: { label: 'Delete', actionCode: c.CARD_MENUS_DELETE } },
+          { type: 'menuItem', config: { label: 'Resize/Move', actionCode: c.CARD_MENU_RESIZE } },
+          { type: 'menuItem', config: { label: 'Delete', actionCode: c.CARD_MENU_DELETE } },
           { type: 'menuItem', config: { label: 'Save', actionCode: c.CARD_MENUS_SAVE } },
           { type: 'menuItem', config: { label: 'Exit', actionCode: c.CARD_MENUS_EXIT } },
 

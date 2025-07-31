@@ -77,9 +77,22 @@ funcs[c.CARD_MENU_SELECTED] = function(cmd){
     }
     case c.CARD_MENUS_CONFIGURE:{
       emit('cevt', [c.SHOW_DIALOG, 'configureCard', props.config.id]);
+      break;
     }
     case c.CARD_MENUS_EDIT: {
       emit('cevt', [c.SHOW_DIALOG, 'editText', props.config.id, props.data.cardText]);
+      break;
+    }
+    case c.CARD_MENU_RESIZE:{
+      console.log('in CARD_MENU_RESIZE-', cmd);
+      emit('cevt', [c.FILL_IN_AREA, cmd[1].position, props.config.id]);
+      break;
+      //debugger;
+    }
+    case c.CARD_MENU_DELETE:{
+      console.log('in CARD_MENU_DELETE-', cmd);
+      emit('cevt', [c.CARD_DELETE, props.config.id]);
+      break;
     }
   }
 
