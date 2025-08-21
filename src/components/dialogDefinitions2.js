@@ -2591,6 +2591,7 @@ const defs = function(dialogDef){
                     twStyling:'text-xs text-blue-500 w-[100%]',
                     items: [
                         { type: 'menuItem', config: { label: 'Cancel', actionCode: c.MENU_EXIT_DIALOG } },
+                        { type: 'menuItem', config: { label: 'Save', actionCode: c.SAVE_RT_CONTENT } },
                     ],
                 }
             }

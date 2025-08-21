@@ -394,6 +394,10 @@ funcs[c.SET_DIALOG] = function(cmd){
   changeDialog(cmd[3]);
   // changeDialog(cmd[1]);
 }
+funcs[c.SAVE_RT_CONTENT] = function(){
+  console.log('in dialog4 SAVE_RT_CONTENT-');
+  cmdHandlers['Fields']([c.GET_TEXT_CONTENT, c.GET_TEXT_CONTENT, "textEditor"]);
+}
 
 funcs[c.SAVE_DIALOG_DATA] = function(evt){
   debugger;

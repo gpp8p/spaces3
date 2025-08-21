@@ -78,6 +78,7 @@ export const c = {
     GET_BACKGROUND:73,
     SAVE_TEXT_CONTENT:74,
     CARD_DELETE:75,
+    GET_TEXT_CONTENT:76,
 
 
 

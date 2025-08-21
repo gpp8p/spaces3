@@ -208,10 +208,7 @@
       </div>
     </div>
 
-    <!-- Save Button -->
-    <div class="save-section">
-      <button @click="save" class="save-button">Save</button>
-    </div>
+
   </div>
 </template>
 
@@ -246,6 +243,8 @@ const characterCount = ref(0)
 const wordCount = ref(0)
 const htmlLength = ref(0)
 const htmlContent = ref('')
+const name = props.config.name || 'textEditor';
+const funcs = [];
 
 // Enhanced format state with super/subscript
 const currentFormat = reactive({
@@ -940,6 +939,13 @@ const cleanupHtml = () => {
   console.log('🧹 HTML cleaned up')
 }
 
+funcs[c.GET_TEXT_CONTENT]= function(){
+  debugger;
+  updateHtmlContent()
+  emit('cevt', [c.SAVE_TEXT_CONTENT,htmlContent.value, props.data.id])
+  console.log('💾 Saved:', htmlContent.value)
+}
+
 const save = () => {
   updateHtmlContent()
   emit('cevt', [c.SAVE_TEXT_CONTENT,htmlContent.value, props.data.id])
@@ -956,10 +962,26 @@ const initializeContent = () => {
   }
 }
 
+const handleCmd = function(args){
+  console.log('handleCmd-', name, args);
+  debugger;
+  if(name==args[2] || args[2]=='*') {
+    if(typeof(funcs[args[0]])!='undefined'){
+      console.log('Found func-', args[1]);
+      funcs[args[0]](args);
+    }else{
+      passCmdDown(args);
+    }
+  }else{
+    passCmdDown(args);
+  }
+}
+
 watch(() => props.data, initializeContent, { deep: true })
 
 onMounted(() => {
-  initializeContent()
+  initializeContent();
+  emit('cevt', [c.SET_CMD_HANDLER, handleCmd, name]);
 
   nextTick(() => {
     if (contentArea.value) {
@@ -968,6 +990,10 @@ onMounted(() => {
       updateCurrentAlignment()
     }
   })
+})
+
+onUnmounted(() => {
+  emit('cevt', [c.UNSET_CMD_HANDLER, name]);
 })
 
 </script>
