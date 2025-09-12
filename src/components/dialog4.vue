@@ -237,7 +237,7 @@ const changeDialog = function(dialogDefinition){
       dialogFieldsData.value.dataToShow = toRaw(dialogFieldsData.value.dataToShow);
     }else{
       dialogFieldsData.value = existingData;
-      dialogData.existingData = existingData;
+//      dialogData.existingData = existingData;
     }
 
     addActions = getActions(dialogDefinition);
@@ -410,6 +410,11 @@ funcs[c.MENU_ADD_LINK] = function(evt){
   console.log('MENU_ADD_LINK clicked', evt);
   changeDialog('addPageLinks');
 }
+funcs[c.UPLOAD_RT_CONTENT]= function (evt){
+  console.log('dialog4 UPLOAD_RT_CONTENT-');
+  changeDialog('uploadRtContent');
+}
+
 addActions(funcs);
 
 

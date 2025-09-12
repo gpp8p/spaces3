@@ -1487,6 +1487,61 @@ const defs = function(dialogDef){
             }
             break;
         }
+        case 'uploadRtContent':{
+            return {
+                dialogAppearence: {
+                    twPrompt: 'text-lg text-current ml-[30%] my-[5%]',
+                    prompt: 'Test Dialog',
+                    twstyle:"fixed w-[50%] h-auto p-[2%] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-200 rounded border-2 border-blue-500 shadow-xl shadow-black",
+                },
+                dialogFields :[
+                    {
+                        name: 'uploader',
+                        type: 'fUpload',
+                        ref: 'uploader',
+                        value: function(existingData){
+                            //debugger;
+                            return;
+                        },
+                        required: true,
+                        size: '50',
+                        maxlength: '255',
+                        startFocus: false,
+                        label: "Uploader"
+                    },
+                ],
+                menuDefs:{
+                    twStyling:'text-xs text-blue-500 w-[100%] mt-[10px]',
+                    items: [
+                        { type: 'menuItem', config: { label: 'Cancel', actionCode: c.MENU_EXIT_DIALOG } },
+                    ],
+                },
+                dialogData: function(emit, c, loginStore, ready, result, config, dialogData) {
+                    result.value= {
+
+                    }
+                    console.log('dialogData is-', dialogData);
+                    ready.value=true;
+
+                },
+
+                defaultData:{
+
+                },
+                addActions:function(currentFuncs) {
+                    currentFuncs[c.MENU_EXIT_DIALOG]=function(emit, dialogData){
+                        //debugger;
+                        console.log('new func exit dialog');
+                        //const emit = defineEmits(['cevt']);
+                        emit('cevt',[c.EXIT_DIALOG])
+                    }
+                }
+            }
+            break;
+        }
+
+
+
         case 'createExternal':{
             return {
                 dialogAppearence: {
@@ -2592,6 +2647,7 @@ const defs = function(dialogDef){
                     items: [
                         { type: 'menuItem', config: { label: 'Cancel', actionCode: c.MENU_EXIT_DIALOG } },
                         { type: 'menuItem', config: { label: 'Save', actionCode: c.SAVE_RT_CONTENT } },
+                        { type: 'menuItem', config: { label: 'Upload File', actionCode: c.UPLOAD_RT_CONTENT } },
                     ],
                 }
             }

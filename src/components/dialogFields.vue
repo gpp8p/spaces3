@@ -43,6 +43,8 @@ import htmlPasswordInput from '../components/htmlPasswordInput.vue';
 import borderPicker from "../components/borderPicker.vue";
 import fontPicker from "../components/fontPicker.vue";
 import richTextEditor from "../components/richTextEditor.vue";
+import fileUploader from "../components/fileUploader.vue";
+import fUpload from "../components/fUpload.vue";
 
 
 const {handleEvent} = useEventHandler();
@@ -78,7 +80,8 @@ const morphs = {
   htmlPasswordInput,
   borderPicker,
   fontPicker,
-  richTextEditor
+  richTextEditor,
+  fUpload
 }
 
 const handleCmd = function(args){

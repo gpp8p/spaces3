@@ -79,6 +79,7 @@ export const c = {
     SAVE_TEXT_CONTENT:74,
     CARD_DELETE:75,
     GET_TEXT_CONTENT:76,
+    UPLOAD_RT_CONTENT:77,
 
 
 

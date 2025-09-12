@@ -38,8 +38,6 @@ const handleCmd = function(args){
 const sendResults = function(response){
   console.log('send results invoked');
   debugger
-  emit('cevt', [c.FIELD_CHANGED,'backgroundType', 'image', props.config.parentName]);
-  emit('cevt', [c.FIELD_CHANGED,'backgroundImage', response, props.config.parentName]);
 //  emit('cevt', [c.FIELD_CHANGED,'backgroundDisplay', backgroundDisplayType.value, props.config.parentName]);
 
 }
