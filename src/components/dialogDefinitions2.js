@@ -1492,7 +1492,7 @@ const defs = function(dialogDef){
                 dialogAppearence: {
                     twPrompt: 'text-lg text-current ml-[30%] my-[5%]',
                     prompt: 'Test Dialog',
-                    twstyle:"fixed w-[50%] h-auto p-[2%] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-200 rounded border-2 border-blue-500 shadow-xl shadow-black",
+                    twstyle:"fixed w-[50%] h-auto p-[2%] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-200 rounded border-2 border-blue-500 shadow-xl shadow-black ",
                 },
                 dialogFields :[
                     {
@@ -1507,7 +1507,11 @@ const defs = function(dialogDef){
                         size: '50',
                         maxlength: '255',
                         startFocus: false,
-                        label: "Uploader"
+                        label: "Uploader",
+                        multiple: false,
+                        accept: 'image/*,.pdf,.docx,.doc,.jpeg,.txt,.html',
+                        maxSize: 100 * 1024 * 1024, // 500MB
+                        promptText: 'Upload your documents',
                     },
                 ],
                 menuDefs:{

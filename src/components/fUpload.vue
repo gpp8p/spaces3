@@ -71,6 +71,27 @@ import {c} from "../components/constants.js";
 import { onMounted, onUnmounted } from 'vue'
 import {useEventHandler} from "./eventHandler.js";
 import {ref} from 'vue';
+import { useFileUpload } from './useFileUpload.js';
+
+const {
+  isUploading,
+  uploadProgress,
+  uploadResults,
+  error,
+  hasError,
+  isComplete,
+  canCancel,
+  upload,
+  cancel,
+  reset
+} = useFileUpload({
+  url: '/api/upload',
+  headers: {
+    'Authorization': 'Bearer your-token'
+  },
+  simultaneousUploads: 2,
+  maxRetries: 3
+});
 
 const {handleEvent} = useEventHandler();
 const emit = defineEmits(['cevt', 'filesSelected', 'uploadComplete', 'uploadError']);
@@ -82,8 +103,8 @@ const cmdHandlers = {}
 const fieldValue = ref('');
 const files = ref([]);
 const isDragOver = ref(false);
-const isUploading = ref(false);
-const uploadProgress = ref(0);
+//const isUploading = ref(false);
+//const uploadProgress = ref(0);
 const errorMessage = ref('');
 const fileInput = ref(null);
 
@@ -191,7 +212,7 @@ const formatFileSize = (bytes) => {
 const updateFieldValue = () => {
   fieldValue.value = files.value.length > 0 ? files.value.map(f => f.name).join(', ') : '';
 };
-
+/*
 const uploadFiles = async () => {
   if (files.value.length === 0) return;
 
@@ -223,6 +244,23 @@ const uploadFiles = async () => {
     emit('uploadError', error);
   } finally {
     isUploading.value = false;
+  }
+};
+*/
+
+const uploadFiles = async () => {
+  if (files.value.length === 0) return;
+
+  try {
+    const results = await upload(files.value);
+    emit('uploadComplete', results);
+    console.log('uploadComplete', results);
+
+    if (props.config.clearAfterUpload) {
+      clearFiles();
+    }
+  } catch (error) {
+    emit('uploadError', error);
   }
 };
 
