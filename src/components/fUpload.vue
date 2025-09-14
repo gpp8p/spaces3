@@ -68,10 +68,20 @@ const props = defineProps({
 });
 
 import {c} from "../components/constants.js";
-import { onMounted, onUnmounted } from 'vue'
+import {onMounted, onUnmounted, toRaw} from 'vue'
 import {useEventHandler} from "./eventHandler.js";
-import {ref} from 'vue';
+import {computed, ref} from 'vue';
 import { useFileUpload } from './useFileUpload.js';
+import {useLogStateStore} from '../stores/logState.js';
+
+
+const store = useLogStateStore();
+const loginResult= toRaw(store.loginStatus);
+console.log('access_token',loginResult.access_token);
+const bearerToken = computed(() => store.loginStatus?.access_token  || '');
+
+debugger;
+
 
 const {
   isUploading,
@@ -85,9 +95,9 @@ const {
   cancel,
   reset
 } = useFileUpload({
-  url: '/api/upload',
+  url: '/api/shan/fUpload?XDEBUG_SESSION_START=19884',
   headers: {
-    'Authorization': 'Bearer your-token'
+    'Authorization': `Bearer ${bearerToken.value}`
   },
   simultaneousUploads: 2,
   maxRetries: 3
