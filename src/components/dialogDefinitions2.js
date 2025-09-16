@@ -1,7 +1,7 @@
 import {c} from "../components/constants.js";
 import {getLogin} from "./login.js";
 import {defineEmits, toRaw} from 'vue'
-import {getTrans} from "./dbTrans.js";
+import {getTrans} from "./dbTrans_0916.js";
 import {ref} from 'vue';
 import { useAsyncState, whenever } from '@vueuse/core'
 import {createPinia, storeToRefs} from "pinia";

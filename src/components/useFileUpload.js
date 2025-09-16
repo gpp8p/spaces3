@@ -1,11 +1,15 @@
-import { ref, reactive, computed, readonly } from 'vue';
+import { ref, reactive, computed } from 'vue';
+import { getTrans } from './dbtrans.js';
 
 /**
- * Vue 3 Composable for file uploads
+ * Vue 3 Composable for file uploads using axios via dbtrans
  * @param {Object} config - Upload configuration
  * @returns {Object} - Reactive upload state and methods
  */
 export function useFileUpload(config = {}) {
+    // Get the dbtrans composable
+    const { executeTrans } = getTrans();
+
     // Reactive state
     const isUploading = ref(false);
     const uploadProgress = ref(0);
@@ -22,18 +26,17 @@ export function useFileUpload(config = {}) {
         maxRetries: 3,
         chunkSize: null,
         timeout: 30000,
-        simultaneousUploads: 1
-    //    ...config
+        simultaneousUploads: 1,
+        ...config
     });
 
     // Computed properties
     const hasError = computed(() => error.value !== null);
     const isComplete = computed(() => uploadProgress.value === 100 && !isUploading.value);
-    const canCancel = computed(() => isUploading.value && abortController.value !== null);
+    const canCancel = computed(() => isUploading.value);
 
     // Private upload methods
     const uploadSequential = async (files, progressCallback) => {
-        debugger;
         const results = [];
 
         for (let i = 0; i < files.length; i++) {
@@ -53,7 +56,7 @@ export function useFileUpload(config = {}) {
 
                 results.push({ success: true, file: file.name, data: result });
             } catch (err) {
-                if (err.name === 'AbortError' || err.message === 'Upload cancelled') {
+                if (err.message === 'Upload cancelled') {
                     throw err;
                 }
                 results.push({ success: false, file: file.name, error: err.message });
@@ -81,7 +84,7 @@ export function useFileUpload(config = {}) {
                 file: file.name,
                 data: result
             })).catch(err => {
-                if (err.name === 'AbortError' || err.message === 'Upload cancelled') {
+                if (err.message === 'Upload cancelled') {
                     throw err;
                 }
                 return {
@@ -97,8 +100,8 @@ export function useFileUpload(config = {}) {
     };
 
     const uploadSingleFile = async (file, progressCallback) => {
-        debugger;
         let lastError;
+        debugger;
 
         for (let attempt = 1; attempt <= uploadConfig.maxRetries; attempt++) {
             try {
@@ -108,7 +111,7 @@ export function useFileUpload(config = {}) {
                     return await uploadFileStandard(file, progressCallback);
                 }
             } catch (err) {
-                if (err.name === 'AbortError' || err.message === 'Upload cancelled') {
+                if (err.message === 'Upload cancelled') {
                     throw err;
                 }
 
@@ -127,7 +130,6 @@ export function useFileUpload(config = {}) {
 
     const uploadFileStandard = async (file, progressCallback) => {
         return new Promise((resolve, reject) => {
-            debugger;
             const formData = new FormData();
             formData.append(uploadConfig.fieldName, file);
 
@@ -137,58 +139,61 @@ export function useFileUpload(config = {}) {
                 });
             }
 
-            const xhr = new XMLHttpRequest();
+            // Create refs for dbtrans
+            const dataReady = ref(false);
+            const transResult = ref(null);
 
-            // Handle abort
-            if (abortController.value) {
-                abortController.value.signal.addEventListener('abort', () => {
-                    xhr.abort();
-                    reject(new Error('Upload cancelled'));
-                });
-            }
+            // Generate unique transaction ID
+            const transId = 'upload_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
 
-            xhr.upload.addEventListener('progress', (event) => {
-                if (event.lengthComputable) {
-                    const progress = Math.round((event.loaded / event.total) * 100);
-                    progressCallback(progress);
-                }
-            });
+            // Mock emit function since we don't need the event system for this
+            const mockEmit = () => {};
 
-            xhr.addEventListener('load', () => {
-                if (xhr.status >= 200 && xhr.status < 300) {
-                    try {
-                        const response = JSON.parse(xhr.responseText);
-                        resolve(response);
-                    } catch (e) {
-                        resolve({ message: 'Upload successful', status: xhr.status });
+            // Mock constants object
+            const mockC = {};
+            debugger;
+            try {
+                // Execute the upload using dbtrans with progress tracking
+                const { cancel, uploadProgress } = executeTrans(
+                    formData,           // transParams (the FormData)
+                    transId,           // transId
+                    uploadConfig.url,  // transUrl
+                    'POST',            // transMethod
+                    mockEmit,          // emit
+                    mockC,             // c (constants)
+                    uploadConfig.headers.Authorization || '', // header (bearer token)
+                    dataReady,         // dataReady ref
+                    transResult,       // transResult ref
+                    {                  // options
+                        timeout: uploadConfig.timeout,
+                        onProgress: progressCallback, // Pass our progress callback
+                        headers: uploadConfig.headers
                     }
-                } else {
-                    reject(new Error(`Upload failed with status ${xhr.status}: ${xhr.statusText}`));
+                );
+
+                // Store cancel function for abort controller
+                if (abortController.value) {
+                    abortController.value.signal.addEventListener('abort', () => {
+                        cancel();
+                        reject(new Error('Upload cancelled'));
+                    });
                 }
-            });
 
-            xhr.addEventListener('error', () => {
-                reject(new Error('Network error during upload'));
-            });
+                // Watch for completion using whenever (now available in dbtrans)
+                whenever(dataReady, () => {
+                    if (dataReady.value && transResult.value) {
+                        // Check if the result indicates success
+                        if (transResult.value.success !== false) {
+                            resolve(transResult.value);
+                        } else {
+                            reject(new Error(transResult.value.error || transResult.value.message || 'Upload failed'));
+                        }
+                    }
+                });
 
-            xhr.addEventListener('timeout', () => {
-                reject(new Error('Upload timed out'));
-            });
-
-            xhr.addEventListener('abort', () => {
-                reject(new Error('Upload cancelled'));
-            });
-
-            xhr.open(uploadConfig.method, uploadConfig.url);
-            xhr.timeout = uploadConfig.timeout;
-
-            Object.entries(uploadConfig.headers).forEach(([key, value]) => {
-                if (key.toLowerCase() !== 'content-type') {
-                    xhr.setRequestHeader(key, value);
-                }
-            });
-
-            xhr.send(formData);
+            } catch (err) {
+                reject(new Error('Failed to initiate upload: ' + err.message));
+            }
         });
     };
 
@@ -224,36 +229,86 @@ export function useFileUpload(config = {}) {
     };
 
     const uploadChunk = async (formData) => {
-        const response = await fetch(uploadConfig.url + '/chunk', {
-            method: 'POST',
-            body: formData,
-            headers: uploadConfig.headers,
-            signal: abortController.value?.signal
+        return new Promise((resolve, reject) => {
+            const dataReady = ref(false);
+            const transResult = ref(null);
+            const transId = 'chunk_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+
+            executeTrans(
+                formData,
+                transId,
+                uploadConfig.url + '/chunk',
+                'POST',
+                () => {},
+                {},
+                uploadConfig.bearerToken || '',
+                dataReady,
+                transResult
+            );
+
+            const checkCompletion = () => {
+                if (abortController.value?.signal.aborted) {
+                    reject(new Error('Upload cancelled'));
+                    return;
+                }
+
+                if (dataReady.value && transResult.value) {
+                    if (transResult.value.success !== false) {
+                        resolve(transResult.value);
+                    } else {
+                        reject(new Error('Chunk upload failed: ' + transResult.value.message));
+                    }
+                } else {
+                    setTimeout(checkCompletion, 100);
+                }
+            };
+
+            setTimeout(checkCompletion, 100);
         });
-
-        if (!response.ok) {
-            throw new Error(`Chunk upload failed: ${response.statusText}`);
-        }
-
-        return response.json();
     };
 
     const finalizeChunkedUpload = async (uploadId, fileName) => {
-        const response = await fetch(uploadConfig.url + '/finalize', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                ...uploadConfig.headers
-            },
-            body: JSON.stringify({ uploadId, fileName }),
-            signal: abortController.value?.signal
+        return new Promise((resolve, reject) => {
+            const dataReady = ref(false);
+            const transResult = ref(null);
+            const transId = 'finalize_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+
+            const params = {
+                uploadId,
+                fileName
+            };
+
+            executeTrans(
+                params,
+                transId,
+                uploadConfig.url + '/finalize',
+                'POST',
+                () => {},
+                {},
+                uploadConfig.bearerToken || '',
+                dataReady,
+                transResult
+            );
+
+            const checkCompletion = () => {
+                if (abortController.value?.signal.aborted) {
+                    reject(new Error('Upload cancelled'));
+                    return;
+                }
+
+                if (dataReady.value && transResult.value) {
+                    if (transResult.value.success !== false) {
+                        resolve(transResult.value);
+                    } else {
+                        reject(new Error('Failed to finalize upload: ' + transResult.value.message));
+                    }
+                } else {
+                    setTimeout(checkCompletion, 100);
+                }
+            };
+
+            setTimeout(checkCompletion, 100);
         });
-
-        if (!response.ok) {
-            throw new Error(`Failed to finalize upload: ${response.statusText}`);
-        }
-
-        return response.json();
     };
 
     const generateUploadId = () => {
@@ -262,7 +317,6 @@ export function useFileUpload(config = {}) {
 
     // Public methods
     const upload = async (files) => {
-        debugger;
         if (!files || files.length === 0) {
             throw new Error('No files provided for upload');
         }
@@ -326,11 +380,11 @@ export function useFileUpload(config = {}) {
     // Return reactive state and methods
     return {
         // State
-        isUploading: readonly(isUploading),
-        uploadProgress: readonly(uploadProgress),
-        uploadResults: readonly(uploadResults),
-        error: readonly(error),
-        uploadConfig: readonly(uploadConfig),
+        isUploading,
+        uploadProgress,
+        uploadResults,
+        error,
+        uploadConfig,
 
         // Computed
         hasError,
@@ -345,7 +399,7 @@ export function useFileUpload(config = {}) {
     };
 }
 
-// Helper composable for common upload configurations
+// Helper composables for common upload configurations
 export function useImageUpload(baseConfig = {}) {
     return useFileUpload({
         ...baseConfig,

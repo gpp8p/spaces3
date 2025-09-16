@@ -41,7 +41,7 @@ const pageStore = useCurrentPage();
 import {useLogStateStore} from "../stores/logState.js";
 const loginStore = useLogStateStore();
 
-import {getTrans} from "./dbTrans.js";
+import {getTrans} from "./dbTrans_0916.js";
 const {executeTrans} = getTrans();
 
 

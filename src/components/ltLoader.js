@@ -1,5 +1,5 @@
 import {ref, toRaw} from 'vue';
-import {getTrans} from "./dbTrans.js";
+import {getTrans} from "./dbTrans_0916.js";
 import {c} from "./constants.js";
 import {whenever} from "@vueuse/core";
 import {useLogStateStore} from "../stores/logState.js";

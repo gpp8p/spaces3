@@ -95,7 +95,7 @@ const {
   cancel,
   reset
 } = useFileUpload({
-  url: '/api/shan/fUpload?XDEBUG_SESSION_START=19884',
+  url: 'http://localhost:8000/api/shan/fUpload',
   headers: {
     'Authorization': `Bearer ${bearerToken.value}`
   },
