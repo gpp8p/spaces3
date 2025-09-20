@@ -77,8 +77,16 @@ import {useLogStateStore} from '../stores/logState.js';
 
 const store = useLogStateStore();
 const loginResult= toRaw(store.loginStatus);
+console.log('loginResult',loginResult);
 console.log('access_token',loginResult.access_token);
 const bearerToken = computed(() => store.loginStatus?.access_token  || '');
+const userId = computed(() => store.loginStatus?.userId  || '');
+const orgId = computed(() => store.loginStatus?.orgId  || '');
+const loginPerms = computed(() => store.loginStatus?.loginPerms  || '');
+const userName = computed(() => store.loginStatus?.userName  || '');
+debugger;
+
+
 
 debugger;
 
@@ -98,6 +106,10 @@ const {
   url: 'http://localhost:8000/api/shan/fUpload',
   headers: {
     'Authorization': `Bearer ${bearerToken.value}`
+  },
+  additionalFields: {
+    userId: userId,
+    orgId: orgId,
   },
   simultaneousUploads: 2,
   maxRetries: 3

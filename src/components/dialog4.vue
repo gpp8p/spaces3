@@ -415,6 +415,11 @@ funcs[c.UPLOAD_RT_CONTENT]= function (evt){
   changeDialog('uploadRtContent');
 }
 
+funcs[c.FINISH_UPLOAD_CONTENT] = function(evt){
+  console.log('dialog4 FINISH_UPLOAD_CONTENT-');
+
+}
+
 addActions(funcs);
 
 

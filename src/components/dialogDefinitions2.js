@@ -1509,6 +1509,7 @@ const defs = function(dialogDef){
                         startFocus: false,
                         label: "Uploader",
                         multiple: false,
+                        clearAfterUpload: true,
                         accept: 'image/*,.pdf,.docx,.doc,.jpeg,.txt,.html',
                         maxSize: 100 * 1024 * 1024, // 500MB
                         promptText: 'Upload your documents',
@@ -1518,6 +1519,7 @@ const defs = function(dialogDef){
                     twStyling:'text-xs text-blue-500 w-[100%] mt-[10px]',
                     items: [
                         { type: 'menuItem', config: { label: 'Cancel', actionCode: c.MENU_EXIT_DIALOG } },
+                        { type: 'menuItem', config: { label: 'Go Back', actionCode: c.FINISH_UPLOAD_CONTENT } }
                     ],
                 },
                 dialogData: function(emit, c, loginStore, ready, result, config, dialogData) {

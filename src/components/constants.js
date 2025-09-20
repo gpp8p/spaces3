@@ -80,6 +80,7 @@ export const c = {
     CARD_DELETE:75,
     GET_TEXT_CONTENT:76,
     UPLOAD_RT_CONTENT:77,
+    FINISH_UPLOAD_CONTENT:78,
 
 
 
