@@ -6,7 +6,9 @@
                :class="props.config.tailwindStyle || 'text-lg outline outline-2 outline-blue-500 focus:outline-red-500 hover:outline-red-500 rounded'"
                :size = "props.config.size"
                :value = "fieldValue"
+
                v-model = "fieldValue"
+               :data-cy="dataCyValue"
                :placeholder = "fieldPlaceholder"
                :maxlength="props.config.maxlength"
                :readonly="noChange"
@@ -47,8 +49,14 @@ const emit = defineEmits(['cevt']);
 const name = props.config.name;
 const funcs = [];
 const cmdHandlers = {}
-
-
+/*
+if(props.config.data_cy != undefined){
+  const dataCyValue = ref(props.config.data_cy);
+}else{
+  const dataCyValue = ref('');
+}
+*/
+const dataCyValue = props.config.data_cy||'';
 
 const handleCmd = function(args){
   console.log('handleCmd-', name, args);

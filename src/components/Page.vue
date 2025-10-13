@@ -83,22 +83,37 @@ const allCards = ref([]);
 const reloadThisPage = function(){
 
   // console.log('page parms-', parms);
-//  debugger;
+  debugger;
 //const ready = ref(false);
-  executeTrans(parms.value, c.TRANS_GET_LAYOUT,  c.API_PATH+'api/shan/getLayout?XDEBUG_SESSION_START=19884', 'GET', emit, c, header, dataReady, transResult);
-  dataReady.value = false;
-  whenever(dataReady, () => {
-    // console.log('data is ready-', transResult, fieldValue.value);
-    //debugger;
-    fieldValue.value = transResult.value;
-    fieldValue.value.pageName=c.PAGE_DISPLAY_NAME;
-    fieldValue.value.layout.pageDimensions=toRaw(props.config).pageDimensions;
-    if(props.config.mode==c.MODE_DISPLAY){
-      pageMode.value=c.PAGE_DISPLAY;
-    }
+  console.log("page load parms", parms);
+  console.log('toRaw parms', toRaw(parms.value).layoutId);
+  if(typeof(toRaw(parms.value).layoutId)=='undefined'){
+    console.log("parms.value.layoutId is undefined");
     pageReload.value+=1;
-    // console.log('pageReload');
-  })
+  }else{
+    executeTrans(parms.value, c.TRANS_GET_LAYOUT,  c.API_PATH+'api/shan/getLayout?XDEBUG_SESSION_START=19884', 'GET', emit, c, header, dataReady, transResult);
+    dataReady.value = false;
+    whenever(dataReady, () => {
+      debugger;
+
+      console.log('transResult.value:', transResult.value);  // ADD THIS
+      console.log('typeof transResult.value:', typeof transResult.value);  // ADD THIS
+
+
+      fieldValue.value = transResult.value;
+
+
+      fieldValue.value.pageName = c.PAGE_DISPLAY_NAME;
+      fieldValue.value.layout.pageDimensions = toRaw(props.config).pageDimensions;
+
+      if(props.config.mode==c.MODE_DISPLAY){
+        pageMode.value=c.PAGE_DISPLAY;
+      }
+      pageReload.value+=1;
+      // console.log('pageReload');
+    })
+  }
+
 }
 
 /*

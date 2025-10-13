@@ -2911,6 +2911,7 @@ const defs = function(dialogDef){
                         label: 'User Id:',
                         required: true,
                         startFocus: true,
+                        data_cy: 'login_user_id',
                         labelStyle:'text-sm text-blue-500 mr-[10%]',
                         tailwindStyle:'text-sm my-0.5 outline-blue-500 rounded focus:outline-2 focus:outline-blue-500 hover:outline-2 hover:outline-red-500 rounded'
                     },
@@ -2918,6 +2919,7 @@ const defs = function(dialogDef){
                         type: 'htmlPasswordInput',
                         name: 'password',
                         label: 'Password:',
+                        data_cy: 'login_password',
                         labelStyle: 'text-sm text-blue-500 mr-[10%]',
                         fieldSize: 30,
                         tailwindStyle:'text-sm my-0.5 outline-blue-500 rounded focus:outline-2 focus:outline-blue-500 hover:outline-2 hover:outline-red-500 rounded',
@@ -2973,8 +2975,8 @@ const defs = function(dialogDef){
                 menuDefs:{
                     twStyling:'text-xs text-blue-500 w-[60%] mt-[15%] ml-[10%]',
                     items: [
-                        { type: 'menuItem', config: { label: 'Login', actionCode: c.MENU_LOGIN } },
-                        { type: 'menuItem', config: { label: 'Cancel', actionCode: c.MENU_CANCEL_LOGIN } },
+                        { type: 'menuItem', config: { label: 'Login', data_cy: 'login_button',  actionCode: c.MENU_LOGIN } },
+                        { type: 'menuItem', config: { label: 'Cancel', data_cy: 'login_cancel_button', actionCode: c.MENU_CANCEL_LOGIN } },
                     ],
                 },
                 addActions:function(currentFuncs){

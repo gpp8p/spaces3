@@ -1,6 +1,6 @@
 <template>
   <div
-
+      :data-cy="dataCyValue"
       @click="handleClick"
   >
     {{ config.label || 'Missing' }}
@@ -33,6 +33,7 @@ const emit = defineEmits(['cevt']);
 const name = props.config.name;
 const funcs = [];
 const cmdHandlers = {}
+const dataCyValue = props.config.data_cy||'';
 
 const fieldValue = ref('');
 if(typeof(props.config.value)=='function'){
