@@ -2952,6 +2952,7 @@ const defs = function(dialogDef){
                     currentFuncs[c.FIELD_CHANGE_EVENT]=function(evt, emit, dialogData){
                         console.log('in c.FIELD_CHANGE_EVENT-', evt, dialogData);
                         if(evt[1]==='password'){
+                            debugger;
                             emit('cevt', [c.CHANGE_DIALOG_CONFIGURATION, c.CHANGE_MENU_CONFIGURATION, "loginMenuB", dialogData]);
                         }
 

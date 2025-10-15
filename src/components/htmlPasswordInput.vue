@@ -6,8 +6,10 @@
         :name="config.name"
         :maxlength="inputLength"
         :size="config.fieldSize || inputLength"
+        :data-cy="dataCyValue"
         @keydown.enter="handleInput"
         @keydown.tab="handleInput"
+        @blur="handleBlur"
         :class="config.tailwindStyle || 'text-lg outline outline-2 outline-blue-500 focus:outline-red-500 hover:outline-red-500 rounded'"
         ref="inputRef"
     />
@@ -21,6 +23,7 @@ import {useEventHandler} from "../components/eventHandler.js";
 const {handleEvent} = useEventHandler();
 
 
+
 const props = defineProps({
   config: {
     type: Object,
@@ -32,6 +35,7 @@ const emit = defineEmits(['error', 'cevt']);
 
 const inputRef = ref(null);
 const inputLength = ref(props.config.inputLength || props.config.fieldSize || 25);
+const dataCyValue = props.config.data_cy||'';
 
 onMounted(() => {
   if (props.config.initialFocus) {
@@ -41,6 +45,7 @@ onMounted(() => {
 
 const handleInput = (event) => {
   debugger;
+
   const inputValue = event.target.value;
   if (inputValue.length > inputLength.value) {
     emit('error', 'Input exceeds the maximum allowed length');
@@ -50,6 +55,10 @@ const handleInput = (event) => {
     emit('cevt', [c.FIELD_CHANGED, props.config.name, event.target.value])
   }
 };
+const handleBlur = function(event){
+  console.log('blur changed on password field', event.target.value);
+  emit('cevt', [c.FIELD_CHANGED, props.config.name, event.target.value])
+}
 </script>
 <style scoped>
 .inputCss {
