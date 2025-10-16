@@ -13,11 +13,11 @@ export function getMenu(){
                                 ]
                             }
                         },
-                        { type: 'menuItem', config: { label: 'Delete', actionCode: c.MENU_PAGE_DELETE } },
-                        { type: 'menuItem', config: { label: 'Publish', actionCode: c.MENU_PUBLISH } },
-                        { type: 'menuItem', config: { label: 'Create', actionCode: c.MENU_CREATE } },
-                        { type: 'menuItem', config: { label: 'Access', actionCode: c.MENU_ACCESS } },
-                        { type: 'menuItem', config: { label: 'My Spaces', actionCode: c.MENU_MYSPACES } },
+                        { type: 'menuItem', config: { label: 'Delete', actionCode: c.MENU_PAGE_DELETE, data_cy: 'menu_opt_delete' } },
+                        { type: 'menuItem', config: { label: 'Publish', actionCode: c.MENU_PUBLISH, data_cy: 'menu_opt_publish' } },
+                        { type: 'menuItem', config: { label: 'Create', actionCode: c.MENU_CREATE, data_cy: 'menu_opt_create' } },
+                        { type: 'menuItem', config: { label: 'Access', actionCode: c.MENU_ACCESS, data_cy: 'menu_opt_access' } },
+                        { type: 'menuItem', config: { label: 'My Spaces', actionCode: c.MENU_MYSPACES, data_cy: 'menu_opt_myspaces' } },
                     ],
                 }
             }

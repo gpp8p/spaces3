@@ -13,7 +13,7 @@
       </thead>
       <tbody :class="props.config.twbody" style="height: 30vh;">
       <tr v-if="reorder==true" :class="props.config.twtr" v-for="(row, rowIndex) in filteredData" :key="rowIndex" >
-           <span :class="cell.css" v-for="(cell, cellIndex) in row" :key="cellIndex">
+           <span :class="cell.css" v-for="(cell, cellIndex) in row" :key="cellIndex" >
             <td >
               {{ cell.value }}
             </td>
@@ -37,7 +37,7 @@
       </tr>
       </thead>
       <tbody :class="props.config.twbody" style="height: 30vh;">
-      <tr :class="props.config.twtr" v-for="(row, rowIndex) in filteredData" :key="rowIndex" @click="rowSelected(rowIndex)">
+      <tr :class="props.config.twtr" :data-cy="`myspaces-row-${rowIndex}`" v-for="(row, rowIndex) in filteredData" :key="rowIndex" @click="rowSelected(rowIndex)">
            <span :class="cell.css" v-for="(cell, cellIndex) in row" :key="cellIndex">
             <td >
               {{ cell.value }}
